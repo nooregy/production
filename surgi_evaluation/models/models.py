@@ -39,7 +39,7 @@ class KPIEMPLOYEE(models.Model):
     weight = fields.Float(string="weight %", required=False, )
     active_kpi = fields.Boolean('Active', default=False, )
 
-    kra_kpi = fields.Char(string="KRA KPI", required=False, )
+    kra_kpi = fields.Char(string="KRA", required=False, )
 
     interval_employee = fields.Many2one(comodel_name="hr.job", string="Job Postion")
 
@@ -74,9 +74,6 @@ class KPIEMPLOYEE(models.Model):
     #     if not manger_hr:
     #         if self.name or self.weight or self.interval_employee:
     #             self.active_kpi = False
-
-
-
 
 
 
@@ -125,7 +122,7 @@ class EvaluationEvaluation(models.Model):
     date_start = fields.Date('Start Date', required=True, )
     date_end = fields.Date('End Date')
     duration = fields.Float('Duration', store=True,readonly=True )  # compute='_compute_duration',
-    check_read = fields.Boolean(string="Check",default=False  )
+    check_read = fields.Boolean(string="Publish for Employee",default=False  )
 
     is_evalualtion = fields.Boolean(string="Check",defaut=False  )
 
@@ -166,7 +163,7 @@ class EvaluationEvaluation(models.Model):
             if rec.active_core == True:
                 lines.append((0, 0, {
                     'name': rec.name,
-                    'kpi_weight': rec.kpi_weight,
+                    'core_weight': rec.core_weight,
                     'state_result': rec.state_result,
                     # 'state_result': "expectation",
                 }))
@@ -177,7 +174,7 @@ class EvaluationEvaluation(models.Model):
                 print ('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
                 lines2.append((0, 0, {
                     'name': rec.name,
-                    'kpi_weight': rec.kpi_weight,
+                    'function_weight': rec.function_weight,
                     'state_result': rec.state_result,
                     # 'state_result': "expectation",
                 }))
@@ -203,33 +200,33 @@ class EvaluationEvaluation(models.Model):
     def submit_core(self):
         total=0.0
         for rec in self.function_comp:
-            total+=rec.kpi_weight
+            total+=rec.function_weight
 
         print ('totalttttttttttt',total)
         if total>1:
-           raise UserError(_('KPI weight % Must be in 100%'))
+           raise UserError(_('Function weight % Must be in 100%'))
         else:
             self.state='done'
             self.check_read=True
 
     @api.constrains('function_comp','core_competencies','employee_kpi')
     def submit_core_weight(self):
-        total = 0.0
-        total2=0.0
-        total3=0.0
+        total_function_comp = 0.0
+        total_core_competencies=0.0
+        total_employee_kpi=0.0
         for rec in self.function_comp:
-            total += rec.kpi_weight
-        if total > 1:
+            total_function_comp += rec.function_weight
+        if total_function_comp > 1:
             raise UserError(_('KPI Function weight  % Must be in 100%'))
 
         for rec in self.core_competencies:
-            total2 += rec.kpi_weight
-        if total2 > 1:
+            total_core_competencies += rec.core_weight
+        if total_core_competencies > 1:
             raise UserError(_('KPI Competencies weight % Must be in 100%'))
 
         for rec in self.employee_kpi:
-            total3 += rec.kpi_weight
-        if total3 > 1:
+            total_employee_kpi += rec.kpi_weight
+        if total_employee_kpi > 1:
             raise UserError(_('KPI Employee weight % Must be in 100%'))
 
 
@@ -462,22 +459,22 @@ class NewModule(models.Model):
     _name = 'core.competencies'
     _rec_name = 'name'
 
-    name = fields.Char(string='Questions',)
+    name = fields.Char(string='Core', groups="hr.group_hr_user")
     percentage = fields.Float(string="Percentage %", required=False, )
-    kpi_weight = fields.Float(string="KPI weight", required=False,)
+    core_weight = fields.Float(string="Weight", groups="hr.group_hr_user")
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
                                                                 ('improvement', 'Need To Improvement'),
                                                                 ('meet', 'Meet'), ('exceed', 'Exceed'),
-                                                                ('fail', 'Fail'), ], required=False,)
+                                                                ('fail', 'Fail'), ], required=False)
     score = fields.Float(string="Score", required=False, compute='get_score', readonly=True,)
     active_core = fields.Boolean('Active', default=True,)
 
     # interval_core = fields.Many2one(comodel_name="evaluation.evaluation")
 
-    @api.depends('percentage', 'kpi_weight')
+    @api.depends('percentage', 'core_weight')
     def get_score(self):
         for rec in self:
-            rec.score = (rec.percentage * rec.kpi_weight)
+            rec.score = (rec.percentage * rec.core_weight)
 
     # @api.constrains('kpi_weight')
     # def get_kpi_employee(self):
@@ -494,7 +491,7 @@ class NewModule(models.Model):
     _name = 'core2.competencies2'
     _rec_name = 'name'
 
-    name = fields.Char(string='Questions', )
+    name = fields.Char(string='Core', groups="hr.group_hr_user")
     percentage = fields.Float(string="Percentage %", required=False, )
     kpi_weight = fields.Float(string="KPI weight", required=False, )
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
@@ -519,23 +516,23 @@ class NewModule(models.Model):
     _name = 'function.competencies'
     _rec_name = 'name'
 
-    name = fields.Char(string='Questions', groups="hr.group_hr_user")
+    name = fields.Char(string='Function', groups="hr.group_hr_user")
     percentage = fields.Float(string="Percentage %", required=False, )
-    kpi_weight = fields.Float(string="KPI weight", required=False, )
+    function_weight = fields.Float(string="Weight", required=False, )
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
                                                                 ('improvement', 'Need To Improvement'),
                                                                 ('meet', 'Meet'), ('exceed', 'Exceed'),
                                                                 ('fail', 'Fail'), ], required=False,
                                     groups="hr.group_hr_user")
-    score = fields.Float(string="Score", required=False, compute='get_score', readonly=True, groups="hr.group_hr_user")
+    score = fields.Float(string="Score", required=False, compute='get_score', readonly=True)
     active_function = fields.Boolean('Active', default=True, groups="hr.group_hr_user")
 
     # interval_function = fields.Many2one(comodel_name="evaluation.evaluation")
 
-    @api.depends('percentage', 'kpi_weight')
+    @api.depends('percentage', 'function_weight')
     def get_score(self):
         for rec in self:
-            rec.score = (rec.percentage * rec.kpi_weight)
+            rec.score = (rec.percentage * rec.function_weight)
 
     # @api.constrains('kpi_weight')
     # def get_kpi_employee(self):
@@ -579,16 +576,16 @@ class NewModule(models.Model):
     _name = 'kpi.competencies'
     _rec_name = 'name'
 
-    name = fields.Char(string='Questions', readonly=True)
+    name = fields.Char(string='KPI', )
     percentage = fields.Float(string="Percentage %", required=False, )
-    kpi_weight = fields.Float(string="KPI weight", readonly=True)
+    kpi_weight = fields.Float(string="Weight", )
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
                                                                 ('improvement', 'Need To Improvement'),
                                                                 ('meet', 'Meet'), ('exceed', 'Exceed'),
                                                                 ('fail', 'Fail'), ], required=False)
     score = fields.Float(string="Score", required=False, compute='get_score', readonly=True)
     # active = fields.Boolean('Active', default=True)
-    kra_kpi = fields.Char(string="KRA KPI", required=False, )
+    kra_kpi = fields.Char(string="KRA", )
 
     interval_kpi = fields.Many2one(comodel_name="evaluation.evaluation")
 

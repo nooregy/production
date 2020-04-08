@@ -7,6 +7,7 @@
             <field name="model">kpi.kpi</field>
             <field name="arch" type="xml">
                 <tree string="KPI">
+                    <field name="kra_kpi"/>
                     <field name="name"/>
                     <field name="weight" widget="percentage"/>
                     <field name="active_kpi"/>
@@ -23,6 +24,7 @@
                     <sheet>
                         <group>
                             <group>
+                                <field name="kra_kpi"/>
                                 <field name="name"/>
                                 <field name="active_kpi"/>
 
