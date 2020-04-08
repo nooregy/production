@@ -38,6 +38,10 @@
                 <tree string="Operation">
                     <field name="name"/>
                     <field name="employee_id"/>
+                    <field name="total_competencies"/>
+                    <field name="total_function_comp"/>
+                    <field name="total_employee_kpi"/>
+                    <field name="total_totals"/>
                 </tree>
             </field>
         </record>
