@@ -163,7 +163,7 @@ class EvaluationEvaluation(models.Model):
             if rec.active_core == True:
                 lines.append((0, 0, {
                     'name': rec.name,
-                    'core_weight': rec.core_weight,
+                    'kpi_weight': rec.kpi_weight,
                     'state_result': rec.state_result,
                     # 'state_result': "expectation",
                 }))
@@ -174,7 +174,7 @@ class EvaluationEvaluation(models.Model):
                 print ('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
                 lines2.append((0, 0, {
                     'name': rec.name,
-                    'function_weight': rec.function_weight,
+                    'kpi_weight': rec.kpi_weight,
                     'state_result': rec.state_result,
                     # 'state_result': "expectation",
                 }))
@@ -200,7 +200,7 @@ class EvaluationEvaluation(models.Model):
     def submit_core(self):
         total=0.0
         for rec in self.function_comp:
-            total+=rec.function_weight
+            total+=rec.kpi_weight
 
         print ('totalttttttttttt',total)
         if total>1:
@@ -211,22 +211,22 @@ class EvaluationEvaluation(models.Model):
 
     @api.constrains('function_comp','core_competencies','employee_kpi')
     def submit_core_weight(self):
-        total_function_comp = 0.0
-        total_core_competencies=0.0
-        total_employee_kpi=0.0
+        total = 0.0
+        total2=0.0
+        total3=0.0
         for rec in self.function_comp:
-            total_function_comp += rec.function_weight
-        if total_function_comp > 1:
+            total += rec.kpi_weight
+        if total > 1:
             raise UserError(_('KPI Function weight  % Must be in 100%'))
 
         for rec in self.core_competencies:
-            total_core_competencies += rec.core_weight
-        if total_core_competencies > 1:
+            total2 += rec.kpi_weight
+        if total2 > 1:
             raise UserError(_('KPI Competencies weight % Must be in 100%'))
 
         for rec in self.employee_kpi:
-            total_employee_kpi += rec.kpi_weight
-        if total_employee_kpi > 1:
+            total3 += rec.kpi_weight
+        if total3 > 1:
             raise UserError(_('KPI Employee weight % Must be in 100%'))
 
 
@@ -461,7 +461,7 @@ class NewModule(models.Model):
 
     name = fields.Char(string='Core', groups="hr.group_hr_user")
     percentage = fields.Float(string="Percentage %", required=False, )
-    core_weight = fields.Float(string="Weight", groups="hr.group_hr_user")
+    kpi_weight = fields.Float(string="Weight", required=False,)
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
                                                                 ('improvement', 'Need To Improvement'),
                                                                 ('meet', 'Meet'), ('exceed', 'Exceed'),
@@ -471,10 +471,10 @@ class NewModule(models.Model):
 
     # interval_core = fields.Many2one(comodel_name="evaluation.evaluation")
 
-    @api.depends('percentage', 'core_weight')
+    @api.depends('percentage', 'kpi_weight')
     def get_score(self):
         for rec in self:
-            rec.score = (rec.percentage * rec.core_weight)
+            rec.score = (rec.percentage * rec.kpi_weight)
 
     # @api.constrains('kpi_weight')
     # def get_kpi_employee(self):
@@ -518,7 +518,7 @@ class NewModule(models.Model):
 
     name = fields.Char(string='Function', groups="hr.group_hr_user")
     percentage = fields.Float(string="Percentage %", required=False, )
-    function_weight = fields.Float(string="Weight", required=False, )
+    kpi_weight = fields.Float(string="Weight", required=False, )
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
                                                                 ('improvement', 'Need To Improvement'),
                                                                 ('meet', 'Meet'), ('exceed', 'Exceed'),
@@ -529,10 +529,10 @@ class NewModule(models.Model):
 
     # interval_function = fields.Many2one(comodel_name="evaluation.evaluation")
 
-    @api.depends('percentage', 'function_weight')
+    @api.depends('percentage', 'kpi_weight')
     def get_score(self):
         for rec in self:
-            rec.score = (rec.percentage * rec.function_weight)
+            rec.score = (rec.percentage * rec.kpi_weight)
 
     # @api.constrains('kpi_weight')
     # def get_kpi_employee(self):

@@ -113,7 +113,7 @@
                                     <tree editable="bottom" create="false">
                                         <field name="name" force_save="1" readonly="1"/>
                                         <field name="percentage" sum="percentage" widget="percentage" force_save="1"/>
-                                        <field name="core_weight" sum="core_weight" widget="percentage" force_save="1" readonly="1"/>
+                                        <field name="kpi_weight" sum="kpi_weight" widget="percentage" force_save="1" readonly="1"/>
                                         <field name="state_result" force_save="1" readonly="1"/>
                                         <field name="active_core" force_save="1" readonly="1"/>
                                         <field name="score" sum="score" force_save="1"/>
@@ -127,7 +127,7 @@
                                     <tree editable="bottom" create="false">
                                         <field name="name" force_save="1" readonly="1"/>
                                         <field name="percentage" sum="percentage" widget="percentage" force_save="1" />
-                                        <field name="function_weight" sum="function_weight" widget="percentage" force_save="1"/>
+                                        <field name="kpi_weight" sum="kpi_weight" widget="percentage" force_save="1"/>
                                         <field name="state_result" force_save="1" readonly="1"/>
                                         <field name="score" sum="score" force_save="1"/>
                                     </tree>

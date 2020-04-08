@@ -64,7 +64,7 @@
                 <tree string="Core Competencies">
                     <field name="name"/>
                     <field name="percentage"/>
-                    <field name="core_weight"/>
+                    <field name="kpi_weight"/>
                     <field name="state_result"/>
                     <field name="score"/>
                     <field name="active_core"/>
@@ -82,7 +82,7 @@
                         <group>
                             <field name="name"/>
                             <field name="percentage" widget="percentage"/>
-                            <field name="core_weight" widget="percentage"/>
+                            <field name="kpi_weight" widget="percentage"/>
                             <field name="state_result"/>
                             <field name="score" widget="percentage"/>
                             <field name="active_core"/>
@@ -118,7 +118,7 @@
                 <tree string="Function Competencies">
                     <field name="name"/>
                     <field name="percentage" widget="percentage"/>
-                    <field name="function_weight" widget="percentage"/>
+                    <field name="kpi_weight" widget="percentage"/>
                     <field name="state_result"/>
                     <field name="score" widget="percentage"/>
                     <field name="active_function"/>
@@ -136,7 +136,7 @@
                         <group>
                             <field name="name"/>
                             <field name="percentage" widget="percentage"/>
-                            <field name="function_weight" widget="percentage"/>
+                            <field name="kpi_weight" widget="percentage"/>
                             <field name="state_result"/>
                             <field name="score" widget="percentage"/>
                             <field name="active_function"/>
