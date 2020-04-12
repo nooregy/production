@@ -18,13 +18,55 @@ from datetime import datetime, date, timedelta, time
 class AttendanceSheet(models.Model):
     _inherit = 'attendance.sheet'
 
+    penalty_ids = fields.One2many('hr.attendance.penalty', 'sheet_id',
+                                  'Penalities')
+    penalty_count = fields.Integer('Penalties Count',
+                                   compute='compute_penalty_count')
+    accrual_date = fields.Date('Accrual Date', required=False)
+
+    def compute_penalty_count(self):
+        for sheet in self:
+            sheet.penalty_count = len(sheet.penalty_ids)
+
+    def action_approve(self):
+        self.action_create_penalties()
+        self.write({'state': 'done'})
+
+    def action_create_penalties(self):
+        for sheet in self:
+            late_lines = sheet.line_ids.filtered(lambda l: l.late_in > 0)
+            penalty_obj = self.env['hr.attendance.penalty']
+            for lateline in late_lines:
+                values = {
+                    'employee_id': sheet.employee_id.id,
+                    'type': 'late',
+                    'accrual_date': sheet.accrual_date,
+                    'date': lateline.date,
+                    'sheet_id': sheet.id,
+                    'name': 'Late IN',
+                    'amount': lateline.late_in
+                }
+                penalty_obj.create(values)
+
+            absence_lines = sheet.line_ids.filtered(
+                lambda l: l.diff_time > 0 and l.status == "ab")
+            for abline in absence_lines:
+                values = {
+                    'employee_id': sheet.employee_id.id,
+                    'type': 'late',
+                    'accrual_date': sheet.accrual_date,
+                    'date': abline.date,
+                    'sheet_id': sheet.id,
+                    'name': 'Absence',
+                    'amount': abline.diff_time
+                }
+                penalty_obj.create(values)
 
     @api.model
     def cron_update_attendance_sheet(self):
-        sheet_ids = self.search([('state','=','draft')])
+        sheet_ids = self.search([('state', '=', 'draft')])
         for sheet in sheet_ids:
             sheet.get_attendances()
-
 
     def get_attendances(self):
         for att_sheet in self:
@@ -53,6 +95,8 @@ class AttendanceSheet(models.Model):
             all_dates = [(from_date + timedelta(days=x)) for x in
                          range((to_date - from_date).days + 1)]
             abs_cnt = 0
+            late_cnt = []
+            diff_cnt = []
             for day in all_dates:
                 day_start = datetime(day.year, day.month, day.day)
                 day_end = day_start.replace(hour=23, minute=59,
@@ -310,7 +354,8 @@ class AttendanceSheet(models.Model):
                                                      'wd_rate']
                             float_late = late_in.total_seconds() / 3600
                             act_float_late = late_in.total_seconds() / 3600
-                            policy_late = policy_id.get_late(float_late)
+                            policy_late, late_cnt = policy_id.get_late(
+                                float_late, late_cnt)
                             float_diff = diff_time.total_seconds() / 3600
                             if status == 'ab':
                                 if not abs_flag:
@@ -322,7 +367,8 @@ class AttendanceSheet(models.Model):
                                                                    abs_cnt)
                             else:
                                 act_float_diff = float_diff
-                                float_diff = policy_id.get_diff(float_diff)
+                                float_diff, diff_cnt = policy_id.get_diff(
+                                    float_diff, diff_cnt)
                             values = {
                                 'date': date,
                                 'day': day_str,
@@ -332,7 +378,7 @@ class AttendanceSheet(models.Model):
                                 'ac_sign_out': ac_sign_out,
                                 'late_in': policy_late,
                                 'act_late_in': act_float_late,
-                                'worked_hours':float_worked_hours,
+                                'worked_hours': float_worked_hours,
                                 'overtime': float_overtime,
                                 'act_overtime': act_float_overtime,
                                 'diff_time': float_diff,
@@ -425,3 +471,9 @@ class AttendanceSheet(models.Model):
                             'note': ""
                         }
                         att_line.create(values)
+
+    def action_view_penalties(self):
+        penalty_ids = self.mapped('penalty_ids')
+        action = self.env.ref('surgi_attendance_sheet.hr_attendance_penalty_view_action').read()[0]
+        action['domain'] = [('id', 'in', penalty_ids.ids)]
+        return action
