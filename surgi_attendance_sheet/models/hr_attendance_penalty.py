@@ -29,3 +29,4 @@ class HrAttendancePenalty(models.Model):
                                readonly=True)
     payslip_id = fields.Many2one('hr.payslip', 'Payslip', readonly=True)
     type = fields.Selection(string="Type", selection=TYPE, required=True, )
+    amount = fields.Float('Amount')

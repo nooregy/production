@@ -34,6 +34,8 @@ class AttendanceSheet(models.Model):
 
     def action_create_penalties(self):
         for sheet in self:
+            if not sheet.accrual_date:
+                raise ValidationError(_('Please Set accrual Date First'))
             late_lines = sheet.line_ids.filtered(lambda l: l.late_in > 0)
             penalty_obj = self.env['hr.attendance.penalty']
             for lateline in late_lines:
@@ -474,6 +476,8 @@ class AttendanceSheet(models.Model):
 
     def action_view_penalties(self):
         penalty_ids = self.mapped('penalty_ids')
-        action = self.env.ref('surgi_attendance_sheet.hr_attendance_penalty_view_action').read()[0]
+        action = self.env.ref(
+            'surgi_attendance_sheet.hr_attendance_penalty_view_action').read()[
+            0]
         action['domain'] = [('id', 'in', penalty_ids.ids)]
         return action

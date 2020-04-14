@@ -20,6 +20,24 @@
             </field>
         </record>
 
+         <record id="hr_diff_rule_view_form" model="ir.ui.view">
+            <field name="name">hr.diff.rule.form</field>
+            <field name="model">hr.diff.rule</field>
+            <field name="inherit_id"
+                   ref="rm_hr_attendance_sheet.hr_diff_rule_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='amount']"
+                       position="after">
+                    <field name="first"/>
+                    <field name="second"/>
+                    <field name="third"/>
+                    <field name="fourth"/>
+                    <field name="fifth"/>
+                </xpath>
+            </field>
+        </record>
+
+
 
     </data>
 </odoo>

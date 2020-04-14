@@ -20,6 +20,7 @@
                                 <field name="type" readonly="1"/>
                                 <field name="payslip_id" readonly="1"/>
                                 <field name="paid" readonly="1"/>
+                                <field name="amount" readonly="1"/>
                             </group>
                         </group>
                     </sheet>
@@ -38,6 +39,7 @@
                     <field name="type"/>
                     <field name="sheet_id"/>
                     <field name="paid"/>
+                    <field name="amount"/>
 
                 </tree>
             </field>

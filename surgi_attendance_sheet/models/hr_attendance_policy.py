@@ -104,8 +104,18 @@ class HrAttendancePolicy(models.Model):
                 res = 0
         return res, diff_cnt
 
-class hr_late_rule_line(models.Model):
+class HrLateRuleLine(models.Model):
     _inherit = 'hr.late.rule.line'
+
+    first = fields.Float('First Time', default=1)
+    second = fields.Float('Second Time', default=1)
+    third = fields.Float('Third Time', default=1)
+    fourth = fields.Float('Fourth Time', default=1)
+    fifth = fields.Float('Fifth Time', default=1)
+
+
+class HrDiffRuleLine(models.Model):
+    _inherit = 'hr.diff.rule.line'
 
     first = fields.Float('First Time', default=1)
     second = fields.Float('Second Time', default=1)

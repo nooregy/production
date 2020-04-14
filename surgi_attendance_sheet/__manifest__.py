@@ -15,6 +15,7 @@
         'views/hr_contract_view.xml',
         'views/hr_attendance_policy_view.xml',
         'views/hr_attendance_sheet_view.xml',
-        'views/hr_attendance_penalty_view.xml'
+        'views/hr_attendance_penalty_view.xml',
+        'views/hr_payslip_view.xml'
     ],
 }

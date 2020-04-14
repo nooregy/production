@@ -33,3 +33,6 @@ class hrEmployee(models.Model):
             working_intervals.append((slot.start_datetime, slot.end_datetime))
         return working_intervals
 
+
+
+
