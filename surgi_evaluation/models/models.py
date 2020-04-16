@@ -124,7 +124,7 @@ class EvaluationEvaluation(models.Model):
     duration = fields.Float('Duration', store=True,readonly=True )  # compute='_compute_duration',
     check_read = fields.Boolean(string="Publish for Employee",default=False  )
 
-    is_evalualtion = fields.Boolean(string="Check",defaut=False  )
+    is_evalualtion = fields.Boolean(string="Get",defaut=False  )
 
 
     # Notice get all question in core.competencies which active only # HR ONLY
@@ -198,13 +198,24 @@ class EvaluationEvaluation(models.Model):
         #
 
     def submit_core(self):
-        total=0.0
+        total = 0.0
+        total2 = 0.0
+        total3 = 0.0
         for rec in self.function_comp:
-            total+=rec.kpi_weight
+            total += rec.kpi_weight
+        if total != 1:
+            raise UserError(_('KPI Function weight  % Must be in 100%'))
 
-        print ('totalttttttttttt',total)
-        if total>1:
-           raise UserError(_('Function weight % Must be in 100%'))
+        for rec in self.core_competencies:
+            total2 += rec.kpi_weight
+        if total2 != 1:
+            raise UserError(_('KPI Competencies weight % Must be in 100%'))
+
+        for rec in self.employee_kpi:
+            total3 += rec.kpi_weight
+        if total3 != 1:
+            raise UserError(_('KPI Employee weight % Must be in 100%'))
+
         else:
             self.state='done'
             self.check_read=True
@@ -216,17 +227,17 @@ class EvaluationEvaluation(models.Model):
         total3=0.0
         for rec in self.function_comp:
             total += rec.kpi_weight
-        if total > 1:
+        if total != 1:
             raise UserError(_('KPI Function weight  % Must be in 100%'))
 
         for rec in self.core_competencies:
             total2 += rec.kpi_weight
-        if total2 > 1:
+        if total2 != 1:
             raise UserError(_('KPI Competencies weight % Must be in 100%'))
 
         for rec in self.employee_kpi:
             total3 += rec.kpi_weight
-        if total3 > 1:
+        if total3 != 1:
             raise UserError(_('KPI Employee weight % Must be in 100%'))
 
 
@@ -256,7 +267,7 @@ class EvaluationEvaluation(models.Model):
             date_start = datetime.strptime(str(self.date_start), "%Y-%m-%d").date()
             date_end = datetime.strptime(str(self.date_end), "%Y-%m-%d").date()
             print (date_start,date_end,'+++++++++++++++')
-            self.duration=float(str((date_start - date_end).days))
+            self.duration=float(str((date_end - date_start).days))
 
 
 

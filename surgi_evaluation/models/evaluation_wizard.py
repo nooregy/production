@@ -20,7 +20,20 @@ class NewModule(models.TransientModel):
         print ('+++++++++++++++++++++++++++++++++')
         duration=0.0
         orders_list = []
+        lines = [(5, 0, 0), ]
         if self.employee_ids:
+
+            for lin in self.employee_ids.job_id.kpi_ids:
+                if lin.active_kpi==True:
+                    lines.append((0, 0, {
+                        'name': lin.name,
+                        'kpi_weight': lin.weight,
+                        'kra_kpi': lin.kra_kpi,
+                        # 'state_result': "expectation",
+                    }))
+
+
+
             if self.start_date and self.end_date:
                 date_start = datetime.strptime(str(self.start_date), "%Y-%m-%d").date()
                 date_end = datetime.strptime(str(self.end_date), "%Y-%m-%d").date()
@@ -35,7 +48,7 @@ class NewModule(models.TransientModel):
                     'date_start':self.start_date,
                     'date_end':self.end_date,
                     'duration':duration,
-                    # 'is_evalualtion':True,
+                    'employee_kpi':lines,
 
                 })
 
