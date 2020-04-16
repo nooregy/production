@@ -296,7 +296,7 @@ class EvaluationEvaluation(models.Model):
         for rec in self:
             # rec.total_totals = (rec.total_competencies + rec.total_function_comp + rec.total_employee_kpi) / 3
             # Notice equation we need
-            rec.total_totals = ((rec.total_competencies * ratio.core_ratio) + (rec.total_function_comp * ratio.function_ratio)+ (rec.total_employee_kpi * ratio.kpi_ratio)) / 3
+            rec.total_totals = ((rec.total_competencies * ratio.core_ratio) + (rec.total_function_comp * ratio.function_ratio)+ (rec.total_employee_kpi * ratio.kpi_ratio))
 
     @api.depends('core_competencies', 'total_competencies')
     def get_total_core_competencies(self):
