@@ -34,7 +34,7 @@
             <field name="view_id" ref="evaluation_form_wizard_page"/>
             <field name="target">new</field>
         </record>
-        <menuitem id="surgi_wizard_page_evalaution" name="Evaluation Wizard" parent="surgi_evaluation_menuitem" action="surgi_action_wizard_page_evaluation"
+        <menuitem id="surgi_wizard_page_evalaution" name="Evaluation Wizard" parent="surgi_evaluation_menuitem" action="surgi_action_wizard_page_evaluation" groups="hr.group_hr_user"
                   sequence="13"/>
 
 

@@ -28,6 +28,7 @@
         'security/evaluation_groups.xml',
         'views/views.xml',
         'views/templates.xml',
+        'views/evaluation_manager.xml',
         'views/config_ratio.xml',
         'views/evaluation_wizard.xml',
         'demo/demo.xml',

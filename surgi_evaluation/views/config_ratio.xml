@@ -51,7 +51,7 @@
         <menuitem id="ratio_config_menu" name="configuration" parent="surgi_evaluation_menuitem" sequence="4"/>
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="ratio_mene_action_page" name="Competencies Ratios" parent="ratio_config_menu"
-                  action="ratio_action_views_page"
+                  action="ratio_action_views_page" groups="hr.group_hr_user"
                   sequence="1"/>
 
 
@@ -108,7 +108,7 @@
         </record>
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="menu_core_competencies_views_config" name="Core Competencies" parent="ratio_config_menu"
-                  action="action_core_competencies_views_page" sequence="2"/>
+                  action="action_core_competencies_views_page" groups="hr.group_hr_user" sequence="2"/>
         <!--###################################################################################-->
 
         <record id="tree_views_function_competencies" model="ir.ui.view">
@@ -163,6 +163,6 @@
         </record>
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="menu_function_competencies_views_page" name="Function Competencies" parent="ratio_config_menu"
-                  action="action_views_page_function_competencies" sequence="3"/>
+                  action="action_views_page_function_competencies" groups="hr.group_hr_user" sequence="3"/>
     </data>
 </odoo>
