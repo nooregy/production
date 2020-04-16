@@ -121,7 +121,7 @@
                 name="Manager"
                 action="action_surgi_evaluation_manager"
                 parent="surgi_evaluation_menuitem"
-                sequence="1"
+                sequence="2"
         />
 
 
