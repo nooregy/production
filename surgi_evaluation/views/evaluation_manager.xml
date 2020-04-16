@@ -117,7 +117,7 @@
 
 
     <menuitem
-                id="surgi_evaluation_evaluation_menuitem"
+                id="surgi_evaluation_evaluation_manager_menuitem"
                 name="Manager"
                 action="action_surgi_evaluation_manager"
                 parent="surgi_evaluation_menuitem"
