@@ -170,7 +170,7 @@
             <field name="name">Evaluation</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">evaluation.evaluation</field>
-            <field name="view_mode">kanban,tree,form,calendar,graph</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Click to create a new Evaluation.
