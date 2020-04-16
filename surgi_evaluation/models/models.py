@@ -199,46 +199,46 @@ class EvaluationEvaluation(models.Model):
 
     def submit_core(self):
         total = 0.0
-        total2 = 0.0
-        total3 = 0.0
+        # total2 = 0.0
+        # total3 = 0.0
         for rec in self.function_comp:
             total += rec.kpi_weight
         if total != 1:
             raise UserError(_('KPI Function weight  % Must be in 100%'))
 
-        for rec in self.core_competencies:
-            total2 += rec.kpi_weight
-        if total2 != 1:
-            raise UserError(_('KPI Competencies weight % Must be in 100%'))
+        # for rec in self.core_competencies:
+        #     total2 += rec.kpi_weight
+        # if total2 != 1:
+        #     raise UserError(_('KPI Competencies weight % Must be in 100%'))
 
-        for rec in self.employee_kpi:
-            total3 += rec.kpi_weight
-        if total3 != 1:
-            raise UserError(_('KPI Employee weight % Must be in 100%'))
+        # for rec in self.employee_kpi:
+        #     total3 += rec.kpi_weight
+        # if total3 != 1:
+        #     raise UserError(_('KPI Employee weight % Must be in 100%'))
 
         else:
             self.state='done'
             self.check_read=True
 
-    @api.constrains('function_comp','core_competencies','employee_kpi')
+    @api.constrains('function_comp')#,'core_competencies','employee_kpi'
     def submit_core_weight(self):
         total = 0.0
-        total2=0.0
-        total3=0.0
+        # total2=0.0
+        # total3=0.0
         for rec in self.function_comp:
             total += rec.kpi_weight
         if total != 1:
             raise UserError(_('KPI Function weight  % Must be in 100%'))
 
-        for rec in self.core_competencies:
-            total2 += rec.kpi_weight
-        if total2 != 1:
-            raise UserError(_('KPI Competencies weight % Must be in 100%'))
-
-        for rec in self.employee_kpi:
-            total3 += rec.kpi_weight
-        if total3 != 1:
-            raise UserError(_('KPI Employee weight % Must be in 100%'))
+        # for rec in self.core_competencies:
+        #     total2 += rec.kpi_weight
+        # if total2 != 1:
+        #     raise UserError(_('KPI Competencies weight % Must be in 100%'))
+        #
+        # for rec in self.employee_kpi:
+        #     total3 += rec.kpi_weight
+        # if total3 != 1:
+        #     raise UserError(_('KPI Employee weight % Must be in 100%'))
 
 
 
