@@ -36,8 +36,8 @@
                         <field name="increase_2016"/>
                         <field name="increase_2017"/>
                         <field name="increase_2018"/>
-                        <!--<field name="increase_total"/>-->
-                        <!--<field name="total_salary_without_incentive"/>-->
+                        <field name="increase_total"/>
+                        <field name="total_salary_without_incentive"/>
                     </group>
                        <group name="Incentives" string="Incentive">
                         <field name="standalone_incentive"/>
@@ -46,7 +46,7 @@
                         <field name="incentive_2016"/>
                         <field name="incentive_2017"/>
                         <field name="incentive_2018"/>
-                        <!--<field name="incentive_total"/>-->
+                        <field name="incentive_total"/>
                     </group>
                        </group>
                     <group name="Allowance" string="Monthly Allowance in Cash">
