@@ -69,27 +69,25 @@
                         </page>
                     </xpath>
 
-                <!--<xpath expr="//field[@name='birthday']" position="after">-->
-                    <!--<label for="age"/>-->
-                    <!--<div class="o_row">-->
-                        <!--<field name="age"/>Years-->
-                    <!--</div>-->
+                <xpath expr="//field[@name='birthday']" position="after">
+                    <label for="age"/>
+                    <div class="o_row">
+                        <field name="age"/>Years
+                    </div>
+                </xpath>
 
-                    <!-- Add your fields or attributes here -->
-                <!--</xpath>-->
-
-                <!--<xpath expr="//group[@name='active_group']" position="after">-->
-                    <!--<group string="Experience">-->
-                        <!--<field name="start_date"/>-->
-                        <!--<label for="experience_y"/>-->
-                        <!--<div class="o_row">-->
-                            <!--<field name="experience_y"/>Years-<field name="experience_m"/>Months-<field-->
-                                <!--name="experience_d"/>Days-->
-                        <!--</div>-->
+                <xpath expr="//group[@name='active_group']" position="after">
+                    <group string="Experience">
+                        <field name="start_date"/>
+                        <label for="experience_y"/>
+                        <div class="o_row">
+                            <field name="experience_y"/>Years-<field name="experience_m"/>Months-<field
+                                name="experience_d"/>Days
+                        </div>
 
 
-                    <!--</group>-->
-                <!--</xpath>-->
+                    </group>
+                </xpath>
 
                 <xpath expr="//page[@name='hr_settings']" position="before">
                     <page name="education_info" string="Education Info">

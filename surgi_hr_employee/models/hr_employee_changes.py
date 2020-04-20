@@ -1,6 +1,9 @@
-from odoo import api
+from odoo import api,_
 from odoo import fields
 from odoo import models
+from odoo.exceptions import ValidationError
+from datetime import datetime,date
+from dateutil import relativedelta
 
 
 class department_fields(models.Model):
@@ -33,7 +36,7 @@ class employee_fields(models.Model):
     full_employee_name = fields.Char(string="Full Name", translate=True)
     attendance_type = fields.Selection([('in_door', 'IN Door'), ('out_door', 'Out Door')], string='Attendance type')
     in_direct_parent_id = fields.Many2one('hr.employee', 'Indirect Manager')
-    # age = fields.Integer(string="Age", compute="_calculate_age", readonly=True)
+    age = fields.Integer(string="Age",compute="_calculate_age",store=True)#compute="_calculate_age",
     start_date = fields.Date(string="Start Working At")
     edu_phase = fields.Many2one(comodel_name="hr.eg.education", string="Education")
     edu_school = fields.Many2one(comodel_name="hr.eg.school", string="School/University/Institute")
@@ -42,10 +45,10 @@ class employee_fields(models.Model):
                                 string="Grad")
     grad_year = fields.Date(string="Grad. Year")
     edu_note = fields.Text("Education Notes")
-    # experience_y = fields.Integer(compute="_calculate_experience", string="Experience",
-    #                               help="experience in our company", store=True)
-    # experience_m = fields.Integer(compute="_calculate_experience", string="Experience monthes", store=True)
-    # experience_d = fields.Integer(compute="_calculate_experience", string="Experience dayes", store=True)
+    experience_y = fields.Integer(compute="_calculate_experience", string="Experience",
+                                  help="experience in our company", store=True)
+    experience_m = fields.Integer(compute="_calculate_experience", string="Experience monthes", store=True)
+    experience_d = fields.Integer(compute="_calculate_experience", string="Experience dayes", store=True)
     payrolled_employee = fields.Boolean("Payrolled Employee", track_visibility='onchange')
     employee_arabic_name = fields.Char(string="Arabic Name")
     private_num = fields.Char(string="Private Number ", required=False, )
@@ -62,34 +65,60 @@ class employee_fields(models.Model):
     def _onchange_department(self):
         self.parent_id = self.section_id.manager_id
 
-    # @api.depends("birthday")
-    # def _calculate_age(self):
-    #     for emp in self.search([]):
-    #         if emp.birthday:
-    #             dob = datetime.strptime(emp.birthday, "%Y-%m-%d")
-    #             emp.age = int((datetime.today() - dob).days / 365)
+    @api.depends("birthday")
+    def _calculate_age(self):
+        for emp in self:
+            if emp.birthday:
+                dob = datetime.strptime(str(emp.birthday), "%Y-%m-%d").date()
+                emp.age = int(int((date.today() - dob).days) / 365)
+            else:
+                emp.age=0
+
     #
-    # @api.depends("start_date")
-    # def _calculate_experience(self):
-    #     for emp in self.search([]):
-    #         if emp.start_date:
-    #             date_format = '%Y-%m-%d'
-    #             current_date = (datetime.today()).strftime(date_format)
-    #             d1 = datetime.strptime(emp.start_date, date_format).date()
-    #             d2 = datetime.strptime(current_date, date_format).date()
-    #             r = relativedelta(d2, d1)
-    #             emp.experience_y = r.years
-    #             emp.experience_m = r.months
-    #             emp.experience_d = r.days
+    @api.depends("start_date")
+    def _calculate_experience(self):
+        for emp in self:
+            if emp.start_date:
+                date_format = '%Y-%m-%d'
+                current_date = (datetime.today()).strftime(date_format)
+                d1 = datetime.strptime(str(emp.start_date), date_format).date()
+                d2 = datetime.strptime(current_date, date_format).date()
+                # r = relativedelta(d2, d1)
+                r = relativedelta.relativedelta(d2 ,d1)
+
+                emp.experience_y = r.years
+                emp.experience_m = r.months
+                emp.experience_d = r.days
     #
     #
     # @api.model
-    # def _cron_employee_age(self):
-    #     self._calculate_age()
-    #
+    def _cron_employee_age(self):
+        print ('22222222222222222222222222222222222')
+        employee_obj=self.env['hr.employee'].search([])
+        for rec in employee_obj:
+            if rec.birthday:
+                dob = datetime.strptime(str(rec.birthday), "%Y-%m-%d").date()
+                rec.age = int(int((date.today() - dob).days) / 365)
+                print ('+++++++++++++++++++',rec.age)
+            else:
+                rec.age=0
+
+
     # @api.model
-    # def _cron_employee_exp(self):
-    #     self._calculate_experience()
+    def _cron_employee_exp(self):
+        for emp in self.search([]):
+            if emp.start_date:
+                date_format = '%Y-%m-%d'
+                current_date = (datetime.today()).strftime(date_format)
+                d1 = datetime.strptime(str(emp.start_date), date_format).date()
+                d2 = datetime.strptime(current_date, date_format).date()
+                # r = relativedelta(d2, d1)
+                r = relativedelta.relativedelta(d2 ,d1)
+
+                emp.experience_y = r.years
+                emp.experience_m = r.months
+                emp.experience_d = r.days
+            print ('-----------------------------------------------------',emp.experience_y,emp.experience_m,emp.experience_d)
 
 
 class dhn_hr__eg_education(models.Model):

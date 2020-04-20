@@ -23,7 +23,7 @@
         ## 'views/eg_hr_payroll_report_templates.xml',
         'views/hr_employee_changes.xml',
         'views/hr_department_changes.xml',
-        # 'data/surgi_hr_employee_data.xml',
+        'data/surgi_hr_employee_data.xml',
         # 'views/print_employee_badge.xml',
         # 'report/eg_hr_payroll_report.xml',
         # #'views/education_degree_view.xml',
