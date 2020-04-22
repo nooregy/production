@@ -111,6 +111,7 @@ class NewModule(models.Model):
 
     total_check = fields.Float(string="UnReconcile Total",  required=False,compute='get_total_check' )
 
+
     @api.depends('line_ids')
     def get_total_check(self):
         total=0.0
@@ -119,3 +120,14 @@ class NewModule(models.Model):
             if rec.is_check!=True:
                 total+=rec.amount
         self.total_check=total
+
+
+
+# class AccountJournal(models.Model):
+#     _inherit = "account.journal"
+#
+#     def get_journal_dashboard_datas(self):
+#         res =super(AccountJournal, self).get_journal_dashboard_datas()
+#         print ('***********************************************SSSSSSSSSSSSSSSSSSSSSS')
+#
+#         return res

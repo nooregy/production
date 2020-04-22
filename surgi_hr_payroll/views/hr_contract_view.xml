@@ -51,7 +51,7 @@
                        </group>
                     <group name="Allowance" string="Monthly Allowance in Cash">
                     <group>
-                        <field name="trans_allow"/>
+                        <!--<field name="trans_allow"/>-->
                         <field name="trans_allow_mokattam"/>
                         <field name="trans_allow_bank"/>
                         <field name="travel_expenses_allow"/>

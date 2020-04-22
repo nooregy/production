@@ -46,7 +46,7 @@ class HrContract(models.Model):
 
     car_allow = fields.Float('Car Allowance',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     fuel_allow = fields.Float('Fuel Allowance',track_visibility='onchange',digits=dp.get_precision('Payroll'))
-    trans_allow = fields.Float('Transportation',track_visibility='onchange',digits=dp.get_precision('Payroll'))
+    # trans_allow = fields.Float('Transportation',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     trans_allow_mokattam = fields.Float('Transportation Mokattam',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     trans_allow_bank = fields.Float('Transportation Bank',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     travel_expenses_allow = fields.Float('Travel Exp Allow.',track_visibility='onchange',digits=dp.get_precision('Payroll'))
