@@ -31,7 +31,7 @@
                                        groups="hr.group_hr_user"/>
                                 <field name="check_read" invisible="1"/>
                                 <field name="department_id" readonly="1"/>
-                                <field name="is_evalualtion" invisible="1"/>
+                                <field name="is_evalualtion" invisible="0"/>
                             </group>
                             <group>
                                 <field name="date_end" attrs="{'readonly':[('check_read','=',True)]}"
@@ -40,7 +40,7 @@
                                        groups="hr.group_hr_user" readonly="1"/>
                                 <field name="employee_parent_id" readonly="1"/>
                                 <field name="jop_ids" readonly="1"/>
-                                <field name="check_eval"/>
+                                <field name="check_eval" readonly="1"/>
 
 
                             </group>
