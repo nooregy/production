@@ -63,7 +63,7 @@ class operation_operation(models.Model):
         if (self.responsible.name and self.responsible.name == 'MOH Tender'):
             self.flag = True
         else :
-            self.flag = False
+            self.flag = True
 
     def action_confirm_sales(self):
         self.sequence = self.env['ir.sequence'].get('sale_operation_number')
@@ -74,7 +74,7 @@ class operation_operation(models.Model):
             'usage': "transit",
             'is_operation_location': True,
             'warehouse_id': self.warehouse_id.id,
-            'company_id': False,
+            # 'company_id': False,
         }
         res_location = self.env['stock.location'].create(values)
         print('location ======================= ', res_location)
