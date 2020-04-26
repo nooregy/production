@@ -27,8 +27,9 @@
         # 'security/ir.model.access.csv',
         'security/accounting_groups.xml',
         'views/views.xml',
+        'views/inhertit_views.xml',
         'views/contract_tags.xml',
-        'views/templates.xml',
+        'views/account_bank_statement.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
