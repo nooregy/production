@@ -70,6 +70,9 @@
                         <field name="advance_collection_comm"/>
                     </group>
                     </group>
+                    <group>
+                        <field name="total_salary"/>
+                    </group>
                     </page>
                 </xpath>
 

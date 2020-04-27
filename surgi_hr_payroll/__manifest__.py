@@ -19,6 +19,8 @@
         'security/ir.model.access.csv',
         'views/hr_contract_view.xml',
         #"data/eg_hr_payroll_data.xml",
+        'views/hr_grade_rank_view.xml',
+
     ],
 
     'license': 'OPL-1',

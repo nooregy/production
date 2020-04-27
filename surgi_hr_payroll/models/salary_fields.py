@@ -11,8 +11,6 @@ class HrContract(models.Model):
         for rec in self:
             rec.increase_total = rec.increase_2018 + rec.increase_2017 + rec.increase_2016 + rec.increase_2015 + rec.increase_2014
 
-
-
     @api.depends('standalone_incentive', 'incentive_2018', 'incentive_2017', 'incentive_2016', 'incentive_2015' ,'incentive_2014')
     def _getsum_incentive_total(self):
         for rec in self:
@@ -22,6 +20,11 @@ class HrContract(models.Model):
     def _getsum_salary_total(self):
         for rec in self:
             rec.total_salary_without_incentive = rec.basic_salary + rec.increase_total
+
+    @api.depends('total_salary_without_incentive', 'incentive_total' ,'basic_salary_precent')
+    def _getsum_total_salary(self):
+        for rec in self:
+            rec.total_salary = rec.total_salary_without_incentive + rec.incentive_total + rec.basic_salary_precent
 
     basic_salary = fields.Float('Basic Wage',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     basic_salary_precent = fields.Float('Basic Salary Precent',track_visibility='onchange',digits=dp.get_precision('Payroll'))
@@ -43,6 +46,8 @@ class HrContract(models.Model):
     incentive_2014 = fields.Float('2014 Incentive.',track_visibility='onchange',digits=dp.get_precision('Payroll'))
 
     incentive_total = fields.Float('Total Incentive',compute='_getsum_incentive_total', track_visibility='onchange')#compute='_getsum_incentive_total',
+
+    total_salary = fields.Float('Total Salary', compute='_getsum_total_salary', track_visibility='onchange')
 
     car_allow = fields.Float('Car Allowance',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     fuel_allow = fields.Float('Fuel Allowance',track_visibility='onchange',digits=dp.get_precision('Payroll'))

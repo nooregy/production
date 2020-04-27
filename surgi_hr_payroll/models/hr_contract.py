@@ -1,5 +1,3 @@
-#author:Eng.Ramaadan Khalil
-
 
 from odoo import models, fields, api
 from odoo.addons import decimal_precision as dp
