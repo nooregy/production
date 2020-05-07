@@ -1,8 +1,8 @@
 import datetime
 import json
-from xxlimited import Null
+#from xxlimited import Null
 
-from addons.stock.models import stock_inventory
+#from addons.stock.models import stock_inventory
 from odoo import api,exceptions,fields,models
 from odoo.exceptions import UserError,Warning,ValidationError
 
@@ -63,7 +63,7 @@ class stock_inventory_inherit(models.Model):
 
     @api.model
     def get_stock_inventory_scan_data(self, active_id):
-        if  active_id is Null:
+        if  active_id is None or active_id is "Null":
             raise Warning(str("Please Save Your Product !!"))
         rec = self.env['stock.inventory'].search([('id', '=', active_id)])
 

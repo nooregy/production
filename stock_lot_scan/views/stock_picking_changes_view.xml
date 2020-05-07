@@ -68,6 +68,7 @@
                                 <field name="product_uom_qty" sum="Product Sum"/>
                                 <field name="lot_no"/>
                                 <field name="pick_Typ_code" invisible="1"/>
+
                                 <!--<field name="lot_name" string="Lot Name"-->
                                 <!--attrs="{'invisible': [('pick_Typ_code', '!=', 'incoming')]}"/>-->
                                 <!--<field name="expiration_date"-->

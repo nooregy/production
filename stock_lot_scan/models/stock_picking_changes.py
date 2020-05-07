@@ -11,7 +11,7 @@ import logging
 from odoo import _
 
 from odoo.exceptions import RedirectWarning
-# from odoo.exceptions import Warning
+from odoo.exceptions import Warning
 from odoo.exceptions import except_orm
 
 import logging
@@ -33,7 +33,7 @@ def myconverter(o):
 class stock_picking_inherit(models.Model):
     _inherit = 'stock.picking'
 
-    ean13 = fields.Char(string="Scan")
+    ean13 = fields.Char(string="Scan",default='')
     ean132 = fields.Char(string="Scan")
     ean_out = fields.Char(string="Scan")
     supplier_ean13 = fields.Char(string="Supplier Scan")
@@ -54,6 +54,7 @@ class stock_picking_inherit(models.Model):
     def get_line_by_barcose(self):
 
         if self.ean13 != '':
+
             list = []
             serial = self.ean13
             lot_obj = self.env['stock.production.lot'].search([('name', '=', serial)])
@@ -80,10 +81,11 @@ class stock_picking_inherit(models.Model):
                 pass # end check ean13 sent
             rec.scan_products_ids = list
             pass#end for
-        rec.ean13=''
+            rec.ean13=''
 
         pass#end function
 
+    #synchronize Function
     def synchronize_scan(self):
         for rec in self:
             rec.do_unreserve()
@@ -144,6 +146,17 @@ class stock_picking_inherit(models.Model):
                             [('name', '=', lot['lot_name']), ('product_id', '=', product_id)])
                         if lot_id:
                             product = self.env['product.product'].search([('id', '=', product_id)])
+                            mov_id_var={
+                                'name': product.name,
+                                'location_id': rec.location_id.id,
+                                'picking_id': rec.id,
+                                'location_dest_id': rec.location_dest_id.id,
+                                'product_id': product_id,
+                                'product_uom': product.uom_id.id,
+                                'product_uom_qty': 0,
+                                #'ordered_qty': 0,
+                            }
+                            print("xxx")
                             move_id = rec.env['stock.move'].create({
                                 'name': product.name,
                                 'location_id': rec.location_id.id,
@@ -154,6 +167,19 @@ class stock_picking_inherit(models.Model):
                                 'product_uom_qty': 0,
                                 #'ordered_qty': 0,
                             })
+                            stock_move_var={
+                                'picking_id': rec.id,
+                                'move_id': move_id.id,
+                                'qty_done': lot['product_uom_qty'],
+                                'lot_id': lot_id.id,
+                                'lot_name': lot_id.name,
+                                'location_dest_id': rec.location_dest_id.id,
+                                'location_id': rec.location_id.id,
+                                'product_id': product_id,
+                                'product_uom_id': move_id.product_uom.id,
+                                # 'product_uom_qty': 0,
+                            }
+                            print("vv")
                             rec.env['stock.move.line'].create({
                                 'picking_id': rec.id,
                                 'move_id': move_id.id,
@@ -176,10 +202,20 @@ class stock_picking_inherit(models.Model):
             if not moves:
                 raise UserError(_('Nothing to check the availability for.'))
             for move in moves:
+                if move.product_tmpl_id.tracking=='none':
+                    move.quantity_done=move.product_uom_qty
+                    v=move.quantity_done
+                    z=move.product_uom_qty
                 if move.state == 'assigned':
                     move.state = 'confirmed'
             moves._action_assign()
             return True
+
+
+
+
+
+
 
     @api.model
     def get_stock_lot_scan_data(self, active_id):

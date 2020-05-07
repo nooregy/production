@@ -15,9 +15,17 @@
                 <div class="col-md-2"></div>
             </div>
             <div id="productsList" style="display: none;"></div>
-            <div class="table-responsive" style="width:100%;">
-                <table class="o_list_view table table-condensed table-striped">
+
+                <table  class="table o_list_view table " style="display: block;width: 100%;max-height: 320px;overflow: auto;">
                     <thead class="ui-widget-header">
+                        <tr>
+                            <td></td>
+                            <td>Total Qty: <span class="totalQty">0</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         <tr>
                             <th class="">
                                 Product
@@ -37,8 +45,10 @@
                             <th class=""></th>
                         </tr>
                     </thead>
-                    <tbody class="ui-widget-content">
+                    <div style="width:100%; overflow:auto;">
+                    <tbody  class="ui-widget-content" >
                     </tbody>
+                    </div>
                     <tfoot  class="ui-widget-header">
                         <tr>
                             <td></td>
@@ -50,7 +60,7 @@
                         </tr>
                     </tfoot>
                 </table>
-            </div>
+
             <div class="products" style="padding-top: 10px;padding-bottom: 10px;">
                     <div class="col-md-12" style=""><button class='save_button btn btn-primary btn-sm o_list_button_add'>Confirm scanned items</button> <button class='cancel_button btn btn-sm btn-default'>Cancel</button></div>
             </div>
