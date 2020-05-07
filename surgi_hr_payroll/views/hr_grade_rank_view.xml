@@ -11,6 +11,11 @@
                     <group>
                         <field name="name" required="1"/>
                     </group>
+                    <group>
+                    <field name="car_allow" string="Car Allowance"/>
+                    <field name="travel_expenses_allow" string="Travel Exp Allow."/>
+                    <field name="travel_allow_int_f" string="Travel Allow internal Fixed"/>
+                    </group>
                     <notebook>
                         <page string="Ranks">
                             <field name="rank_ids">
@@ -18,9 +23,6 @@
                                     <field name="name"/>
                                     <field name="salary_range"/>
                                     <!--<field name="total_salary"/>-->
-                                    <field name="car_allow"/>
-                                    <field name="travel_expenses_allow"/>
-                                    <field name="travel_allow_int_f"/>
                                     <field name="description"/>
                                 </tree>
                             </field>
@@ -39,6 +41,9 @@
         <field name="arch" type="xml">
             <tree string="Grades">
                 <field name="name"/>
+                <field name="car_allow"/>
+                <field name="travel_expenses_allow"/>
+                <field name="travel_allow_int_f"/>
                 <field name="description"/>
             </tree>
         </field>
@@ -114,11 +119,105 @@
     <menuitem id="menu_rank" parent="hr.menu_human_resources_configuration"
               action="action_employee_rank"/>
 
+    <!-- Contract INHERITED FORM VIEW -->
+    <record id="view_contract_form_grade_rank" model="ir.ui.view">
+        <field name="name">hr.contract.form.grade.rank</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <field name="department_id" position="after">
+                <field name="grade_id"/>
+                <field name="rank_id"/>
+                <field name="rang_id"/>
+            </field>
+        </field>
+    </record>
+
+        <!-- Contract INHERITED TREE VIEW -->
+    <record id="view_contract_tree_grade_rank" model="ir.ui.view">
+        <field name="name">hr.contract.tree.grade.rank</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="job_id" position="after">
+                <field name="grade_id"/>
+                <field name="rank_id"/>
+                <field name="rang_id"/>
+                <field name="total_salary"/>
+                <field name="Grade_total_salary"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Contract INHERITED SEARCH VIEW -->
+    <record id="view_contract_filter_grade_rank" model="ir.ui.view">
+        <field name="name">Contract Grade Rank</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="group_by_state" position="after">
+                <filter string="Grade" icon="terp-gtk-select-all" domain="[]"
+                        name ='grade' context="{'group_by':'grade_id'}"/>
+                <filter string="Rank" icon="terp-gtk-select-all" domain="[]"
+                        name='rank' context="{'group_by':'rank_id'}"/>
+            </filter>
+        </field>
+    </record>
+
+     <!--Contract INHERITED KANBAN VIEW -->
+    <!--<record id="hr_kanban_view_emp_grade_rank" model="ir.ui.view">-->
+        <!--<field name="name">hr.contract.kanban.grade.rank</field>-->
+        <!--<field name="model">hr.contract</field>-->
+        <!--<field name="inherit_id" ref="hr.hr_kanban_view_employees"/>-->
+        <!--<field name="arch" type="xml">-->
+            <!--<xpath expr="//templates" position="before">-->
+                <!--<field name="grade_id"/>-->
+                <!--<field name="rank_id"/>-->
+            <!--</xpath>-->
+            <!--<xpath expr="//field[@name='work_phone']" position="after">-->
+                <!--<li t-if="record.grade_id.raw_value">-->
+                    <!--<field name="grade_id"/>-->
+                <!--</li>-->
+                <!--<li t-if="record.rank_id.raw_value">-->
+                    <!--<field name="rank_id"/>-->
+                <!--</li>-->
+            <!--</xpath>-->
+        <!--</field>-->
+    <!--</record>-->
+
+    <!-- Payslip INHERITED FORM VIEW -->
+    <record id="view_payslip_form_grade_rank" model="ir.ui.view">
+        <field name="name">hr.payslip.form.grade.rank</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <field name="contract_id" position="after">
+                <field name="grade_id" options="{'no_open': True}"/>
+                <field name="rank_id" options="{'no_open': True}"/>
+                <field name="rang_id" options="{'no_open': True}"/>
+            </field>
+        </field>
+    </record>
+
     <!-- EMPLOYEES INHERITED FORM VIEW -->
     <record id="view_employee_form_grade_rank" model="ir.ui.view">
         <field name="name">hr.employee.form.grade.rank</field>
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <field name="department_id" position="after">
+                <field name="grade_id" options="{'no_open': True}"/>
+                <field name="rank_id" options="{'no_open': True}"/>
+                <field name="rang_id" options="{'no_open': True}"/>
+            </field>
+        </field>
+    </record>
+
+    <!--&lt;!&ndash; EMPLOYEES INHERITED TREE VIEW &ndash;&gt;-->
+    <record id="view_employee_tree_grade_rank" model="ir.ui.view">
+        <field name="name">hr.employee.tree.grade.rank</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
         <field name="arch" type="xml">
             <field name="job_id" position="after">
                 <field name="grade_id"/>
@@ -128,20 +227,7 @@
         </field>
     </record>
 
-    <!-- EMPLOYEES INHERITED TREE VIEW -->
-    <record id="view_employee_tree_grade_rank" model="ir.ui.view">
-        <field name="name">hr.employee.tree.grade.rank</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_tree"/>
-        <field name="arch" type="xml">
-            <field name="job_id" position="after">
-                <field name="grade_id"/>
-                <field name="rank_id"/>
-            </field>
-        </field>
-    </record>
-
-    <!-- EMPLOYEES INHERITED SEARCH VIEW -->
+    <!--&lt;!&ndash; EMPLOYEES INHERITED SEARCH VIEW &ndash;&gt;-->
     <record id="view_employee_filter_grade_rank" model="ir.ui.view">
         <field name="name">Employees Grade Rank</field>
         <field name="model">hr.employee</field>
@@ -156,7 +242,7 @@
         </field>
     </record>
 
-    <!-- EMPLOYEES INHERITED KANBAN VIEW -->
+    <!--&lt;!&ndash; EMPLOYEES INHERITED KANBAN VIEW &ndash;&gt;-->
     <record id="hr_kanban_view_emp_grade_rank" model="ir.ui.view">
         <field name="name">hr.employee.kanban.grade.rank</field>
         <field name="model">hr.employee</field>

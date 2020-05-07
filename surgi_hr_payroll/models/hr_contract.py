@@ -41,3 +41,6 @@ class HrPaySlip(models.Model):
     _inherit = 'hr.payslip'
 
     employee_code = fields.Char(string="Employee Code", related='employee_id.registration_number', readonly=True)
+    grade_id = fields.Many2one('grade.grade', related='employee_id.contract_id.grade_id', readonly=True)
+    rank_id = fields.Many2one('rank.rank', related='employee_id.contract_id.rank_id', readonly=True)
+    rang_id = fields.Many2one('rang.rang', related='employee_id.contract_id.rang_id', readonly=True)

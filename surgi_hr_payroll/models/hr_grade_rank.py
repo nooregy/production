@@ -27,9 +27,6 @@ class RankRank(models.Model):
     description = fields.Text('Description')
     salary_range = fields.Text('Salary Range')
     # total_salary = fields.Float('Salary',track_visibility='onchange',digits=dp.get_precision('Payroll'))
-    car_allow = fields.Float('Car Allowance',track_visibility='onchange',digits=dp.get_precision('Payroll'))
-    travel_expenses_allow = fields.Float('Travel Exp Allow.',track_visibility='onchange',digits=dp.get_precision('Payroll'))
-    travel_allow_int_f = fields.Float('Travel Allow internal Fixed',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     grade_id = fields.Many2one('grade.grade', 'Grade')
     rang_ids = fields.Many2one('rang.rang', 'Rang')
 
@@ -40,6 +37,11 @@ class GradeGrade(models.Model):
     name = fields.Char('Name')
     description = fields.Text('Description')
     rank_ids = fields.One2many('rank.rank', 'grade_id', 'Ranks')
+    car_allow = fields.Float('Car Allowance', track_visibility='onchange', digits=dp.get_precision('Payroll'))
+    travel_expenses_allow = fields.Float('Travel Exp Allow.', track_visibility='onchange',
+                                         digits=dp.get_precision('Payroll'))
+    travel_allow_int_f = fields.Float('Travel Allow internal Fixed', track_visibility='onchange',
+                                      digits=dp.get_precision('Payroll'))
 
 class HrEmployee(models.Model):
 
@@ -75,26 +77,26 @@ class HrEmployee(models.Model):
 
     _inherit = 'hr.employee'
 
-    grade_id = fields.Many2one('grade.grade', 'Grade')
-    rank_id = fields.Many2one('rank.rank', 'Rank')
-    rang_id = fields.Many2one('rang.rang', 'Rang')
+    grade_id = fields.Many2one('grade.grade', related='contract_id.grade_id', readonly=True)
+    rank_id = fields.Many2one('rank.rank',  related='contract_id.rank_id', readonly=True)
+    rang_id = fields.Many2one('rang.rang',  related='contract_id.rang_id', readonly=True)
 
-    @api.onchange('grade_id')
-    def onchange_grade(self):
-        res = {}
-        if self.grade_id:
-            self.rank_id = False
-            res['domain'] = \
-                {'rank_id': [
-                    ('id', 'in', self.grade_id.rank_ids.ids)]}
-        return res
-
-    @api.onchange('rank_id')
-    def onchange_rank(self):
-        res = {}
-        if self.rank_id:
-            self.rang_id = False
-            res['domain'] = \
-                {'rang_id': [
-                    ('id', 'in', self.rank_id.rang_ids.ids)]}
-        return res
+    # @api.onchange('grade_id')
+    # def onchange_grade(self):
+    #     res = {}
+    #     if self.grade_id:
+    #         self.rank_id = False
+    #         res['domain'] = \
+    #             {'rank_id': [
+    #                 ('id', 'in', self.grade_id.rank_ids.ids)]}
+    #     return res
+    #
+    # @api.onchange('rank_id')
+    # def onchange_rank(self):
+    #     res = {}
+    #     if self.rank_id:
+    #         self.rang_id = False
+    #         res['domain'] = \
+    #             {'rang_id': [
+    #                 ('id', 'in', self.rank_id.rang_ids.ids)]}
+    #     return res
