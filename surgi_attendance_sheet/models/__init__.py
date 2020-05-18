@@ -6,3 +6,4 @@ from . import hr_employee
 from . import hr_attendance_policy
 from . import hr_attendance_penalty
 from . import hr_payslip
+from . import hr_attendance

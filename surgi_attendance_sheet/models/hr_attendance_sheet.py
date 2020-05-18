@@ -23,6 +23,31 @@ class AttendanceSheet(models.Model):
     penalty_count = fields.Integer('Penalties Count',
                                    compute='compute_penalty_count')
     accrual_date = fields.Date('Accrual Date', required=False)
+    no_miss = fields.Integer(compute="_compute_sheet_total",
+                             string="No of Miss Punches", readonly=True,
+                             store=True)
+    tot_miss = fields.Float(compute="_compute_sheet_total",
+                            string="Total Miss Punches Penalty", readonly=True,
+                            store=True)
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirm', 'Confirmed'),
+        ('done', 'Approved'),
+        ('cancel', 'Cancel')], default='draft', track_visibility='onchange',
+        string='Status', required=True, readonly=True, index=True,
+        help=' * The \'Draft\' status is used when a HR user is creating a new  attendance sheet. '
+             '\n* The \'Confirmed\' status is used when  attendance sheet is confirmed by HR user.'
+             '\n* The \'Approved\' status is used when  attendance sheet is accepted by the HR Manager.')
+
+    @api.depends('line_ids.overtime', 'line_ids.diff_time', 'line_ids.late_in')
+    def _compute_sheet_total(self):
+        res = super(AttendanceSheet, self)._compute_sheet_total()
+        for sheet in self:
+            miss_line_ids = sheet.line_ids.filtered(
+                lambda l: l.miss_type != 'right' and l.miss_pen > 0)
+            sheet.no_miss = len(miss_line_ids)
+            sheet.tot_miss = sum([l.miss_pen for l in miss_line_ids])
+        return res
 
     def compute_penalty_count(self):
         for sheet in self:
@@ -31,6 +56,17 @@ class AttendanceSheet(models.Model):
     def action_approve(self):
         self.action_create_penalties()
         self.write({'state': 'done'})
+
+    def action_cancel(self):
+        for sheet in self:
+            if sheet.penalty_ids:
+                for pen in sheet.penalty_ids:
+                    if pen.paid:
+                        raise ValidationError(_('You cannot cancel attendance '
+                                                'sheet as there is a penalty '
+                                                'that has already paid'))
+                    pen.unlink()
+            sheet.write({'state': 'cancel'})
 
     def action_create_penalties(self):
         for sheet in self:
@@ -63,12 +99,51 @@ class AttendanceSheet(models.Model):
                     'amount': abline.diff_time
                 }
                 penalty_obj.create(values)
+            miss_lines = sheet.line_ids.filtered(
+                lambda l: l.miss_type != 'right' and l.miss_pen > 0)
+            for missline in miss_lines:
+                values = {
+                    'employee_id': sheet.employee_id.id,
+                    'type': 'late',
+                    'accrual_date': sheet.accrual_date,
+                    'date': missline.date,
+                    'sheet_id': sheet.id,
+                    'name': 'Miss-Punch Penalty',
+                    'amount': missline.miss_pen
+                }
+                penalty_obj.create(values)
 
     @api.model
     def cron_update_attendance_sheet(self):
         sheet_ids = self.search([('state', '=', 'draft')])
         for sheet in sheet_ids:
             sheet.get_attendances()
+
+    def get_attendance_intervals(self, employee, day_start, day_end, tz):
+        """
+
+        :param employee:
+        :param day_start:datetime the start of the day in datetime format
+        :param day_end: datetime the end of the day in datetime format
+        :return:
+        """
+        day_start_native = day_start.replace(tzinfo=tz).astimezone(
+            pytz.utc).replace(tzinfo=None)
+        day_end_native = day_end.replace(tzinfo=tz).astimezone(
+            pytz.utc).replace(tzinfo=None)
+        res = []
+        attendances = self.env['hr.attendance'].sudo().search(
+            [('employee_id.id', '=', employee.id),
+             ('check_in', '>=', day_start_native),
+             ('check_in', '<=', day_end_native)],
+            order="check_in")
+        for att in attendances:
+            check_in = att.check_in
+            check_out = att.check_out
+            if not check_out:
+                continue
+            res.append((check_in, check_out, att.state))
+        return res
 
     def get_attendances(self):
         for att_sheet in self:
@@ -97,6 +172,7 @@ class AttendanceSheet(models.Model):
             all_dates = [(from_date + timedelta(days=x)) for x in
                          range((to_date - from_date).days + 1)]
             abs_cnt = 0
+            miss_cnt = 0
             late_cnt = []
             diff_cnt = []
             for day in all_dates:
@@ -176,6 +252,121 @@ class AttendanceSheet(models.Model):
                             }
                             att_line.create(values)
                     else:
+                        if any([att[2] != 'right' for att in
+                                attendance_intervals]):
+                            act_float_miss_overtime = 0
+                            float_miss_overtime = 0
+                            policy_miss_diff = 0
+                            act_float_miss_diff = 0
+                            act_float_miss_late = 0
+                            policy_miss_late = 0
+
+                            all_miss_intervals = attendance_intervals
+                            miss_cnt += 1
+                            miss_amount = policy_id.get_miss(miss_cnt)
+                            for i, work_interval in enumerate(work_intervals):
+                                pl_sign_in = self._get_float_from_time(
+                                    pytz.utc.localize(
+                                        work_interval[0]).astimezone(tz))
+                                pl_sign_out = self._get_float_from_time(
+                                    pytz.utc.localize(
+                                        work_interval[1]).astimezone(tz))
+                                ac_sign_in = ac_sign_out = 0
+                                miss_att_intervals = []
+                                for j, miss_att in enumerate(
+                                        all_miss_intervals):
+                                    if miss_att[0] < work_interval[1] and \
+                                            miss_att[2] == 'fixout':
+                                        miss_att_intervals.append(
+                                            all_miss_intervals.pop(j))
+                                    elif miss_att[1] >= work_interval[0] and \
+                                            miss_att[2] == 'fixin':
+                                        if i + 1 < len(work_intervals):
+                                            next_work_interval = work_intervals[
+                                                i + 1]
+                                            if miss_att[1] >= \
+                                                    next_work_interval[0]:
+                                                continue
+                                        else:
+                                            miss_att_intervals.append(
+                                                all_miss_intervals.pop(j))
+                                if miss_att_intervals and miss_att_intervals[0][
+                                    2] != 'fixin':
+                                    miss_type = 'missout'
+                                    ac_sign_in = self._get_float_from_time(
+                                        pytz.utc.localize(miss_att_intervals[0][
+                                                              0]).astimezone(
+                                            tz))
+                                    ac_sign_out = 0
+                                    miss_late_in = (miss_att_intervals[0][0] -
+                                                    work_interval[0])
+                                    float_miss_late = miss_late_in.total_seconds() / 3600
+                                    act_float_miss_late = miss_late_in.total_seconds() / 3600
+                                    policy_miss_late, late_cnt = policy_id.get_late(
+                                        float_miss_late, late_cnt)
+
+                                elif miss_att_intervals and \
+                                        miss_att_intervals[-1][2] != 'fixout':
+                                    miss_type = 'misin'
+                                    ac_sign_in = 0
+                                    ac_sign_out = self._get_float_from_time(
+                                        pytz.utc.localize(
+                                            miss_att_intervals[-1][
+                                                1]).astimezone(tz))
+                                    overtime_interval = (
+                                        work_interval[1],
+                                        miss_att_intervals[-1][1])
+                                    if overtime_interval[1] < overtime_interval[
+                                        0]:
+                                        miss_overtime = timedelta(hours=0,
+                                                                  minutes=0,
+                                                                  seconds=0)
+                                        miss_diff_time = overtime_interval[1] - \
+                                                         overtime_interval[0]
+                                    else:
+                                        miss_overtime = overtime_interval[1] - \
+                                                        overtime_interval[0]
+                                        miss_diff_time = timedelta(hours=0,
+                                                                   minutes=0,
+                                                                   seconds=0)
+                                    float_miss_overtime = miss_overtime.total_seconds() / 3600
+                                    if float_miss_overtime <= overtime_policy[
+                                        'wd_after']:
+                                        act_float_miss_overtime = float_miss_overtime = 0
+                                    else:
+                                        act_float_miss_overtime = float_miss_overtime
+                                        float_miss_overtime = float_miss_overtime * \
+                                                              overtime_policy[
+                                                                  'wd_rate']
+
+                                    float_miss_diff = miss_diff_time.total_seconds() / 3600
+                                    act_float_miss_diff = float_miss_diff
+                                    policy_miss_diff, diff_cnt = policy_id.get_diff(
+                                        float_miss_diff, diff_cnt)
+
+                                values = {
+                                    'date': date,
+                                    'day': day_str,
+                                    'pl_sign_in': pl_sign_in,
+                                    'pl_sign_out': pl_sign_out,
+                                    'ac_sign_in': ac_sign_in,
+                                    'ac_sign_out': ac_sign_out,
+                                    'miss_type': miss_type,
+                                    'late_in': policy_miss_late,
+                                    'act_late_in': act_float_miss_late,
+                                    'overtime': float_miss_overtime,
+                                    'act_overtime': act_float_miss_overtime,
+                                    'diff_time': policy_miss_diff,
+                                    'act_diff_time': act_float_miss_diff,
+                                    'miss_pen': miss_amount,
+                                    'status': '',
+
+                                    'att_sheet_id': self.id
+
+                                }
+                                att_line.create(values)
+                            continue
+
                         for i, work_interval in enumerate(work_intervals):
                             float_worked_hours = 0
                             att_work_intervals = []
@@ -481,3 +672,13 @@ class AttendanceSheet(models.Model):
             0]
         action['domain'] = [('id', 'in', penalty_ids.ids)]
         return action
+
+
+class AttendanceSheetLine(models.Model):
+    _inherit = 'attendance.sheet.line'
+
+    miss_type = fields.Selection(
+        selection=[('misin', 'Miss-IN'), ('missout', 'Miss-Out'),
+                   ('right', 'Right')], string='Miss Punch Type',
+        default='right')
+    miss_pen = fields.Float("Miss punch Penalty", readonly=True)

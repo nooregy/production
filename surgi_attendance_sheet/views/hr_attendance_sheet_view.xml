@@ -8,9 +8,21 @@
                    ref="rm_hr_attendance_sheet.attendance_sheet_form_view"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//button[@name='action_payslip']" position="replace">
+                <xpath expr="//button[@name='action_payslip']"
+                       position="replace">
 
                 </xpath>
+                <xpath expr="//button[@name='action_draft']" position="attributes">
+                    <attribute name="states">confirm,cancel</attribute>
+
+                </xpath>
+                <xpath expr="//button[@name='action_draft']" position="after">
+                    <button name="action_cancel" states="done"
+                            string="Cancel" type="object"/>
+
+                </xpath>
+
+
 
                 <xpath expr="//field[@name='att_policy_id']" position="after">
                     <field name="accrual_date"/>
@@ -25,8 +37,11 @@
                     </button>
 
                 </xpath>
-
-
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='diff_time']"
+                       position="after">
+                    <field name="miss_type" optional="hide" />
+                    <field name="miss_pen" optional="hide"/>
+                </xpath>
             </field>
         </record>
 

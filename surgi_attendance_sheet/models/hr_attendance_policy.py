@@ -16,6 +16,9 @@ from odoo.exceptions import ValidationError, UserError
 class HrAttendancePolicy(models.Model):
     _inherit = 'hr.attendance.policy'
 
+    miss_rule_id = fields.Many2one(comodel_name="hr.miss.rule",
+                                   string="Missed Punch Rule", required=False)
+
     def get_late(self,period, cnt):
         res = period
         flag = False
@@ -104,6 +107,23 @@ class HrAttendancePolicy(models.Model):
                 res = 0
         return res, diff_cnt
 
+    def get_miss(self, cnt):
+        self.ensure_one()
+        res = 0
+        flag = False
+        if self:
+            if self.miss_rule_id:
+                miss_ids = self.miss_rule_id.line_ids.sorted(
+                    key=lambda r: r.counter, reverse=True)
+                for ln in miss_ids:
+                    if cnt >= int(ln.counter):
+                        res = ln.amount
+                        flag = True
+                        break
+                if not flag:
+                    res = 0
+        return res
+
 class HrLateRuleLine(models.Model):
     _inherit = 'hr.late.rule.line'
 
@@ -122,6 +142,37 @@ class HrDiffRuleLine(models.Model):
     third = fields.Float('Third Time', default=1)
     fourth = fields.Float('Fourth Time', default=1)
     fifth = fields.Float('Fifth Time', default=1)
+
+class hr_miss_rule(models.Model):
+    _name = 'hr.miss.rule'
+
+    name = fields.Char(string='name', required=True,translate=True)
+    line_ids = fields.One2many(comodel_name='hr.miss.rule.line', inverse_name='miss_id', string='Missed punchis rules')
+
+
+class hr_miss_rule_line(models.Model):
+    _name = 'hr.miss.rule.line'
+
+    times = [
+        ('1', 'First Time'),
+        ('2', 'Second Time'),
+        ('3', 'Third Time'),
+        ('4', 'Fourth Time'),
+        ('5', 'Fifth Time'),
+
+    ]
+
+    miss_id = fields.Many2one(comodel_name='hr.miss.rule', string='name')
+    amount = fields.Float(string='amount',required=True)
+    counter = fields.Selection(string="Times", selection=times, required=True, )
+
+    _sql_constraints = [
+        ('miss_rule_cons', 'unique(miss_id,counter)',
+         'The counter Must Be unique Per Rule'),
+    ]
+
+
+
 
 
 
