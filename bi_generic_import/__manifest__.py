@@ -581,12 +581,12 @@ Importar imagens do produto do caminho, importar imagens do caminho do sistema l
              #"views/customer_payment.xml",
              #"views/import_order_lines_view.xml",
              "views/import_po_lines_view.xml",
-             "views/import_invoice_lines_view.xml",
+             #"views/import_invoice_lines_view.xml",
              #"views/bank_statement.xml",
              #"views/account_move.xml",
              "views/supp_info.xml",
              #"views/mrp.xml",
-             "views/pricelist.xml",
+             #"views/pricelist.xml",
              "views/product_variant.xml"
              ],
 	'qweb': [
