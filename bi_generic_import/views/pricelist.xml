@@ -43,7 +43,7 @@
         <record id="action_import_sale_pricelist_wizard" model="ir.actions.act_window">
             <field name="name">Import Sale Pricelist</field>
             <field name="res_model">import.sale.pricelist</field>
-            <field name="view_type">form</field>
+            <!--<field name="view_type">form</field>-->
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
@@ -87,7 +87,7 @@
         <record id="action_import_vendor_pricelist_wizard" model="ir.actions.act_window">
             <field name="name">Import Vendor Pricelist</field>
             <field name="res_model">import.vendor.pricelist</field>
-            <field name="view_type">form</field>
+            <!--<field name="view_type">form</field>-->
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
@@ -129,7 +129,7 @@
         <record id="action_import_product_pricelist_wizard" model="ir.actions.act_window">
             <field name="name">Import Product Pricelist</field>
             <field name="res_model">import.product.pricelist</field>
-            <field name="view_type">form</field>
+            <!--<field name="view_type">form</field>-->
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>

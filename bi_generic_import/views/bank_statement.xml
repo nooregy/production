@@ -24,7 +24,7 @@
         <record id="action_bank_statement_import_line_wizard" model="ir.actions.act_window">
             <field name="name">action bank statement import line wizard</field>
             <field name="res_model">account.bank.statement.wizard</field>
-            <field name="view_type">form</field>
+            <!--<field name="view_type">form</field>-->
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>

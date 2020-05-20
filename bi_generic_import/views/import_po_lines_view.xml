@@ -28,7 +28,7 @@
 			<field name="name">Import Purchase Order Lines</field>
 			<field name="res_model">import.po.line.wizard</field>
 			<field name="target">new</field>
-			<field name="view_type">form</field>
+			<!--<field name="view_type">form</field>-->
 			<field name="view_mode">form</field>
 		</record>
 

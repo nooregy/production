@@ -37,7 +37,7 @@
 		<record id="bi_gen_picking_wizard_action" model="ir.actions.act_window">
 			<field name="name">Import Shipments And Delivery Orders</field>
 			<field name="res_model">import.picking</field>
-			<field name="view_type">form</field>
+			<!--<field name="view_type">form</field>-->
 			<field name="view_mode">form</field>
 			<field name="target">new</field>
 		</record>

@@ -30,7 +30,7 @@
 		<record id="gen_product_variant_import_wizard" model="ir.actions.act_window">
 			<field name="name">Import Product Variant</field>
 			<field name="res_model">gen.product.variant</field>
-			<field name="view_type">form</field>
+			<!--<field name="view_type">form</field>-->
 			<field name="view_mode">form</field>
 			<field name="target">new</field>
 		</record>

@@ -23,7 +23,7 @@
         <record id="action_import_account_move_line" model="ir.actions.act_window">
             <field name="name">Import Journal Entries</field>
             <field name="res_model">gen.journal.entry</field>
-            <field name="view_type">form</field>
+            <!--<field name="view_type">form</field>-->
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>

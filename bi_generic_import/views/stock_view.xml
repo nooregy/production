@@ -40,7 +40,7 @@
         <record id="gen_inv_wizard" model="ir.actions.act_window">
             <field name="name">Import Inventory</field>
             <field name="res_model">gen.inv</field>
-            <field name="view_type">form</field>
+            <!--<field name="view_type">form</field>-->
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
