@@ -31,7 +31,7 @@
 		<record id="gen_product_import_wizard" model="ir.actions.act_window">
 			<field name="name">Import Product Template</field>
 			<field name="res_model">gen.product</field>
-			<!--<field name="<!--<field name="view_type">form</field>-->">form</field>-->
+			<!--<field name="view_type">form</field>-->
 			<field name="view_mode">form</field>
 			<field name="target">new</field>
 		</record>
