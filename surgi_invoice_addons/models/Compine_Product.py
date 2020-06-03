@@ -237,28 +237,28 @@ class account_move(models.Model):
         print("1")
         pass
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        res = super(account_move, self).create(vals_list)
-        self.changed_line_ids()
-        return res
-        pass
-
-    @api.model
-    def action_post(self, values):
-        record = super(account_move, self).create(values)
-        print(values)
-        self.changed_line_ids()
-        print("ff")
-        return record
-        pass
-
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     res = super(account_move, self).create(vals_list)
+    #     self.changed_line_ids()
+    #     return res
+    #     pass
+    #
     # @api.model
-    def write(self, vals):
-        res = super(account_move, self).write(vals)
-        self.changed_line_ids()
-        return res
-        pass
+    # def action_post(self, values):
+    #     record = super(account_move, self).create(values)
+    #     print(values)
+    #     self.changed_line_ids()
+    #     print("ff")
+    #     return record
+    #     pass
+    #
+    # # @api.model
+    # def write(self, vals):
+    #     res = super(account_move, self).write(vals)
+    #     self.changed_line_ids()
+    #     return res
+    #     pass
 
 
 class account_move_line_inhert(models.Model):
