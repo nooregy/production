@@ -5,6 +5,21 @@ import pandas as pd
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.addons.resource.models.resource import HOURS_PER_DAY
+from datetime import datetime,date
+
+
+class AttendanceAttendance(models.Model):
+    _name = 'attendance.attendance'
+    _rec_name = 'employee_id'
+
+
+    employee_id = fields.Many2one(comodel_name="hr.employee", string="Employee",)
+    check_in = fields.Datetime(string="Check In", required=False, )
+    check_out = fields.Datetime(string="Check Out", required=False, )
+    work_hour = fields.Float(string="Work Hour",  required=False, )
+    interval_attendance = fields.Many2one(comodel_name="hr.overtime", string="", required=False, )
+
+
 
 
 class HrOverTime(models.Model):
@@ -64,7 +79,10 @@ class HrOverTime(models.Model):
     overtime_type_id = fields.Many2one('overtime.type', domain="[('type','=',type),('duration_type','=', "
                                                                "duration_type)]")
     public_holiday = fields.Char(string='Public Holiday', readonly=True)
-    attendance_ids = fields.Many2many('hr.attendance', string='Attendance')
+
+    # attendance_ids = fields.Many2many('hr.attendance', string='Attendance')
+    attendance_ids = fields.One2many(comodel_name="attendance.attendance", inverse_name="interval_attendance", string="", required=False, )
+
     work_schedule = fields.One2many(
         related='employee_id.resource_calendar_id.attendance_ids')
     global_leaves = fields.One2many(
@@ -268,6 +286,7 @@ class HrOverTime(models.Model):
     @api.onchange('date_from', 'date_to', 'employee_id')
     def _onchange_date(self):
         holiday = False
+        lines = [(5, 0, 0), ]
         if self.contract_id and self.date_from and self.date_to:
             for leaves in self.contract_id.resource_calendar_id.global_leave_ids:
                 leave_dates = pd.date_range(leaves.date_from, leaves.date_to).date
@@ -281,13 +300,38 @@ class HrOverTime(models.Model):
                     'public_holiday': 'You have Public Holidays in your Overtime request.'})
             else:
                 self.write({'public_holiday': ' '})
-            hr_attendance = self.env['hr.attendance'].search(
-                [('check_in', '>=', self.date_from),
-                 ('check_in', '<=', self.date_to),
-                 ('employee_id', '=', self.employee_id.id)])
+            hr_attendance = self.env['hr.attendance'].search([('employee_id', '=', self.employee_id.id)])
+            # ('check_in', '>=', self.date_from),
+            # ('check_in', '<=', self.date_to),
+            for emp_att in hr_attendance:
+                checkin = datetime.strptime(str(emp_att.check_in), '%Y-%m-%d %H:%M:%S').date()
+                start_date = datetime.strptime(str(self.date_from), '%Y-%m-%d %H:%M:%S').date()
+                to_date = datetime.strptime(str(self.date_to), '%Y-%m-%d %H:%M:%S').date()
+
+                if start_date<=checkin<=to_date:
+                    print(start_date,checkin,to_date,'QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ')
+                    lines.append((0, 0, {
+                    'employee_id':emp_att.employee_id.id ,
+                    'check_in': emp_att.check_in,
+                    'check_out': emp_att.check_out,
+                    'work_hour': emp_att.worked_hours,
+                }))
+
+            # [(6, 0, hr_attendance.ids)]
             self.update({
-                'attendance_ids': [(6, 0, hr_attendance.ids)]
+                'attendance_ids': lines
             })
+
+    @api.constrains('date_from', 'date_to','attendance_ids')
+    def _validate_check_out_date(self):
+        for res in self.attendance_ids:
+            if self.date_to > res.check_out:
+                raise ValidationError('check out in attendance must be greater than Date To in Overtime Request')
+
+            if self.date_from < res.check_in:
+                raise ValidationError('check in in attendance must be less than Date From in Overtime Request')
+
+
 
 
 class HrOverTimeType(models.Model):
