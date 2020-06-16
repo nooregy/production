@@ -18,6 +18,7 @@ class HrAttendancePenalty(models.Model):
 
     TYPE = [('late', 'Late IN'),
             ('ab', 'Absence'),
+            ('mis', 'Mis-Punch'),
             ('diff', 'Early Out')]
 
     name = fields.Char('Name', required=True)

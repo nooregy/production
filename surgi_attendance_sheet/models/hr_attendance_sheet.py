@@ -91,7 +91,7 @@ class AttendanceSheet(models.Model):
             for abline in absence_lines:
                 values = {
                     'employee_id': sheet.employee_id.id,
-                    'type': 'late',
+                    'type': 'ab',
                     'accrual_date': sheet.accrual_date,
                     'date': abline.date,
                     'sheet_id': sheet.id,
@@ -99,12 +99,26 @@ class AttendanceSheet(models.Model):
                     'amount': abline.diff_time
                 }
                 penalty_obj.create(values)
+
+            diff = sheet.line_ids.filtered(
+                lambda l: l.diff_time > 0 and l.status != "ab")
+            for diffline in diff:
+                values = {
+                    'employee_id': sheet.employee_id.id,
+                    'type': 'ab',
+                    'accrual_date': sheet.accrual_date,
+                    'date': diffline.date,
+                    'sheet_id': sheet.id,
+                    'name': 'diff',
+                    'amount': diffline.diff_time
+                }
+                penalty_obj.create(values)
             miss_lines = sheet.line_ids.filtered(
                 lambda l: l.miss_type != 'right' and l.miss_pen > 0)
             for missline in miss_lines:
                 values = {
                     'employee_id': sheet.employee_id.id,
-                    'type': 'late',
+                    'type': 'mis',
                     'accrual_date': sheet.accrual_date,
                     'date': missline.date,
                     'sheet_id': sheet.id,

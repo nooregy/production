@@ -41,11 +41,11 @@ class AttendanceSheet(models.Model):
                                  states={'draft': [('readonly', False)]})
     date_from = fields.Date(string='Date From', required=True,
                             default=lambda self: fields.Date.to_string(
-                                date.today().replace(day=1)), )#, readonly=True
+                                date.today().replace(day=1)), )# readonly=True,
     date_to = fields.Date(string='Date To', required=True,
                           default=lambda self: fields.Date.to_string(
                               (datetime.now() + relativedelta(months=+1, day=1,
-                                                              days=-1)).date()))
+                                                              days=-1)).date()))# readonly=True,
     line_ids = fields.One2many(comodel_name='attendance.sheet.line',
                                string='Attendances', readonly=True,
                                inverse_name='att_sheet_id')

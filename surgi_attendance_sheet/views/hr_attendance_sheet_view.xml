@@ -12,7 +12,8 @@
                        position="replace">
 
                 </xpath>
-                <xpath expr="//button[@name='action_draft']" position="attributes">
+                <xpath expr="//button[@name='action_draft']"
+                       position="attributes">
                     <attribute name="states">confirm,cancel</attribute>
 
                 </xpath>
@@ -21,7 +22,14 @@
                             string="Cancel" type="object"/>
 
                 </xpath>
+                <xpath expr="//page[2]//group[1]" position="inside">
+                    <group string="Mis Punch Penalties">
+                        <field name="no_miss"/>
+                        <field name="tot_miss"/>
 
+                    </group>
+
+                </xpath>
 
 
                 <xpath expr="//field[@name='att_policy_id']" position="after">
@@ -39,7 +47,7 @@
                 </xpath>
                 <xpath expr="//field[@name='line_ids']/tree/field[@name='diff_time']"
                        position="after">
-                    <field name="miss_type" optional="hide" />
+                    <field name="miss_type" optional="hide"/>
                     <field name="miss_pen" optional="hide"/>
                 </xpath>
             </field>
