@@ -62,6 +62,8 @@
 
             </field>
         </record>
+        <!--================================================================================================-->
+
 
         <record id="tree_views_employee_directory_tree_view_new" model="ir.ui.view">
             <field name="name">tree_views_employee_directory</field>
@@ -81,6 +83,7 @@
 
             </field>
         </record>
+<!--================================================================================================-->
 
 
         <record id="surgi_ess_employee_directory_form_view" model="ir.ui.view">
@@ -135,6 +138,7 @@
             </field>
         </record>
 
+<!--================================================================================================-->
 
         <record id="surgi_ess_employee_directory_search_new" model="ir.ui.view">
             <field name="name">surgi.ess.employee.directory.search.new</field>
@@ -161,6 +165,7 @@
                 </search>
             </field>
         </record>
+<!--================================================================================================-->
 
 
         <record id="employee_action_employee_new_page" model="ir.actions.act_window">
@@ -173,6 +178,7 @@
             <field name="search_view_id" ref="surgi_ess_employee_directory_search_new"/>
         </record>
 
+<!--================================================================================================-->
 
         <record model="ir.actions.act_window.view" id="action_form_view_employee_new_directors">
             <field name="sequence" eval="3"/>
@@ -192,6 +198,7 @@
             <field name="view_id" ref="new_employee_directory_kanban_views_page"/>
             <field name="act_window_id" ref="employee_action_employee_new_page"/>
         </record>
+<!--================================================================================================-->
 
         <menuitem id="menu_root_ess_surgi" name="ESS"  web_icon="surgi_ess,static/description/ess.png" sequence="0"/>
         <menuitem id="menu_employee_directory" name="Employee Directory" parent="menu_root_ess_surgi"
