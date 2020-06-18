@@ -222,5 +222,21 @@
         />
 
 
+         <record id="hr_payroll_view_hr_payslip_form_views" model="ir.ui.view">
+            <field name="name">view_hr_payslip_form_views_hr</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='struct_id']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="total_evaluation"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
     </data>
 </odoo>

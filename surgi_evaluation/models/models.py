@@ -144,6 +144,7 @@ class EvaluationEvaluation(models.Model):
 
     check_eval = fields.Boolean(string="Check Evaluation",default=False  )
 
+    accrual_date = fields.Date('Accrual Date', required=False)
     #######################################
 
     def write(self, values):
@@ -465,7 +466,6 @@ class EvaluationEvaluation(models.Model):
         #     # res.update({'function_comp': manager_rec_total})
         #     return res
 
-
 class NewModule(models.Model):
     _name = 'core.competencies'
     _rec_name = 'name'
@@ -480,7 +480,7 @@ class NewModule(models.Model):
     score = fields.Float(string="Score", required=False, compute='get_score', readonly=True,)
     active_core = fields.Boolean('Active', default=True,)
 
-    # interval_core = fields.Many2one(comodel_name="evaluation.evaluation")
+    # interval_core22 = fields.Many2one(comodel_name="evaluation.evaluation")
 
     @api.depends('percentage', 'kpi_weight')
     def get_score(self):
