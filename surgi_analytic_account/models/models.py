@@ -4,6 +4,9 @@ class AccountAnalyticAccount(models.Model):
     _inherit = 'account.analytic.account'
 
     user_id = fields.Many2one(comodel_name="res.users", string="Salesperson",)
+    user_add_ids = fields.Many2many(comodel_name="res.users",string="Additional Users", )
+
+
     salesteam_id = fields.Many2one(comodel_name="crm.team", string="Sales Team",)
     product_id = fields.Many2one(comodel_name="product.lines", string="Product Line",)
     undefined_sales_person = fields.Boolean(string="Undefined Sales Person",  )
@@ -30,6 +33,10 @@ class AccountMove(models.Model):
                     part=True
                     if rec.user_id == self.invoice_user_id:
                         line.analytic_account_id=rec.id
+
+                    elif self.invoice_user_id in rec.user_add_ids:
+                        line.analytic_account_id = rec.id
+
                     elif rec.undefined_sales_person==True:
                         line.analytic_account_id = rec.id
                     else:

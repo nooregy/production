@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','hr_attendance'],
+    'depends': ['base','hr','hr_attendance','hr_holidays'],
 
     # always loaded
     'data': [
@@ -28,6 +28,11 @@
         'views/employee_directory.xml',
         'views/attendance.xml',
         'views/employee_profile.xml',
+        'views/leaves.xml',
+        'views/allocate_leave.xml',
+        'views/my_permissions.xml',
+        'views/missions.xml',
+        'views/hr_leave_type.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
