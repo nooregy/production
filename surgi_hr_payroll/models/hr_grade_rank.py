@@ -8,29 +8,6 @@ import time
 import babel
 import logging
 
-
-class RangRang(models.Model):
-    _name = 'rang.rang'
-
-    name = fields.Char('Name')
-    description = fields.Text('Description')
-    total_salary = fields.Float('Salary',track_visibility='onchange',digits=dp.get_precision('Payroll'))
-    # car_allow = fields.Float('Car Allowance',track_visibility='onchange',digits=dp.get_precision('Payroll'))
-    # travel_expenses_allow = fields.Float('Travel Exp Allow.',track_visibility='onchange',digits=dp.get_precision('Payroll'))
-    # travel_allow_int_f = fields.Float('Travel Allow internal Fixed',track_visibility='onchange',digits=dp.get_precision('Payroll'))
-    rank_id = fields.Many2one('rank.rank', 'Rank')
-
-class RankRank(models.Model):
-    _name = 'rank.rank'
-
-    name = fields.Char('Name')
-    description = fields.Text('Description')
-    salary_range = fields.Text('Salary Range')
-    # total_salary = fields.Float('Salary',track_visibility='onchange',digits=dp.get_precision('Payroll'))
-    grade_id = fields.Many2one('grade.grade', 'Grade')
-    rang_ids = fields.Many2one('rang.rang', 'Rang')
-
-
 class GradeGrade(models.Model):
     _name = 'grade.grade'
 
@@ -43,6 +20,30 @@ class GradeGrade(models.Model):
     travel_allow_int_f = fields.Float('Travel Allow internal Fixed', track_visibility='onchange',
                                       digits=dp.get_precision('Payroll'))
 
+class RankRank(models.Model):
+    _name = 'rank.rank'
+
+    name = fields.Char('Name')
+    description = fields.Text('Description')
+    salary_range = fields.Text('Salary Range')
+    # total_salary = fields.Float('Salary',track_visibility='onchange',digits=dp.get_precision('Payroll'))
+    grade_id = fields.Many2one('grade.grade', 'Grade')
+    #     rang_ids = fields.Many2one('rang.rang', 'Rang')
+    rang_ids = fields.One2many('rang.rang', 'rank_id', 'Rangs')
+
+
+
+class RangRang(models.Model):
+    _name = 'rang.rang'
+
+    name = fields.Char('Name')
+    description = fields.Text('Description')
+    total_salary = fields.Float('Salary',track_visibility='onchange',digits=dp.get_precision('Payroll'))
+    # car_allow = fields.Float('Car Allowance',track_visibility='onchange',digits=dp.get_precision('Payroll'))
+    # travel_expenses_allow = fields.Float('Travel Exp Allow.',track_visibility='onchange',digits=dp.get_precision('Payroll'))
+    # travel_allow_int_f = fields.Float('Travel Allow internal Fixed',track_visibility='onchange',digits=dp.get_precision('Payroll'))
+    rank_id = fields.Many2one('rank.rank', 'Rank')
+
 class HrEmployee(models.Model):
 
     _inherit = 'hr.contract'
@@ -50,6 +51,7 @@ class HrEmployee(models.Model):
     grade_id = fields.Many2one('grade.grade', 'Grade')
     rank_id = fields.Many2one('rank.rank', 'Rank')
     rang_id = fields.Many2one('rang.rang', 'Rang')
+    grade_total_salary = fields.Float('Grade Salary',  related='rang_id.total_salary', readonly=True)
 
     @api.onchange('grade_id')
     def onchange_grade(self):

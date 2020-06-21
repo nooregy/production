@@ -48,7 +48,6 @@ class HrContract(models.Model):
     incentive_total = fields.Float('Total Incentive',compute='_getsum_incentive_total', track_visibility='onchange')#compute='_getsum_incentive_total',
 
     total_salary = fields.Float('Total Salary', compute='_getsum_total_salary', track_visibility='onchange')
-    Grade_total_salary = fields.Float('Grade Salary',  related='rang_id.total_salary', readonly=True)
 
     car_allow = fields.Float('Car Allowance',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     fuel_allow = fields.Float('Fuel Allowance',track_visibility='onchange',digits=dp.get_precision('Payroll'))
