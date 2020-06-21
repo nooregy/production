@@ -470,13 +470,13 @@ class NewModule(models.Model):
     _name = 'core.competencies'
     _rec_name = 'name'
 
-    name = fields.Char(string='Core')#, groups="hr.group_hr_user")
+    name = fields.Char(string='Core', groups="hr.group_hr_user")
     percentage = fields.Float(string="Percentage %", required=False, )
     kpi_weight = fields.Float(string="Weight", required=False,)
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
                                                                 ('improvement', 'Need To Improvement'),
                                                                 ('meet', 'Meet'), ('exceed', 'Exceed'),
-                                                                ('fail', 'Fail'), ], required=False)#, groups="hr.group_hr_user")
+                                                                ('fail', 'Fail'), ], required=False)
     score = fields.Float(string="Score", required=False, compute='get_score', readonly=True,)
     active_core = fields.Boolean('Active', default=True,)
 
@@ -502,13 +502,13 @@ class NewModule(models.Model):
     _name = 'core2.competencies2'
     _rec_name = 'name'
 
-    name = fields.Char(string='Core')#, groups="hr.group_hr_user")
+    name = fields.Char(string='Core', groups="hr.group_hr_user")
     percentage = fields.Float(string="Percentage %", required=False, )
     kpi_weight = fields.Float(string="KPI weight", required=False, )
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
                                                                 ('improvement', 'Need To Improvement'),
                                                                 ('meet', 'Meet'), ('exceed', 'Exceed'),
-                                                                ('fail', 'Fail'), ], required=False)#, groups="hr.group_hr_user")
+                                                                ('fail', 'Fail'), ], required=False, )
     score = fields.Float(string="Score", required=False, compute='get_score', readonly=True, )
     active_core = fields.Boolean('Active', default=True, )
 
@@ -527,15 +527,16 @@ class NewModule(models.Model):
     _name = 'function.competencies'
     _rec_name = 'name'
 
-    name = fields.Char(string='Function')#, groups="hr.group_hr_user")
+    name = fields.Char(string='Function', groups="hr.group_hr_user")
     percentage = fields.Float(string="Percentage %", required=False, )
     kpi_weight = fields.Float(string="Weight", required=False, )
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
                                                                 ('improvement', 'Need To Improvement'),
                                                                 ('meet', 'Meet'), ('exceed', 'Exceed'),
-                                                                ('fail', 'Fail'), ], required=False)#, groups="hr.group_hr_user")
+                                                                ('fail', 'Fail'), ], required=False,
+                                    groups="hr.group_hr_user")
     score = fields.Float(string="Score", required=False, compute='get_score', readonly=True)
-    active_function = fields.Boolean('Active', default=True)#, groups="hr.group_hr_user")
+    active_function = fields.Boolean('Active', default=True, groups="hr.group_hr_user")
 
     # interval_function = fields.Many2one(comodel_name="evaluation.evaluation")
 
@@ -561,15 +562,17 @@ class NewModule(models.Model):
     _name = 'function2.competencies2'
     _rec_name = 'name'
 
-    name = fields.Char(string='Questions')#, groups="hr.group_hr_user")
+    name = fields.Char(string='Questions', groups="hr.group_hr_user")
     percentage = fields.Float(string="Percentage %", required=False, )
     kpi_weight = fields.Float(string="KPI weight", required=False, )
     state_result = fields.Selection(string="Result", selection=[('expectation', 'Rank of Expectation'),
                                                                 ('improvement', 'Need To Improvement'),
                                                                 ('meet', 'Meet'), ('exceed', 'Exceed'),
-                                                                ('fail', 'Fail'), ], required=False)#, groups="hr.group_hr_user")
-    score = fields.Float(string="Score", required=False, compute='get_score', readonly=True)#, groups="hr.group_hr_user")
-    active_function = fields.Boolean('Active', default=True)#, groups="hr.group_hr_user")
+                                                                ('fail', 'Fail'), ], required=False,
+                                    groups="hr.group_hr_user")
+    score = fields.Float(string="Score", required=False, compute='get_score', readonly=True,
+                         groups="hr.group_hr_user")
+    active_function = fields.Boolean('Active', default=True, groups="hr.group_hr_user")
 
     interval_function = fields.Many2one(comodel_name="evaluation.evaluation")
 
