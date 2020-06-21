@@ -11,6 +11,8 @@
                 <form string="Evaluation">
                     <header>
                         <field name="state" widget="statusbar"/>
+                        <button name="get_lines_cor" type="object" string="Reset Competencies" class="oe_highlight" attrs="{'invisible': [('state', '=', 'done')]}"/>
+                        <button name="total_lines_employee_id" type="object" string="Reset KPI" class="oe_highlight" attrs="{'invisible': [('state', '=', 'done')]}"/>
                         <button name="submit_core" type="object" string="Submit" class="oe_highlight"
                                 attrs="{'invisible':[('check_read','=',True)]}"/>
                     </header>
@@ -31,7 +33,6 @@
                                        groups="hr.group_hr_user"/>
                                 <field name="check_read" invisible="1"/>
                                 <field name="department_id" readonly="1"/>
-                                <field name="is_evalualtion" invisible="0"/>
                             </group>
                             <group>
                                 <field name="date_end" attrs="{'readonly':[('check_read','=',True)]}"
@@ -118,7 +119,7 @@
 
     <menuitem
                 id="surgi_evaluation_evaluation_manager_menuitem"
-                name="Manager"
+                name="Direct Subordinate Evaluation"
                 action="action_surgi_evaluation_manager"
                 parent="surgi_evaluation_menuitem"
                 sequence="2"
