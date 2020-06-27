@@ -41,7 +41,7 @@ class AttendanceSheet(models.Model):
                                  states={'draft': [('readonly', False)]})
     date_from = fields.Date(string='Date From', required=True,
                             default=lambda self: fields.Date.to_string(
-                                date.today().replace(day=1)), )# readonly=True,
+                                date.today().replace(day=1)), )#, readonly=True
     date_to = fields.Date(string='Date To', required=True,
                           default=lambda self: fields.Date.to_string(
                               (datetime.now() + relativedelta(months=+1, day=1,

@@ -249,7 +249,7 @@ class AttendanceSheet(models.Model):
                                     'ac_sign_in': float_ac_sign_in,
                                     'ac_sign_out': float_ac_sign_out,
                                     'worked_hours': float_worked_hours,
-                                    'o_worked_hours': float_worked_hours,
+                                    # 'o_worked_hours': float_worked_hours,
                                     'overtime': float_overtime,
                                     'act_overtime': act_float_overtime,
                                     'att_sheet_id': self.id,
