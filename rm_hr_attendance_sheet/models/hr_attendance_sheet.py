@@ -41,7 +41,7 @@ class AttendanceSheet(models.Model):
                                  states={'draft': [('readonly', False)]})
     date_from = fields.Date(string='Date From', required=True,
                             default=lambda self: fields.Date.to_string(
-                                date.today().replace(day=1)), )#, readonly=True
+                                date.today().replace(day=1)), )# readonly=True,
     date_to = fields.Date(string='Date To', required=True,
                           default=lambda self: fields.Date.to_string(
                               (datetime.now() + relativedelta(months=+1, day=1,
@@ -309,7 +309,7 @@ class AttendanceSheet(models.Model):
                                     'ac_sign_in': float_ac_sign_in,
                                     'ac_sign_out': float_ac_sign_out,
                                     'worked_hours': float_worked_hours,
-                                    'o_worked_hours': float_worked_hours,
+                                    # 'o_worked_hours': float_worked_hours,
                                     'overtime': float_overtime,
                                     'act_overtime': act_float_overtime,
                                     'att_sheet_id': self.id,

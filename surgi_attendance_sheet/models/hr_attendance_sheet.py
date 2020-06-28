@@ -287,6 +287,8 @@ class AttendanceSheet(models.Model):
                                         work_interval[1]).astimezone(tz))
                                 ac_sign_in = ac_sign_out = 0
                                 miss_att_intervals = []
+                                miss_type = 'right'
+                                note = ''
                                 for j, miss_att in enumerate(
                                         all_miss_intervals):
                                     if miss_att[0] < work_interval[1] and \
@@ -307,21 +309,52 @@ class AttendanceSheet(models.Model):
                                 if miss_att_intervals and miss_att_intervals[0][
                                     2] != 'fixin':
                                     miss_type = 'missout'
+                                    if leaves:
+                                        for leave_interval in leaves:
+                                            if leave_interval[0] < \
+                                                    work_interval[1] < \
+                                                    leave_interval[1]:
+                                                miss_type = 'right'
+                                                miss_amount=0
+                                                miss_cnt -= 1
+                                                note = 'Removing Mis-punch Out due to leave'
+
                                     ac_sign_in = self._get_float_from_time(
                                         pytz.utc.localize(miss_att_intervals[0][
                                                               0]).astimezone(
                                             tz))
                                     ac_sign_out = 0
-                                    miss_late_in = (miss_att_intervals[0][0] -
-                                                    work_interval[0])
+                                    miss_lat_in_interval = (
+                                        work_interval[0],
+                                        miss_att_intervals[0][0])
+                                    miss_late_in = timedelta(0, 0, 0)
+                                    if leaves:
+                                        miss_late_clean_intervals = calendar_id.att_interval_without_leaves(
+                                            miss_lat_in_interval, leaves)
+                                        for late_clean in miss_late_clean_intervals:
+                                            miss_late_in += late_clean[1] - \
+                                                            late_clean[0]
+                                    else:
+                                        miss_late_in = (
+                                                miss_att_intervals[0][0] -
+                                                work_interval[0])
                                     float_miss_late = miss_late_in.total_seconds() / 3600
-                                    act_float_miss_late = miss_late_in.total_seconds() / 3600
+                                    act_float_miss_late = float_miss_late
                                     policy_miss_late, late_cnt = policy_id.get_late(
                                         float_miss_late, late_cnt)
 
                                 elif miss_att_intervals and \
                                         miss_att_intervals[-1][2] != 'fixout':
                                     miss_type = 'misin'
+                                    if leaves:
+                                        for leave_interval in leaves:
+                                            if leave_interval[0] < \
+                                                    work_interval[0] < \
+                                                    leave_interval[1]:
+                                                miss_type = 'right'
+                                                miss_amount=0
+                                                miss_cnt -= 1
+                                                note = 'Removing Mis-punch In due to leave'
                                     ac_sign_in = 0
                                     ac_sign_out = self._get_float_from_time(
                                         pytz.utc.localize(
@@ -330,19 +363,20 @@ class AttendanceSheet(models.Model):
                                     overtime_interval = (
                                         work_interval[1],
                                         miss_att_intervals[-1][1])
+                                    miss_diff_interval = (
+                                        miss_att_intervals[-1][1],
+                                        work_interval[1]
+                                    )
                                     if overtime_interval[1] < overtime_interval[
                                         0]:
                                         miss_overtime = timedelta(hours=0,
                                                                   minutes=0,
                                                                   seconds=0)
-                                        miss_diff_time = overtime_interval[1] - \
-                                                         overtime_interval[0]
+
                                     else:
                                         miss_overtime = overtime_interval[1] - \
                                                         overtime_interval[0]
-                                        miss_diff_time = timedelta(hours=0,
-                                                                   minutes=0,
-                                                                   seconds=0)
+
                                     float_miss_overtime = miss_overtime.total_seconds() / 3600
                                     if float_miss_overtime <= overtime_policy[
                                         'wd_after']:
@@ -352,6 +386,22 @@ class AttendanceSheet(models.Model):
                                         float_miss_overtime = float_miss_overtime * \
                                                               overtime_policy[
                                                                   'wd_rate']
+                                    miss_diff_time = timedelta(hours=0,
+                                                               minutes=0,
+                                                               seconds=0)
+                                    if miss_diff_interval[0] < \
+                                            miss_diff_interval[1]:
+                                        if leaves:
+                                            miss_diff_clean_intervals = calendar_id.att_interval_without_leaves(
+                                                miss_diff_interval, leaves)
+                                            for diff_clean in miss_diff_clean_intervals:
+                                                miss_diff_time += diff_clean[
+                                                                      1] - \
+                                                                  diff_clean[0]
+                                        else:
+                                            miss_diff_time = (
+                                                    miss_diff_interval[1] -
+                                                    miss_diff_interval[0])
 
                                     float_miss_diff = miss_diff_time.total_seconds() / 3600
                                     act_float_miss_diff = float_miss_diff
@@ -374,7 +424,7 @@ class AttendanceSheet(models.Model):
                                     'act_diff_time': act_float_miss_diff,
                                     'miss_pen': miss_amount,
                                     'status': '',
-
+                                    'note': note,
                                     'att_sheet_id': self.id
 
                                 }
