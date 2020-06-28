@@ -232,7 +232,10 @@
                     <!-- Add your fields or attributes here -->
                     <field name="total_evaluation"/>
                 </xpath>
-
+                <xpath expr="//button[@name='action_payslip_done']" position="after">
+                    <button string="Get Evaluation" name="_compute_total_evaluation"
+                            type="object" attrs="{'invisible':[('state','!=','draft')]}"/>
+                </xpath>
             </field>
         </record>
 
