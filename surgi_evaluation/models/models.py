@@ -154,11 +154,11 @@ class EvaluationEvaluation(models.Model):
     # indirect_manager_id = fields.Many2one(comodel_name="hr.employee",related='employee_id.in_direct_parent_id' ,string="Indirect Manager",store=True)
 
     state_quarter = fields.Selection(string="Quarter",
-                                     selection=[('q1', 'Q1'), ('q2', 'Q2'), ('q3', 'Q3'), ('q4', 'Q4')], readonly=True)
+                                     selection=[('q1', 'Q1'), ('q2', 'Q2'), ('q3', 'Q3'), ('q4', 'Q4')])#, readonly=True
     month = fields.Selection([('January', 'January'), ('February', 'February'), ('March', 'March'), ('April', 'April'),
                               ('May', 'May'), ('June', 'June'), ('July', 'July'), ('August', 'August'),
                               ('September', 'September'), ('October', 'October'), ('November', 'November'),
-                              ('December', 'December'), ], string='Month', readonly=True)
+                              ('December', 'December'), ], string='Month')#, readonly=True
 
     # is_xx = fields.Boolean(string="", compute='_compute_indirect_manager' )
 

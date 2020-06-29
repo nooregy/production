@@ -94,8 +94,8 @@
                             <group>
                                 <!--<field name="evaluate_by_parent"/>-->
                                 <!--<field name="evaluate_by_parent_indirect"/>-->
-                                <field name="state_quarter"/>
-                                <field name="month"/>
+                                <field name="state_quarter" force_save="1" readonly="1"/>
+                                <field name="month" force_save="1" readonly="1"/>
                                 <field name="date_start" attrs="{'readonly':[('check_read','=',True)]}"
                                        groups="hr.group_hr_user"/>
                                 <field name="check_read"/>
