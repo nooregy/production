@@ -1,14 +1,14 @@
 <odoo>
     <data>
 
-        <!-- Inherit Form View to Modify it
-                 <field name="inherit_id" ref="evaluation.evaluation_form"/>
-                 -->
-        <record id="surgi_sub_direct_evaluation_form_views" model="ir.ui.view">
-            <field name="name">surgi.evaluation.sub.direct.form.views</field>
+<!-- Inherit Form View to Modify it
+         <field name="inherit_id" ref="evaluation.evaluation_form"/>
+         -->
+        <record id="surgi_employee_self_assessment_evaluation_form_views" model="ir.ui.view">
+            <field name="name">surgi.evaluation.employee.self.assessment.form.views</field>
             <field name="model">evaluation.evaluation</field>
             <field name="arch" type="xml">
-                <form string="Sub-Direct Employee Evaluation" create="false" edit="false" delete="false">
+                <form string="Evaluation" create="false" edit="true" delete="false">
                     <header>
                         <field name="state" widget="statusbar"/>
                         <button name="get_lines_cor" type="object" string="Reset Competencies" class="oe_highlight" attrs="{'invisible': [('state', '=', 'done')]}"/>
@@ -20,7 +20,7 @@
                         <label for="name"/>
                         <field name="name" attrs="{'readonly':[('check_read','=',True)]}" readonly="1"/>
                         <br/>
-                        <label for="employee_id" />
+                        <label for="employee_id"/>
                         <field name="employee_id" options="{'no_open': True}" attrs="{'readonly':[('check_read','=',True)]}" readonly="1"/>
                         <br/>
                         <label for="active_evaluation"/>
@@ -102,29 +102,13 @@
             </field>
         </record>
 
-        <record id="surgi_evaluation_tree_views" model="ir.ui.view">
-            <field name="name">surgi.evaluation.tree.views</field>
-            <field name="model">evaluation.evaluation</field>
-            <field name="arch" type="xml">
-                <tree string="Sub-Direct Employee Evaluation" create="false" edit="false" delete="false">
-                    <field name="name"/>
-                    <field name="employee_id"/>
-                    <field name="total_competencies"/>
-                    <field name="total_function_comp"/>
-                    <field name="total_employee_kpi"/>
-                    <field name="total_totals"/>
-                    <field name="state"/>
-                </tree>
-            </field>
-        </record>
-
         <!--&lt;!&ndash; Operation Action&ndash;&gt;   -->
-        <record id="action_surgi_evaluation_sub_direct_employee" model="ir.actions.act_window">
-            <field name="name">Sub-Direct Employee Evaluation</field>
+        <record id="action_surgi_evaluation_employee_self_assessment" model="ir.actions.act_window">
+            <field name="name">Employee Self Assessment Page</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">evaluation.evaluation</field>
             <field name="view_mode">tree,form,calendar,graph</field>
-            <field name="domain">[('employee_id.parent_id.parent_id.user_id','=',uid)]</field><!--'|',('employee_id.user_id','=',user.id),-->
+            <field name="domain">[('employee_id.user_id','=',uid)]</field><!--'|',('employee_id.user_id','=',user.id),-->
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Click to create a new Evaluation.
@@ -133,30 +117,14 @@
         </record>
 
 
-        <record model="ir.actions.act_window.view" id="surgi_employee_sub_direct_action_tree_views">
-            <field name="sequence" eval="1"/>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="surgi_evaluation_tree_views"/>
-            <field name="act_window_id" ref="action_surgi_evaluation_sub_direct_employee"/>
-        </record>
-
-
-        <record model="ir.actions.act_window.view" id="surgi_employee_sub_direct_action_form">
-            <field name="sequence" eval="2"/>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="surgi_sub_direct_evaluation_form_views"/>
-            <field name="act_window_id" ref="action_surgi_evaluation_sub_direct_employee"/>
-        </record>
-
-
-        <menuitem
-                id="surgi_evaluation_evaluation_sub_direct_employee_menuitem"
-                name="Sub Direct Subordinate Evaluation"
-                action="action_surgi_evaluation_sub_direct_employee"
+    <menuitem
+                id="surgi_evaluation_evaluation_employee_self_assessment_menuitem"
+                name="Direct Subordinate Evaluation"
+                action="action_surgi_evaluation_employee_self_assessment"
                 parent="surgi_evaluation_menuitem"
                 sequence="2"
         />
 
 
-    </data>
+</data>
 </odoo>

@@ -30,6 +30,7 @@
         'views/templates.xml',
         'views/evaluation_manager.xml',
         'views/evaluation_sub_direct_employee.xml',
+        'views/evaluation_employee_self_assessment.xml',
         'views/config_ratio.xml',
         'views/evaluation_wizard.xml',
         'demo/demo.xml',

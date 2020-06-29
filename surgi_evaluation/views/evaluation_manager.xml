@@ -8,7 +8,7 @@
             <field name="name">surgi.evaluation.manager.form.views</field>
             <field name="model">evaluation.evaluation</field>
             <field name="arch" type="xml">
-                <form string="Evaluation">
+                <form string="Evaluation" create="false" edit="true" delete="false">
                     <header>
                         <field name="state" widget="statusbar"/>
                         <button name="get_lines_cor" type="object" string="Reset Competencies" class="oe_highlight" attrs="{'invisible': [('state', '=', 'done')]}"/>
@@ -20,7 +20,7 @@
                         <label for="name"/>
                         <field name="name" attrs="{'readonly':[('check_read','=',True)]}" readonly="1"/>
                         <br/>
-                        <label for="employee_id"/>
+                        <label for="employee_id" options="{'no_open': True}"/>
                         <field name="employee_id" attrs="{'readonly':[('check_read','=',True)]}" readonly="1"/>
                         <br/>
                         <label for="active_evaluation"/>
@@ -32,15 +32,15 @@
                                 <field name="date_start" attrs="{'readonly':[('check_read','=',True)]}"
                                        groups="hr.group_hr_user"/>
                                 <field name="check_read" invisible="1"/>
-                                <field name="department_id" readonly="1"/>
+                                <field name="department_id" options="{'no_open': True}" readonly="1"/>
                             </group>
                             <group>
                                 <field name="date_end" attrs="{'readonly':[('check_read','=',True)]}"
                                        groups="hr.group_hr_user" readonly="1"/>
                                 <field name="duration" attrs="{'readonly':[('check_read','=',True)]}"
                                        groups="hr.group_hr_user" readonly="1"/>
-                                <field name="employee_parent_id" readonly="1"/>
-                                <field name="jop_ids" readonly="1"/>
+                                <field name="employee_parent_id" options="{'no_open': True}" readonly="1"/>
+                                <field name="jop_ids" options="{'no_open': True}" readonly="1"/>
                                 <field name="check_eval" readonly="1"/>
 
 

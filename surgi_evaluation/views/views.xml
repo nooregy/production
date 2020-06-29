@@ -42,6 +42,7 @@
                     <field name="total_function_comp"/>
                     <field name="total_employee_kpi"/>
                     <field name="total_totals"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
