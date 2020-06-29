@@ -1,9 +1,6 @@
 <odoo>
     <data>
 
-<!-- Inherit Form View to Modify it
-         <field name="inherit_id" ref="evaluation.evaluation_form"/>
-         -->
         <record id="surgi_manager_evaluation_form_views" model="ir.ui.view">
             <field name="name">surgi.evaluation.manager.form.views</field>
             <field name="model">evaluation.evaluation</field>
@@ -124,7 +121,7 @@
 
 
     <menuitem
-                id="surgi_evaluation_evaluation_manager_menuitem"
+                id="surgi_evaluation_evaluation_direct_subordinate_menuitem"
                 name="Direct Subordinate Evaluation"
                 action="action_surgi_evaluation_manager"
                 parent="surgi_evaluation_evaluation_manager_menuitem"
