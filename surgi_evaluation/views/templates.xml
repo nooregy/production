@@ -56,7 +56,7 @@
         </record>
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="menu_action_page_kpi" name="KPI Employee" parent="surgi_evaluation_menuitem"
-                  action="kpi_employee_page_actions" groups="hr.group_hr_user" sequence="2"/>
+                  action="kpi_employee_page_actions" groups="hr.group_hr_user" sequence="6"/>
 
 
     </data>

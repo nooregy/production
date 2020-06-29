@@ -48,7 +48,7 @@
 
 
         <!-- This Menu Item Must have a parent -->
-        <menuitem id="ratio_config_menu" name="configuration" parent="surgi_evaluation_menuitem" sequence="4"/>
+        <menuitem id="ratio_config_menu" name="configuration" parent="surgi_evaluation_menuitem" sequence="12"/>
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="ratio_mene_action_page" name="Competencies Ratios" parent="ratio_config_menu"
                   action="ratio_action_views_page" groups="hr.group_hr_user"

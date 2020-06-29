@@ -125,7 +125,7 @@
                 name="Employee Self Assessment "
                 action="action_surgi_evaluation_employee_self_assessment"
                 parent="surgi_evaluation_menuitem"
-                sequence="2"
+                sequence="1"
         />
 
 

@@ -157,7 +157,7 @@
                 name="Sub Direct Subordinate Evaluation"
                 action="action_surgi_evaluation_sub_direct_employee"
                 parent="surgi_evaluation_menuitem"
-                sequence="2"
+                sequence="3"
         />
 
 
