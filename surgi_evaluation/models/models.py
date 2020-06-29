@@ -151,7 +151,7 @@ class EvaluationEvaluation(models.Model):
     # parent_managager = fields.Many2one(comodel_name="hr.employee", related='employee_parent_id.parent_id',
     #                                    string="Parent Manager", store=True)
 
-    # indirect_manager_id = fields.Many2one(comodel_name="hr.employee",related='employee_id.in_direct_parent_id' ,string="Indirect Manager",store=True)
+    indirect_manager_id = fields.Many2one(comodel_name="hr.employee",related='employee_id.in_direct_parent_id' ,string="Indirect Manager",store=True)
 
     state_quarter = fields.Selection(string="Quarter",
                                      selection=[('q1', 'Q1'), ('q2', 'Q2'), ('q3', 'Q3'), ('q4', 'Q4')])#, readonly=True
@@ -170,13 +170,6 @@ class EvaluationEvaluation(models.Model):
     #     #     print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
     #     #     for rec in self.core_competencies:
     #     #         rec.is_indirect=True
-
-
-
-
-
-
-
 
     @api.onchange('date_start')
     def _compute_month_quarter(self):

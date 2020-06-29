@@ -139,8 +139,8 @@
                                     <tree editable="bottom" create="false">
                                         <field name="name" force_save="1" readonly="1"/>
                                         <field name="employee_self_assessment" widget="percentage" force_save="1" readonly="1"/>
-                                        <field name="direct_manager" widget="percentage"/>
-                                        <field name="in_direct_manager" widget="percentage"/><!--attrs="{'readonly':[('parent.evaluate_by_parent_indirect','=',False)]}"-->
+                                        <field name="direct_manager" force_save="1" widget="percentage"/>
+                                        <field name="in_direct_manager" force_save="1" widget="percentage"/><!--attrs="{'readonly':[('parent.evaluate_by_parent_indirect','=',False)]}"-->
                                         <field name="percentage" widget="percentage" force_save="1" />
                                         <field name="kpi_weight" sum="kpi_weight" widget="percentage" force_save="1"/>
                                         <field name="state_result" force_save="1" readonly="1"/>
@@ -216,6 +216,12 @@
                 sequence="2"
         />
 
+        <menuitem
+                id="surgi_evaluation_evaluation_manager_menuitem"
+                name="Managers"
+                parent="surgi_evaluation_menuitem"
+                sequence="2"
+        />
 
         <menuitem
                 id="surgi_evaluation_evaluation_menuitem"
