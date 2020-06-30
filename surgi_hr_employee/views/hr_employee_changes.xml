@@ -104,5 +104,52 @@
 
                     </field>
                 </record>
+
+
+        <!-- Inherit Form View to Modify it -->
+<!--        <record id="form_view_hr_employee_public_fields" model="ir.ui.view">-->
+<!--            <field name="name">view_hr_employee_public_fields</field>-->
+<!--            <field name="model">hr.employee.public</field>-->
+<!--            <field name="inherit_id" ref="hr.hr_employee_public_view_form"/>-->
+<!--            <field name="arch" type="xml">-->
+
+<!--                <xpath expr="//field[@name='parent_id']" position="after">-->
+<!--                    &lt;!&ndash; Add your fields or attributes here &ndash;&gt;-->
+<!--                    <field name="labor_linc_no"/>-->
+<!--                    <field name="id_from"/>-->
+<!--                    <field name="military_status"/>-->
+<!--                    <field name="military_number"/>-->
+<!--                    <field name="religion"/>-->
+<!--                    <field name="social_ins_exist"/>-->
+<!--                    <field name="social_ins_no"/>-->
+<!--                    <field name="social_ins_title"/>-->
+<!--                    <field name="medical_ins_exist"/>-->
+<!--                    <field name="medical_company"/>-->
+<!--                    <field name="medical_number"/>-->
+<!--                    <field name="mi_date"/>-->
+<!--                    <field name="section_id"/>-->
+<!--                    <field name="full_employee_name"/>-->
+<!--                    <field name="attendance_type"/>-->
+<!--                    <field name="in_direct_parent_id"/>-->
+<!--                    <field name="age"/>-->
+<!--                    <field name="start_date"/>-->
+<!--                    <field name="edu_phase"/>-->
+<!--                    <field name="edu_school"/>-->
+<!--                    <field name="edu_major"/>-->
+<!--                    <field name="edu_grad"/>-->
+<!--                    <field name="grad_year"/>-->
+<!--                    <field name="edu_note"/>-->
+<!--                    <field name="experience_y"/>-->
+<!--                    <field name="experience_m"/>-->
+<!--                    <field name="experience_d"/>-->
+<!--                    <field name="payrolled_employee"/>-->
+<!--                    <field name="employee_arabic_name"/>-->
+<!--                    <field name="private_num"/>-->
+<!--                </xpath>-->
+
+<!--            </field>-->
+<!--        </record>-->
+
+
 	</data>
 </odoo>
