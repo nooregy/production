@@ -54,100 +54,6 @@ class HrEmployeeBaseDate(models.AbstractModel):
     employee_arabic_name = fields.Char(string="Arabic Name")
     private_num = fields.Char(string="Private Number ", required=False, )
 
-
-# class HREmployeeFields(models.Model):
-#     _inherit = 'hr.employee.public'
-#
-#     labor_linc_no = fields.Char(string="Labor Linc No.", )
-#     id_from = fields.Char(string="ID From", store=True)
-#     military_status = fields.Selection(string="Military Status",
-#                                        selection=[('not applicable', 'Not Applicable'), ('postponed', 'Postponed'),
-#                                                   ('exempted', 'Exempted'), ('completed', 'Completed'),
-#                                                   ('current', 'Currently serving ')], store=True)
-#     military_number = fields.Char(string="Military Number", store=True)
-#
-#     # @api.model
-#     # def _get_fields(self):
-#     #     return ','.join('emp.%s' % name for name, field in self._fields.items() if
-#     #                     if field.store and field.type not in ['many2many', 'one2many'])
-#
-#
-#     religion = fields.Selection(string="Religion",
-#                                 selection=[('muslim', 'Muslim'), ('christian', 'Christian'), ('other', 'Others')])
-#     social_ins_exist = fields.Boolean("Has Social Insurance")
-#     social_ins_no = fields.Integer(string="Soical Ins No.")
-#     social_ins_title = fields.Char(string="Social Job Title")
-#     medical_ins_exist = fields.Boolean("Has Medical Insurance")
-#     medical_company = fields.Selection(string="Medical Co.", selection=[('inaya', 'Inaya')])
-#     medical_number = fields.Integer(string="Medical No.")
-#     mi_date = fields.Date(string="Medical Insurance Date", help='Medical  Insurance Date')
-#     section_id = fields.Many2one('hr.department', string="Section", domain=[('department_type', '=', 'section')])
-#     full_employee_name = fields.Char(string="Full Name", translate=True)
-#     attendance_type = fields.Selection([('in_door', 'IN Door'), ('out_door', 'Out Door')], string='Attendance type')
-#     in_direct_parent_id = fields.Many2one('hr.employee', 'Indirect Manager')
-#     age = fields.Integer(string="Age", compute="_calculate_age", store=True)  # compute="_calculate_age",
-#     start_date = fields.Date(string="Start Working At")
-#     edu_phase = fields.Many2one(comodel_name="hr.eg.education", string="Education")
-#     edu_school = fields.Many2one(comodel_name="hr.eg.school", string="School/University/Institute")
-#     edu_major = fields.Char(string="major")
-#     edu_grad = fields.Selection([('ex', 'Excellent'), ('vgod', 'Very Good'), ('god', 'Good'), ('pas', 'Pass')],
-#                                 string="Grad")
-#     grad_year = fields.Date(string="Grad. Year")
-#     edu_note = fields.Text("Education Notes")
-#     experience_y = fields.Integer(compute="_calculate_experience", string="Experience",
-#                                   help="experience in our company", store=True)
-#     experience_m = fields.Integer(compute="_calculate_experience", string="Experience monthes", store=True)
-#     experience_d = fields.Integer(compute="_calculate_experience", string="Experience dayes", store=True)
-#     payrolled_employee = fields.Boolean("Payrolled Employee", track_visibility='onchange')
-#     employee_arabic_name = fields.Char(string="Arabic Name")
-#     private_num = fields.Char(string="Private Number ", required=False, )
-
-
-class HREmployeeFields(models.Model):
-    _inherit = 'hr.employee'
-
-    # labor_linc_no = fields.Char(string="Labor Linc No.", )
-    # id_from = fields.Char(string="ID From", store=True)
-    # military_status = fields.Selection(string="Military Status",
-    #                                    selection=[('not applicable', 'Not Applicable'), ('postponed', 'Postponed'),
-    #                                               ('exempted', 'Exempted'), ('completed', 'Completed'),
-    #                                               ('current', 'Currently serving ')], store=True)
-    # military_number = fields.Char(string="Military Number", store=True)
-    # religion = fields.Selection(string="Religion",
-    #                             selection=[('muslim', 'Muslim'), ('christian', 'Christian'), ('other', 'Others')])
-    # social_ins_exist = fields.Boolean("Has Social Insurance")
-    # social_ins_no = fields.Integer(string="Soical Ins No.")
-    # social_ins_title = fields.Char(string="Social Job Title")
-    # medical_ins_exist = fields.Boolean("Has Medical Insurance")
-    # medical_company = fields.Selection(string="Medical Co.", selection=[('inaya', 'Inaya')])
-    # medical_number = fields.Integer(string="Medical No.")
-    # mi_date = fields.Date(string="Medical Insurance Date", help='Medical  Insurance Date')
-    # section_id = fields.Many2one('hr.department', string="Section", domain=[('department_type', '=', 'section')])
-    # full_employee_name = fields.Char(string="Full Name", translate=True)
-    # attendance_type = fields.Selection([('in_door', 'IN Door'), ('out_door', 'Out Door')], string='Attendance type')
-    # in_direct_parent_id = fields.Many2one('hr.employee', 'Indirect Manager')
-    # age = fields.Integer(string="Age", compute="_calculate_age", store=True)  # compute="_calculate_age",
-    # start_date = fields.Date(string="Start Working At")
-    # edu_phase = fields.Many2one(comodel_name="hr.eg.education", string="Education")
-    # edu_school = fields.Many2one(comodel_name="hr.eg.school", string="School/University/Institute")
-    # edu_major = fields.Char(string="major")
-    # edu_grad = fields.Selection([('ex', 'Excellent'), ('vgod', 'Very Good'), ('god', 'Good'), ('pas', 'Pass')],
-    #                             string="Grad")
-    # grad_year = fields.Date(string="Grad. Year")
-    # edu_note = fields.Text("Education Notes")
-    # experience_y = fields.Integer(compute="_calculate_experience", string="Experience",
-    #                               help="experience in our company", store=True)
-    # experience_m = fields.Integer(compute="_calculate_experience", string="Experience monthes", store=True)
-    # experience_d = fields.Integer(compute="_calculate_experience", string="Experience dayes", store=True)
-    # payrolled_employee = fields.Boolean("Payrolled Employee", track_visibility='onchange')
-    # employee_arabic_name = fields.Char(string="Arabic Name")
-    # private_num = fields.Char(string="Private Number ", required=False, )
-
-
-
-    # bank_account_num = fields.Integer(string="Bank Account Number",)
-
-
     @api.constrains('in_direct_parent_id')
     def _check_parent_id(self):
         for employee in self:
@@ -209,6 +115,7 @@ class HREmployeeFields(models.Model):
 
 class dhn_hr__eg_education(models.Model):
     _name = "hr.eg.education"
+    _description = "Education"
 
     name = fields.Char(string="Education", translate=True)
     note = fields.Char(string="Note", required=False, )
@@ -216,6 +123,7 @@ class dhn_hr__eg_education(models.Model):
 
 class hr_eg_school(models.Model):
     _name = "hr.eg.school"
+    _description = "Education School"
 
     name = fields.Char(string="School name", translate=True)
     note = fields.Char(string="Note", required=False, )
