@@ -54,6 +54,9 @@ class HrEmployeeBaseDate(models.AbstractModel):
     employee_arabic_name = fields.Char(string="Arabic Name")
     private_num = fields.Char(string="Private Number ", required=False, )
 
+    class employee_fields(models.Model):
+        _inherit = 'hr.employee'
+
     @api.constrains('in_direct_parent_id')
     def _check_parent_id(self):
         for employee in self:
