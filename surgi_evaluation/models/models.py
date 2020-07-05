@@ -162,6 +162,15 @@ class EvaluationEvaluation(models.Model):
                               ('September', 'September'), ('October', 'October'), ('November', 'November'),
                               ('December', 'December'), ], string='Month')#, readonly=True
 
+    evaluation_method = fields.Selection(string="Evaluation Method", selection=[('dm', 'Direct Manager'), ('average', 'Average'),('pm','Parent Manager') ], required=False, )
+
+    @api.onchange('employee_id')
+    def _compute_evaluation_method(self):
+        self.evaluation_method=self.employee_id.evaluation_method
+
+
+
+
     # is_xx = fields.Boolean(string="", compute='_compute_indirect_manager' )
 
     # @api.depends('evaluate_by_parent_indirect')
@@ -554,6 +563,18 @@ class NewModule(models.Model):
     in_direct_manager = fields.Float(string="In Direct Manager", required=False, )
 
     interval_core = fields.Many2one(comodel_name="evaluation.evaluation")
+    # evaluation_method = fields.Selection(string="Evaluation Method", selection=[('dm', 'Direct Manager'), ('average', 'Average'),('pm','Parent Manager') ],related='interval_core.evaluation_method' )
+
+    @api.onchange('direct_manager','in_direct_manager','interval_core')
+    def get_final_total(self):
+        print("ddddddddddddddddddddddddd",self.interval_core._origin)
+        if self.interval_core.evaluation_method=='dm':
+            self.percentage=self.direct_manager
+        if self.interval_core.evaluation_method == 'average':
+            self.percentage = (self.direct_manager+self.in_direct_manager)/2
+        if self.interval_core.evaluation_method == 'pm':
+            self.percentage = 0
+
 
     @api.depends('percentage', 'kpi_weight')
     def get_score(self):
@@ -617,6 +638,16 @@ class NewModule(models.Model):
 
     interval_function = fields.Many2one(comodel_name="evaluation.evaluation")
 
+    @api.onchange('direct_manager', 'in_direct_manager', 'interval_function')
+    def get_final_total(self):
+        if self.interval_function.evaluation_method == 'dm':
+            self.percentage = self.direct_manager
+        if self.interval_function.evaluation_method == 'average':
+            self.percentage = (self.direct_manager + self.in_direct_manager) / 2
+        if self.interval_function.evaluation_method == 'pm':
+            self.percentage = 0
+
+
     @api.depends('percentage', 'kpi_weight')
     def get_score(self):
         for rec in self:
@@ -642,6 +673,17 @@ class NewModule(models.Model):
     direct_manager = fields.Float(string="Direct Manager", required=False, )
     in_direct_manager = fields.Float(string="In Direct Manager", required=False, )
     interval_kpi = fields.Many2one(comodel_name="evaluation.evaluation")
+
+
+    @api.onchange('direct_manager', 'in_direct_manager', 'interval_kpi')
+    def get_final_total(self):
+        if self.interval_kpi.evaluation_method == 'dm':
+            self.percentage = self.direct_manager
+        if self.interval_kpi.evaluation_method == 'average':
+            self.percentage = (self.direct_manager + self.in_direct_manager) / 2
+        if self.interval_kpi.evaluation_method == 'pm':
+            self.percentage = 0
+
 
     @api.depends('percentage', 'kpi_weight')
     def get_score(self):
