@@ -109,6 +109,7 @@
                                        groups="hr.group_hr_user"/>
                                 <field name="employee_parent_id"/>
                                 <field name="jop_ids"/>
+                                <field name="evaluation_method"/>
                                 <field name="check_eval"/>
 
 

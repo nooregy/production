@@ -8,6 +8,8 @@ from pytz import timezone
 class NewModule(models.Model):
     _inherit = 'hr.employee'
 
+    evaluation_method = fields.Selection(string="Evaluation Method", selection=[('dm', 'Direct Manager'), ('average', 'Average'),('pm','Parent Manager') ], required=False, )
+
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
         args = args or []

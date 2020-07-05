@@ -45,6 +45,7 @@ class NewModule(models.TransientModel):
                 orders_list.append({
                     'name':self.name,
                     'employee_id':rec.id,
+                    'evaluation_method':rec.evaluation_method,
                     'date_start':self.start_date,
                     'date_end':self.end_date,
                     'duration':duration,
