@@ -129,7 +129,7 @@
             </field>
         </record>
 
-        <record model="ir.actions.act_window.view" id="surgi_manager_evaluation_action_tree_views">
+        <record model="ir.actions.act_window.view" id="surgi_direct_manager_evaluation_action_tree_views">
             <field name="sequence" eval="1"/>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="surgi_evaluation_tree_views"/>
@@ -137,7 +137,7 @@
         </record>
 
 
-        <record model="ir.actions.act_window.view" id="surgi_manager_evaluation_action_form">
+        <record model="ir.actions.act_window.view" id="surgi_direct_manager_evaluation_action_form">
             <field name="sequence" eval="2"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="surgi_manager_evaluation_form_views"/>
