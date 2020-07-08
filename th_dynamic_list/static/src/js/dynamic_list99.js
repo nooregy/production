@@ -1,4 +1,4 @@
-
+       var visit=0;
 odoo.define('th_dynamic_list.DynamicList', function(require) {
 
     "use strict";
@@ -11,17 +11,7 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
     var QWeb = core.qweb;
     var uid = session.uid;
     var _t = core._t;
-    var ListRenderer = require('web.ListRenderer');
-    var EditableListRenderer = require('web.EditableListRenderer');
-
-
-
-
-
-
-
-
-
+    //var tr=new th_fields()
     ListView.include({
 		init: function (viewInfo, params) {
             this._super.apply(this, arguments);
@@ -33,6 +23,7 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
                 method: 'has_access',
                 args: [],
             }).then(function(result){
+            console.log("1->>>>>>>>>>>>>>>>>>>>>>>>>");
                 self.controllerParams['has_access'] = result;
             });
         },
@@ -42,102 +33,24 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
 
         init: function (parent, model, renderer, params) {
         	var self = this;
-//        	this._freezeColumnWidths= function () {
-//        if (!this.columnWidths && this.el.offsetParent === null) {
-//            // there is no record nor widths to restore or the list is not visible
-//            // -> don't force column's widths w.r.t. their label
-//            return;
-//        }
-//        const thElements = [...this.el.querySelectorAll('table thead th')];
-//        if (!thElements.length) {
-//            return;
-//        }
-//        const table = this.el.getElementsByTagName('table')[0];
-//        let columnWidths = this.columnWidths;
-//
-//        if (!columnWidths || !columnWidths.length) { // no column widths to restore
-//            // Set table layout auto and remove inline style to make sure that css
-//            // rules apply (e.g. fixed width of record selector)
-//            table.style.tableLayout = 'auto';
-//            thElements.forEach(th => {
-//                th.style.width = null;
-//                th.style.maxWidth = null;
-//            });
-//
-//            // Resets the default widths computation now that the table is visible.
-//            if(th!== null){
-//            this._computeDefaultWidths();
-//                }
-//            // Squeeze the table by applying a max-width on largest columns to
-//            // ensure that it doesn't overflow
-//            columnWidths = this._squeezeTable();
-//        }
-//
-//        thElements.forEach((th, index) => {
-//            // Width already set by default relative width computation
-//            if (!th.style.width) {
-//                th.style.width = `${columnWidths[index]}px`;
-//            }
-//        });
-//
-//        // Set the table layout to fixed
-//        table.style.tableLayout = 'fixed';
-//    };
-//_computeDefaultWidths=()=> {
-//        const isListEmpty = !super()._hasVisibleRecords(this.state);
-//        const relativeWidths = [];
-//        this.columns.forEach(column => {
-//            const th = this._getColumnHeader(column);
-//            if (th.offsetParent === null || th === null) {
-//                relativeWidths.push(false);
-//            } else {
-//                const width = this._getColumnWidth(column);
-//                if (width.match(/[a-zA-Z]/)) { // absolute width with measure unit (e.g. 100px)
-//                    if (isListEmpty) {
-//                        th.style.width = width;
-//                    } else {
-//                        // If there are records, we force a min-width for fields with an absolute
-//                        // width to ensure a correct rendering in edition
-//                        th.style.minWidth = width;
-//                    }
-//                    relativeWidths.push(false);
-//                } else { // relative width expressed as a weight (e.g. 1.5)
-//                    relativeWidths.push(parseFloat(width, 10));
-//                }
-//            }
-//        });
-//
-//        // Assignation of relative widths
-//        if (isListEmpty) {
-//            const totalWidth = this._getColumnsTotalWidth(relativeWidths);
-//            for (let i in this.columns) {
-//                if (relativeWidths[i]) {
-//                    const th = this._getColumnHeader(this.columns[i]);
-//                    th.style.width = (relativeWidths[i] / totalWidth * 100) + '%';
-//                }
-//            }
-//            // Manualy assigns trash icon header width since it's not in the columns
-//            const trashHeader = this.el.getElementsByClassName('o_list_record_remove_header')[0];
-//            if (trashHeader) {
-//                trashHeader.style.width = '32px';
-//            }
-//        }
-//    };
             this.stopBanner = true;
             this.has_access = params.has_access;
 			this._super.apply(this, arguments);
 			var domain = [['view_id', '=', self.renderer.arch.view_id], ['user_id', '=', uid]];
             var fields = ['th_list_text'];
+            var visit=0;
             this.default_arch = renderer.arch.children;
             this.default_list = [];
             for(var i in renderer.arch.children){
                 this.default_list.push(renderer.arch.children[i].attrs.name);
             }
+            console.log("2->>>>>>>>>>>>>>>>>>>>>>>>>");
         	rpc.query({
                 model: 'th.fields',
                 method: 'search_read',
                 args: [domain, fields],
             }).then(function(result){
+            console.log("3->>>>>>>>>>>>>>>>>>>>>>>>>");
             	if(result.length > 0){
             		self.col_list = _.filter(JSON.parse(result[0].th_list_text), function(elem){return elem.visible});
 					var sortArray = _.pluck(self.col_list, 'name');
@@ -148,14 +61,20 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
                     });
                     sortArray = _.compact(sortArray);
 					self.render_fields(sortArray);
+console.log("4->>>>>>>>>>>>>>>>>>>>>>>>>");
+				self.stopBanner = true;
 				}
-			}).then(function (){self.stopBanner = false;});
+
+
+			});
+console.log("5->>>>>>>>>>>>>>>>>>>>>>>>>");
             var col_values = this.prepare_col_vals();
             self.$DColumns = $(QWeb.render("ListviewColumns",{'columns': col_values}));
 			self.$DColumns.find('.th_ul').click(function (e) {
 				e.stopPropagation();
             });
-            self.$DColReset = $(QWeb.render("th_list_reset",{}));
+            //self.$DColReset = $(QWeb.render("th_list_reset",{}));
+            console.log("6->>>>>>>>>>>>>>>>>>>>>>>>>");
         },
 
         _renderBanner: function () {
@@ -176,7 +95,6 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
         		}
             }
         },
-
 
         prepare_col_vals: function(){
         	var self = this;
@@ -212,7 +130,9 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
 			    return -1;
 			    if (parseInt($(a).find('input').attr('data-seq')) > parseInt($(b).find('input').attr('data-seq')))
 			    return 1; return 0;
-			}).appendTo(elems.parent());
+			}).appendTo(
+			elems.parent()
+			);
 		},
 
         renderSidebar: function ($node) {
@@ -289,6 +209,7 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
 		        });
 
 				self.$DColumns.find('#restoreList').click(function(e){
+				  console.log("A->>>>>>>>>>>>>>>>>>>>>>>>>");
 					rpc.query({
 						model: 'th.fields',
 						method: 'search',
@@ -300,7 +221,9 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
                                 method: 'unlink',
                                 args: result,
                             }).then(function(e){
+                            console.log("7->>>>>>>>>>>>>>>>>>>>>>>>>");
                                 location.reload();
+                                console.log("8->>>>>>>>>>>>>>>>>>>>>>>>>");
                             })
 						}
 					});
@@ -323,18 +246,9 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
                 });
             }
         },
-// on_attach_callback: function () {
-//        this.isInDOM = true;
-//        this._freezeColumnWidths();
-//        this._super();
-//    },
-//     start: function () {
-//      //  core.bus.on('click', this, this._onWindowClicked.bind(this));
-//      //  core.bus.on('resize', this, _.debounce(this._onResize.bind(this), this.RESIZE_DELAY));
-//        core.bus.on('DOM_updated', this, () => this._freezeColumnWidths());
-//        return this._super();
-//    },
+
         render_fields: function(col_names){
+
             // TODO: Uncaught TypeError: Widget is not a constructor
 			var self = this;
 			self.fetch_invisible_fields();
@@ -429,15 +343,17 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
 				    }
 				}
 			}
-            if(this.invisible_fields.length>0){
-            self.renderer._processColumns(self.invisible_fields);
-            }else{
-            self.renderer._processColumns({});
-            }
+    console.log("++++"+visit);
+
+           self.renderer._processColumns({});
+
+
+
+         self.renderer._processColumns(self.fetch_invisible_fields() || {});
             self.precheck_li();
-            self.sort_elements();
+           self.sort_elements();
             self.reload();
-            self.store_current_state();
+           self.store_current_state();
 		},
 
 		store_current_state: function(){
@@ -450,11 +366,13 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
 			})
 			// TODO: add limit and order by for multiple list views.
 			// add functionatily to manage the list view by storing the list and user can access it.
+			  console.log("B->>>>>>>>>>>>>>>>>>>>>>>>>");
 			rpc.query({
                 model: 'th.fields',
                 method: 'search',
                 args: [[["view_id", "=", self.renderer.arch.view_id],["user_id", "=", uid]]],
             }).then(function(results){
+            console.log("d->>>>>>>>>>>>>>>>>>>>>>>>>");
 				if(results.length==1){
 					rpc.query({
 						model: 'th.fields',
@@ -462,6 +380,7 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
 						args: [results, {'th_list_text': JSON.stringify(self.col_list)}],
 					})
         		}else{
+        		console.log("x->>>>>>>>>>>>>>>>>>>>>>>>>");
 					rpc.query({
 						model: 'th.fields',
 						method: 'create',
@@ -473,80 +392,8 @@ odoo.define('th_dynamic_list.DynamicList', function(require) {
 					})
         		}
 			})
+			console.log("c->>>>>>>>>>>>>>>>>>>>>>>>>");
 		},
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ListRenderer.include({
- _computeDefaultWidths: function () {
- //console.log("VVVVVVVVVVVVVVV");
-        const isListEmpty = !this._hasVisibleRecords(this.state);
-        const relativeWidths = [];
-        this.columns.forEach(column => {
-     //   console.log(column);
-            const th = this._getColumnHeader(column);
-
-            if (th == null || th.offsetParent === null) {
-                relativeWidths.push(false);
-            } else {
-                const width = this._getColumnWidth(column);
-                if (width.match(/[a-zA-Z]/)) { // absolute width with measure unit (e.g. 100px)
-                    if (isListEmpty) {
-                        th.style.width = width;
-                    } else {
-                        // If there are records, we force a min-width for fields with an absolute
-                        // width to ensure a correct rendering in edition
-                        th.style.minWidth = width;
-                    }
-                    relativeWidths.push(false);
-                } else { // relative width expressed as a weight (e.g. 1.5)
-                    relativeWidths.push(parseFloat(width, 10));
-                }
-            }
-
-
-
-
-
-        });
-
-        // Assignation of relative widths
-        if (isListEmpty) {
-            const totalWidth = this._getColumnsTotalWidth(relativeWidths);
-            for (let i in this.columns) {
-                if (relativeWidths[i]) {
-                    const th = this._getColumnHeader(this.columns[i]);
-                    th.style.width = (relativeWidths[i] / totalWidth * 100) + '%';
-                }
-            }
-            // Manualy assigns trash icon header width since it's not in the columns
-            const trashHeader = this.el.getElementsByClassName('o_list_record_remove_header')[0];
-            if (trashHeader) {
-                trashHeader.style.width = '32px';
-            }
-        }
-    },
-
-    });
-
-
-
-
 
 });
