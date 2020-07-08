@@ -131,7 +131,20 @@
                 </p>
             </field>
         </record>
+        <record model="ir.actions.act_window.view" id="surgi_indirect_evaluation_action_tree_views">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="surgi_evaluation_tree_views"/>
+            <field name="act_window_id" ref="action_surgi_evaluation_indirect_subordinate"/>
+        </record>
 
+
+        <record model="ir.actions.act_window.view" id="surgi_indirect_evaluation_action_form">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="surgi_indirect_subordinate_evaluation_form_views"/>
+            <field name="act_window_id" ref="action_surgi_evaluation_indirect_subordinate"/>
+        </record>
 
         <menuitem
                 id="surgi_evaluation_evaluation_indirect_subordinate_menuitem"
