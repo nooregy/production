@@ -119,7 +119,7 @@
             <field name="name">Manager Evaluation Page</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">evaluation.evaluation</field>
-            <field name="view_mode">tree,form,graph</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
             <field name="domain">[('employee_id.parent_id.user_id','=',uid)]
             </field><!--'|',('employee_id.user_id','=',user.id),-->
             <field name="help" type="html">
@@ -129,20 +129,20 @@
             </field>
         </record>
 
-        <record model="ir.actions.act_window.view" id="surgi_direct_manager_evaluation_action_tree_views">
-            <field name="sequence" eval="1"/>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="surgi_evaluation_tree_views"/>
-            <field name="act_window_id" ref="action_surgi_evaluation_manager"/>
-        </record>
+        <!--<record model="ir.actions.act_window.view" id="surgi_direct_manager_evaluation_action_tree_views">-->
+            <!--<field name="sequence" eval="1"/>-->
+            <!--<field name="view_mode">tree</field>-->
+            <!--<field name="view_id" ref="surgi_evaluation_tree_views"/>-->
+            <!--<field name="act_window_id" ref="action_surgi_evaluation_manager"/>-->
+        <!--</record>-->
 
 
-        <record model="ir.actions.act_window.view" id="surgi_direct_manager_evaluation_action_form">
-            <field name="sequence" eval="2"/>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="surgi_manager_evaluation_form_views"/>
-            <field name="act_window_id" ref="action_surgi_evaluation_manager"/>
-        </record>
+        <!--<record model="ir.actions.act_window.view" id="surgi_direct_manager_evaluation_action_form">-->
+            <!--<field name="sequence" eval="2"/>-->
+            <!--<field name="view_mode">form</field>-->
+            <!--<field name="view_id" ref="surgi_manager_evaluation_form_views"/>-->
+            <!--<field name="act_window_id" ref="action_surgi_evaluation_manager"/>-->
+        <!--</record>-->
 
 
         <menuitem

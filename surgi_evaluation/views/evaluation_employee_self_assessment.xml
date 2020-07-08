@@ -118,7 +118,7 @@
             <field name="name">Employee Self Assessment Page</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">evaluation.evaluation</field>
-            <field name="view_mode">tree,form,graph</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
             <field name="domain">[('employee_id.user_id','=',uid)]
             </field><!--'|',('employee_id.user_id','=',user.id),-->
             <field name="help" type="html">
