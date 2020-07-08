@@ -115,7 +115,7 @@
         </record>
 
         <!--&lt;!&ndash; Operation Action&ndash;&gt;   -->
-        <record id="action_surgi_evaluation_manager" model="ir.actions.act_window">
+        <record id="action_surgi_evaluation_direct_subordinate" model="ir.actions.act_window">
             <field name="name">Manager Evaluation Page</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">evaluation.evaluation</field>
@@ -129,26 +129,26 @@
             </field>
         </record>
 
-        <!--<record model="ir.actions.act_window.view" id="surgi_direct_subordinate_evaluation_action_tree_views">-->
-            <!--<field name="sequence" eval="1"/>-->
-            <!--<field name="view_mode">tree</field>-->
-            <!--<field name="view_id" ref="surgi_evaluation_tree_views"/>-->
-            <!--<field name="act_window_id" ref="action_surgi_evaluation_manager"/>-->
-        <!--</record>-->
+        <record model="ir.actions.act_window.view" id="surgi_direct_subordinate_evaluation_action_tree_views">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="surgi_evaluation_tree_views"/>
+            <field name="act_window_id" ref="action_surgi_evaluation_direct_subordinate"/>
+        </record>
 
 
         <record model="ir.actions.act_window.view" id="surgi_direct_subordinate_evaluation_action_form">
             <field name="sequence" eval="2"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="surgi_manager_evaluation_form_views"/>
-            <field name="act_window_id" ref="action_surgi_evaluation_manager"/>
+            <field name="act_window_id" ref="action_surgi_evaluation_direct_subordinate"/>
         </record>
 
 
         <menuitem
                 id="surgi_evaluation_evaluation_direct_subordinate_menuitem"
                 name="Direct Subordinate Evaluation"
-                action="action_surgi_evaluation_manager"
+                action="action_surgi_evaluation_direct_subordinate"
                 parent="surgi_evaluation_evaluation_manager_menuitem"
                 sequence="1"
         />
