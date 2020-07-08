@@ -26,7 +26,7 @@ class HRLeave(models.Model):
         diff_permission_hour=0.0
         if self.request_unit_hours:
             diff_hour=float(str(self.request_hour_to))-float(str(self.request_hour_from))
-        if self.holiday_status_id.is_permissions==True:
+        if self.holiday_status_id.limited_hours==True:
 
             if self.holiday_status_id.mini_hours<=diff_hour<=self.holiday_status_id.max_hours:
                 pass
@@ -64,14 +64,14 @@ class HRLeave(models.Model):
 class HrLeaveType(models.Model):
     _inherit = 'hr.leave.type'
 
-    is_permissions = fields.Boolean(string="Permissions",  )
+    limited_hours = fields.Boolean(string="Limited Hours",  )
     mini_hours = fields.Float(string="Mini Hours",  required=False, )
     max_hours = fields.Float(string="Max Hours",  required=False, )
 
     @api.constrains('mini_hours','max_hours')
     def prevent_mini_max_hours(self):
 
-        if self.is_permissions:
+        if self.limited_hours:
             if self.mini_hours>self.max_hours:
                 raise ValidationError(_('Minimum hours Must be less than Maximum hours'))
 

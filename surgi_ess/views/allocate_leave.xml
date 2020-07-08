@@ -57,7 +57,7 @@
                                        attrs="{'readonly':[('state','!=','draft'),('state','!=','confirm')]}"/>
 <!--                                ('categ_id','=',False)-->
                                 <field name="holiday_status_id" context="{'employee_id':employee_id}"
-                                       domain="[('id','!=','5'),]"/>
+                                       domain="[('id','!=','65'),('id','!=','63')]"/>
 
                                 <field name="request_unit_hours" invisible="1"/>
                                 <field name="request_unit_half" invisible="1"/>

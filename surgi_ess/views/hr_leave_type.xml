@@ -9,9 +9,9 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='allocation_type']" position="after">
-                    <field name="is_permissions"/>
-                    <field name="mini_hours" attrs="{'invisible': [('is_permissions', '=', False),],}"/>
-                    <field name="max_hours" attrs="{'invisible': [('is_permissions', '=', False),],}"/>
+                    <field name="limited_hours"/>
+                    <field name="mini_hours" attrs="{'invisible': [('limited_hours', '=', False),],}"/>
+                    <field name="max_hours" attrs="{'invisible': [('limited_hours', '=', False),],}"/>
                 </xpath>
 
             </field>

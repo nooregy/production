@@ -65,11 +65,11 @@
                         <button string="Confirm" name="action_confirm" states="draft" type="object"
                                 class="oe_highlight"/>
                         <!--                        -->
-                        <button string="Approve" name="action_approve" states="confirm" type="object"
-                              attrs="{'invisible':[('current_user','!=','employee_id.parent_id.id')]}"  groups="hr_holidays.group_hr_holidays_user" class="oe_highlight"/>
+<!--                        <button string="Approve" name="action_approve" states="confirm" type="object"-->
+<!--                              attrs="{'invisible':[('current_user','!=','employee_id.parent_id.id')]}"  groups="hr_holidays.group_hr_holidays_user" class="oe_highlight"/>-->
                         <!--                        -->
-                        <button string="Refuse" name="action_refuse" states="confirm" type="object"
-                              attrs="{'invisible':[('current_user','!=','employee_id.parent_id.id')]}"  groups="hr_holidays.group_hr_holidays_user"/>
+<!--                        <button string="Refuse" name="action_refuse" states="confirm" type="object"-->
+<!--                              attrs="{'invisible':[('current_user','!=','employee_id.parent_id.id')]}"  groups="hr_holidays.group_hr_holidays_user"/>-->
                         <button string="Reset to Draft" name="action_draft" type="object"
                                 attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm'])]}"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,validate"/>
@@ -89,8 +89,8 @@
                                 <field name="name" readonly="1"
                                        attrs="{'readonly':[('state','!=','draft'),('state','!=','confirm')]}"/>
 <!--                                ('categ_id','=',False)-->
-                                <field name="holiday_status_id" readonly="1" context="{'employee_id':employee_id}"
-                                       domain="[('id','!=','5'),]"
+                                <field name="holiday_status_id" context="{'employee_id':employee_id}"
+                                       domain="[('id','!=','65'),('id','!=','63')]"
                                        options="{'no_create': True, 'no_open': True}"/>
 
                                 <label for="request_date_from" string="From"/>
@@ -196,7 +196,7 @@
                                        options="{'no_create': True, 'no_open': True}"/>
                                 <!--                                attrs="{'invisible':[('type','=','add')]}"-->
                                 <field name="payslip_status" readonly="1" groups="hr_holidays.group_hr_holidays_manager"
-                                       widget="toggle_button"/>
+                                       widget="toggle_button" invisible="1"/>
                             </group>
                             <!--                            attrs="{'invisible': [('type', '=', 'remove')]}"-->
                             <field name="notes" nolabel="1" colspan="4" placeholder="Add a reason..."/>
@@ -222,7 +222,7 @@
             <field name="name">surgi.ess.employee.leaves.tree.view</field>
             <field name="model">hr.leave</field>
             <field name="arch" type="xml">
-                <tree create="false" edit="true" decoration-danger="state == 'refuse'"
+                <tree edit="true" decoration-danger="state == 'refuse'"
                       decoration-info="state == ' draft'" string="Leave Requests"
                       decoration-bf="message_needaction == True">
                     <field name="employee_id"/>
@@ -314,21 +314,21 @@
         </record>
 
 
-        <record model="ir.actions.act_window.view" id="surgi_ess_employee_my_vacations_action_calendar">
-            <field name="sequence" eval="1"/>
-            <field name="view_mode">calendar</field>
-            <field name="view_id" ref="surgi_ess_employee_calendar_view"/>
-            <field name="act_window_id" ref="surgi_ess_employee_my_vacations_action"/>
-        </record>
+<!--        <record model="ir.actions.act_window.view" id="surgi_ess_employee_my_vacations_action_calendar">-->
+<!--            <field name="sequence" eval="1"/>-->
+<!--            <field name="view_mode">calendar</field>-->
+<!--            <field name="view_id" ref="surgi_ess_employee_calendar_view"/>-->
+<!--            <field name="act_window_id" ref="surgi_ess_employee_my_vacations_action"/>-->
+<!--        </record>-->
 
         <record model="ir.actions.act_window.view" id="surgi_ess_employee_my_vacations_action_tree">
-            <field name="sequence" eval="2"/>
+            <field name="sequence" eval="1"/>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="surgi_ess_employee_Leaves_tree_view"/>
             <field name="act_window_id" ref="surgi_ess_employee_my_vacations_action"/>
         </record>
         <record model="ir.actions.act_window.view" id="surgi_ess_employee_my_vacations_action_form">
-            <field name="sequence" eval="3"/>
+            <field name="sequence" eval="2"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="surgi_ess_employee_leaves_form_view"/>
             <field name="act_window_id" ref="surgi_ess_employee_my_vacations_action"/>

@@ -28,6 +28,7 @@
         'security/evaluation_groups.xml',
         'views/views.xml',
         'views/templates.xml',
+        'views/employee.xml',
         'views/evaluation_direct_subordinate.xml',
         'views/evaluation_sub_direct_subordinate.xml',
         'views/evaluation_indirect_subordinate.xml',
