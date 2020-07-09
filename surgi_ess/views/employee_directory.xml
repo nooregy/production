@@ -195,7 +195,7 @@
 
         <menuitem id="menu_root_ess_surgi" name="ESS"  web_icon="surgi_ess,static/description/ess.png" sequence="0"/>
         <menuitem id="menu_employee_directory" name="Employee Directory" parent="menu_root_ess_surgi"
-                  action="employee_action_employee_new_page" sequence="1"/>
+                  action="employee_action_employee_new_page" sequence="2"/>
 
 
     </data>

@@ -180,7 +180,7 @@
 
         <!--        ===================================================================================================-->
         <menuitem id="category_menu_employee_attendance_list" name="Attendance" parent="menu_root_ess_surgi"
-                  sequence="2"/>
+                  sequence="3"/>
         <menuitem id="first_menu_employee_my_attendance_list" name="My Attendance"
                   parent="category_menu_employee_attendance_list" action="surgi_ess_employee_attendance_action"
                   sequence="1"/>

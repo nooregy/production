@@ -92,9 +92,9 @@
                                         <field name="request_unit_half" attrs="{'readonly': [('state', 'not in', ('draft', 'confirm'))], 'invisible': [('leave_type_request_unit', '=', 'day')] }" invisible="1"/>
                                         <label for="request_unit_half" attrs="{'readonly': [('state', 'not in', ('draft', 'confirm'))], 'invisible': [('leave_type_request_unit', '=', 'day')]  }" invisible="1"/>
                                         <field name="request_unit_hours"
-                                               attrs="{                                     'readonly': [('state', 'not in', ('draft', 'confirm'))],                                     'invisible': [('leave_type_request_unit', '!=', 'hour')]                                 }" readonly="1" invisible="1"/>
+                                               attrs="{                                     'readonly': [('state', 'not in', ('draft', 'confirm'))],                                     'invisible': [('leave_type_request_unit', '!=', 'hour')]                                 }"/>
                                         <label for="request_unit_hours"
-                                               attrs="{                                     'readonly': [('state', 'not in', ('draft', 'confirm'))],                                     'invisible': [('leave_type_request_unit', '!=', 'hour')]                                 }" invisible="1"/>
+                                               attrs="{                                     'readonly': [('state', 'not in', ('draft', 'confirm'))],                                     'invisible': [('leave_type_request_unit', '!=', 'hour')]                                 }"/>
                                         <field name="request_unit_custom" invisible="1"
                                                attrs="{                                     'readonly': [('state', 'not in', ('draft', 'confirm'))],                                 }"/>
                                         <label for="request_unit_custom" invisible="1"
@@ -124,7 +124,7 @@
                                         <span class="ml8">Days</span>
                                     </div>
                                     <div groups="hr_holidays.group_hr_holidays_manager">
-                                        <field name="number_of_days" nolabel="1" readonly="1" class="oe_inline"/>
+                                        <field name="number_of_days" nolabel="1" class="oe_inline"/>
                                         <span class="ml8">Days</span>
                                     </div>
                                     <div attrs="{'invisible': [('leave_type_request_unit', '!=', 'hour')]}">

@@ -335,7 +335,7 @@
         </record>
 
 
-        <menuitem id="surgi_ess_menu_employee_leaves_list" name="Leaves" parent="menu_root_ess_surgi" sequence="4"/>
+        <menuitem id="surgi_ess_menu_employee_leaves_list" name="Leaves" parent="menu_root_ess_surgi" sequence="5"/>
         <menuitem id="surgi_ess1_menu_employee_leaves1_list" name="Leaves" parent="surgi_ess_menu_employee_leaves_list"
                   sequence="1"/>
         <menuitem id="surgi_ess_menu_employee_my_vacations_list" name="My Vacations"
