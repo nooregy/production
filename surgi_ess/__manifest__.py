@@ -24,7 +24,7 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ess_security.xml',
         'views/employee_directory.xml',
         'views/attendance.xml',
         'views/employee_profile.xml',
@@ -34,6 +34,7 @@
         'views/missions.xml',
         'views/hr_leave_type.xml',
         'views/my_tasks.xml',
+        'views/menu.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
