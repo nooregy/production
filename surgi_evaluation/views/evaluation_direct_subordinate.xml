@@ -9,11 +9,11 @@
                     <header>
                         <field name="state" widget="statusbar"/>
                         <button name="get_lines_cor" type="object" string="Reset Competencies" class="oe_highlight"
-                                attrs="{'invisible': [('state', '=', 'done')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                         <button name="total_lines_employee_id" type="object" string="Reset KPI" class="oe_highlight"
-                                attrs="{'invisible': [('state', '=', 'done')]}"/>
-                        <button name="submit_core" type="object" string="Submit" class="oe_highlight"
-                                attrs="{'invisible':[('check_read','=',True)]}"/>
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="submit_direct_manager" type="object" string="Submit" class="oe_highlight"
+                                attrs="{'invisible':[('state','=','direct_manager')]}"/>
                     </header>
                     <sheet>
                         <label for="name"/>
@@ -31,6 +31,9 @@
                                 <field name="date_start" attrs="{'readonly':[('check_read','=',True)]}"
                                        groups="hr.group_hr_user" readonly="1"/>
                                 <field name="check_read" invisible="1"/>
+                                <field name="check_esa" invisible="1"/>
+                                <field name="check_direct_manager" invisible="1"/>
+                                <field name="check_indirect_manager" invisible="1"/>
                                 <field name="department_id" options="{'no_open': True}" readonly="1"/>
                             </group>
                             <group>
@@ -56,7 +59,7 @@
                                         <field name="name" force_save="1" readonly="1"/>
                                         <field name="employee_self_assessment" widget="percentage" force_save="1"
                                                readonly="1"/>
-                                        <field name="direct_manager" force_save="1" widget="percentage"/>
+                                        <field name="direct_manager" force_save="1" widget="percentage" attrs="{'readonly':[('check_direct_manager','=',True)]}"/>
                                         <field name="percentage" widget="percentage" readonly="1" force_save="1"/>
                                         <field name="kpi_weight" sum="kpi_weight" widget="percentage" force_save="1"
                                                readonly="1"/>
@@ -74,7 +77,7 @@
                                         <field name="name" force_save="1" readonly="1"/>
                                         <field name="employee_self_assessment" widget="percentage" force_save="1"
                                                readonly="1"/>
-                                        <field name="direct_manager" force_save="1" widget="percentage"/>
+                                        <field name="direct_manager" force_save="1" widget="percentage" attrs="{'readonly':[('check_direct_manager','=',True)]}"/>
                                         <field name="percentage" widget="percentage" readonly="1" force_save="1"/>
                                         <field name="kpi_weight" sum="kpi_weight" widget="percentage" force_save="1"/>
                                         <field name="state_result" force_save="1" readonly="1"/>
@@ -92,8 +95,8 @@
                                         <field name="name" force_save="1" readonly="1"/>
                                         <field name="employee_self_assessment" widget="percentage" force_save="1"
                                                readonly="1"/>
-                                        <field name="direct_manager" force_save="1" readonly="1" widget="percentage"/>
-                                        <field name="percentage" force_save="1" widget="percentage"/>
+                                        <field name="direct_manager" force_save="1" widget="percentage" attrs="{'readonly':[('check_direct_manager','=',True)]}"/>
+                                        <field name="percentage" force_save="1" readonly="1" widget="percentage"/>
                                         <field name="kpi_weight" force_save="1" sum="kpi_weight" widget="percentage"
                                                readonly="1"/>
                                         <field name="state_result" force_save="1" readonly="1"/>

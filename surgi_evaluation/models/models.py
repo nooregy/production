@@ -125,6 +125,9 @@ class EvaluationEvaluation(models.Model):
     date_end = fields.Date('End Date')
     duration = fields.Float('Duration', store=True, readonly=True)  # compute='_compute_duration',
     check_read = fields.Boolean(string="Publish for Employee", default=False)
+    check_esa = fields.Boolean(string="Employee Self Assessment Evaluated", default=False)
+    check_direct_manager = fields.Boolean(string="Direct Manager Evaluated", default=False)
+    check_indirect_manager = fields.Boolean(string="IN-Direct Manager Evaluated", default=False)
 
     is_evalualtion = fields.Boolean(string="Get", defaut=False)
 
@@ -141,7 +144,7 @@ class EvaluationEvaluation(models.Model):
     total_employee_kpi = fields.Float(string="Total KPI", required=False, compute='get_total_total_employee_kpi',
                                       store=True)
     total_totals = fields.Float(string="Total", compute='get_total_total', store=True)
-    state = fields.Selection(string="", selection=[('draft', 'Draft'), ('done', 'Done'), ], required=False, )
+    state = fields.Selection(string="", selection=[('draft', 'Draft'), ('esa', 'Self Assessment'),('direct_manager', 'Direct Manager'),('indirect_manager', 'IN-Direct Manager'),('done', 'Done'), ], required=False, )
 
     check_eval = fields.Boolean(string="Check Evaluation", default=False)
 
@@ -167,9 +170,6 @@ class EvaluationEvaluation(models.Model):
     @api.onchange('employee_id')
     def _compute_evaluation_method(self):
         self.evaluation_method=self.employee_id.evaluation_method
-
-
-
 
     # is_xx = fields.Boolean(string="", compute='_compute_indirect_manager' )
 
@@ -270,6 +270,18 @@ class EvaluationEvaluation(models.Model):
         else:
             self.state = 'done'
             self.check_read = True
+
+    def submit_esa(self):
+        self.state = 'esa'
+        self.check_esa = True
+
+    def submit_direct_manager(self):
+        self.state = 'direct_manager'
+        self.check_direct_manager = True
+
+    def submit_indirect_manager(self):
+        self.state = 'indirect_manager'
+        self.check_indirect_manager = True
 
     @api.constrains('function_comp')  # ,'core_competencies','employee_kpi'
     def submit_core_weight(self):
