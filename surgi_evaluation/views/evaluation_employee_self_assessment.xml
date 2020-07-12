@@ -35,7 +35,7 @@
                                 <field name="date_start" attrs="{'readonly':[('check_read','=',True)]}"
                                        groups="hr.group_hr_user" readonly="1"/>
                                 <field name="check_read" invisible="1"/>
-                                <field name="check_esa" invisible="1"/>
+                                <field name="check_esa"/>
                                 <field name="check_direct_manager" invisible="1"/>
                                 <field name="check_indirect_manager" invisible="1"/>
 
