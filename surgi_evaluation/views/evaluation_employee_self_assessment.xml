@@ -35,7 +35,7 @@
                                 <field name="date_start" attrs="{'readonly':[('check_read','=',True)]}"
                                        groups="hr.group_hr_user" readonly="1"/>
                                 <field name="check_read" invisible="1"/>
-                                <field name="check_esa"/>
+                                <field name="check_esa" invisible="1"/>
                                 <field name="check_direct_manager" invisible="1"/>
                                 <field name="check_indirect_manager" invisible="1"/>
 
@@ -62,7 +62,7 @@
                                     <!--attrs="{'readonly':[('check_read','=',True)]}"-->
                                     <tree editable="bottom" create="false">
                                         <field name="name" force_save="1" readonly="1"/>
-                                        <field name="employee_self_assessment" widget="percentage" force_save="1" attrs="{'readonly':[('check_esa','=',True)]}"/>
+                                        <field name="employee_self_assessment" widget="percentage" force_save="1"/>
                                         <field name="direct_manager" force_save="1" widget="percentage" readonly="1"/>
                                         <field name="in_direct_manager" force_save="1" widget="percentage" readonly="1"/>
                                         <field name="percentage" widget="percentage" force_save="1" readonly="1"/>
@@ -80,7 +80,7 @@
                                 <field name="function_comp" attrs="{'readonly':[('check_read','=',True)]}">
                                     <tree editable="bottom" create="false">
                                         <field name="name" force_save="1" readonly="1"/>
-                                        <field name="employee_self_assessment" widget="percentage" force_save="1" attrs="{'readonly':[('check_esa','=',True)]}"/>
+                                        <field name="employee_self_assessment" widget="percentage" force_save="1"/>
                                         <field name="direct_manager" force_save="1" widget="percentage" readonly="1"/>
                                         <field name="in_direct_manager" force_save="1" widget="percentage" readonly="1"/>
                                         <field name="percentage" widget="percentage" force_save="1" readonly="1"/>
@@ -99,7 +99,7 @@
                                     <tree editable="bottom" create="false">
                                         <field name="kra_kpi" force_save="1" readonly="1"/>
                                         <field name="name" force_save="1" readonly="1"/>
-                                        <field name="employee_self_assessment" widget="percentage" force_save="1" attrs="{'readonly':[('check_esa','=',True)]}"/>
+                                        <field name="employee_self_assessment" widget="percentage" force_save="1"/>
                                         <field name="direct_manager" force_save="1" widget="percentage" readonly="1"/>
                                         <field name="in_direct_manager" force_save="1" widget="percentage" readonly="1"/>
                                         <field name="percentage" force_save="1" widget="percentage" readonly="1"/>
