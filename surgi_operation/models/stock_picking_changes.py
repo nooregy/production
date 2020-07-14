@@ -144,8 +144,7 @@ class stock_picking_inherit(models.Model):
                     })
             elif rec.location_dest_id.id == location.id:
                 for line in rec.move_lines:
-                    quant_line = self.env['stock.quant'].search(
-                        [('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id)])
+                    quant_line = self.env['stock.quant'].search([('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id),('lot_id','=',line.move_line_ids.lot_id.id)])
                     if quant_line:
                         self.env['hanged.stock.quant'].create({
                             'quant_id': quant_line.id,

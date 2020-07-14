@@ -243,7 +243,7 @@ class operation_operation(models.Model):
                     'price_unit': price,
                     'product_uom_qty': quant.quantity,
                     'state': 'draft',
-                    'qty_delivered_updateable': True,
+                    # 'qty_delivered_updateable': True,
                     'invoice_status': 'no',
                     'name': quant.product_id.name, }]
                 order_lines.append(line)
