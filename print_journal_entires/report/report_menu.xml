@@ -105,7 +105,7 @@
         model = "account.move"
         string = "Journal Entries"
         report_type = "qweb-pdf"
-        name = "journal_entries_print.journal_entries_report_id"  
-        file = "journal_entries_print.journal_entries_report_id"
+        name = "print_journal_entires.journal_entries_report_id"
+        file = "print_journal_entires.journal_entries_report_id"
     />
 </odoo>
