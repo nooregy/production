@@ -33,6 +33,7 @@
         'views/my_permissions.xml',
         'views/missions.xml',
         'views/hr_leave_type.xml',
+	    'views/manager.xml',
         'views/my_tasks.xml',
         'views/menu.xml',
     ],
