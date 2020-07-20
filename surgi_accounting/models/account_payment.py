@@ -6,7 +6,7 @@ class account_payment2(models.Model):
     _inherit = 'account.payment'
 
     ar_validate = fields.Boolean(string="AR Validation", )
-    check_number = fields.Char(string="Check Number(Payment)", readonly=False, copy=False, default=0,
+    check_number = fields.Char(string="Check Number(Payment)", readonly=False, copy=False,
                                help="Number of the check corresponding to this payment. If your pre-printed check are not already numbered, "
                                     "you can manage the numbering in the journal configuration page.")
 
