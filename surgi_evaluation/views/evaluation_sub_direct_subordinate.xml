@@ -11,10 +11,10 @@
                 <form string="Sub-Direct Employee Evaluation" create="false" edit="true" delete="false">
                     <header>
                         <field name="state" widget="statusbar"/>
-                        <button name="get_lines_cor" type="object" string="Reset Competencies" class="oe_highlight"
-                                attrs="{'invisible': [('state', '=', 'done')]}"/>
-                        <button name="total_lines_employee_id" type="object" string="Reset KPI" class="oe_highlight"
-                                attrs="{'invisible': [('state', '=', 'done')]}"/>
+                        <!--<button name="get_lines_cor" type="object" string="Reset Competencies" class="oe_highlight"-->
+                                <!--attrs="{'invisible': [('state', '=', 'done')]}"/>-->
+                        <!--<button name="total_lines_employee_id" type="object" string="Reset KPI" class="oe_highlight"-->
+                                <!--attrs="{'invisible': [('state', '=', 'done')]}"/>-->
                         <button name="submit_core" type="object" string="Submit" class="oe_highlight"
                                 attrs="{'invisible':[('check_read','=',True)]}"/>
                     </header>
