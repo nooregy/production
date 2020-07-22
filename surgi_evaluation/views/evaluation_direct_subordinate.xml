@@ -43,7 +43,7 @@
                                        groups="hr.group_hr_user" readonly="1"/>
                                 <field name="employee_parent_id" options="{'no_open': True}" readonly="1"/>
                                 <field name="jop_ids" options="{'no_open': True}" readonly="1"/>
-                                <field name="evaluation_method"/>
+                                <field name="evaluation_method" readonly="1"/>
 
                                 <field name="check_eval" readonly="1"/>
 

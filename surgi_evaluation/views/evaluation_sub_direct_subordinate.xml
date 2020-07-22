@@ -8,7 +8,7 @@
             <field name="name">surgi.evaluation.sub.direct.form.views</field>
             <field name="model">evaluation.evaluation</field>
             <field name="arch" type="xml">
-                <form string="Sub-Direct Employee Evaluation" create="false" edit="false" delete="false">
+                <form string="Sub-Direct Employee Evaluation" create="false" edit="true" delete="false">
                     <header>
                         <field name="state" widget="statusbar"/>
                         <button name="get_lines_cor" type="object" string="Reset Competencies" class="oe_highlight"
@@ -44,7 +44,7 @@
                                        groups="hr.group_hr_user" readonly="1"/>
                                 <field name="employee_parent_id" options="{'no_open': True}" readonly="1"/>
                                 <field name="jop_ids" options="{'no_open': True}" readonly="1"/>
-                                <field name="evaluation_method"/>
+                                <field name="evaluation_method" readonly="1"/>
 
                                 <field name="check_eval" readonly="1"/>
 
@@ -61,7 +61,7 @@
                                         <field name="employee_self_assessment" widget="percentage" force_save="1"
                                                readonly="1"/>
                                         <field name="direct_manager" force_save="1" readonly="1" widget="percentage"/>
-                                        <field name="percentage" widget="percentage" force_save="1" readonly="1"/>
+                                        <field name="percentage" widget="percentage" force_save="1"/>
                                         <field name="kpi_weight" sum="kpi_weight" widget="percentage" force_save="1"
                                                readonly="1"/>
                                         <field name="state_result" force_save="1" readonly="1"/>
@@ -79,7 +79,7 @@
                                         <field name="employee_self_assessment" widget="percentage" force_save="1"
                                                readonly="1"/>
                                         <field name="direct_manager" force_save="1" readonly="1" widget="percentage"/>
-                                        <field name="percentage" widget="percentage" force_save="1" readonly="1"/>
+                                        <field name="percentage" widget="percentage" force_save="1"/>
                                         <field name="kpi_weight" sum="kpi_weight" widget="percentage" force_save="1"
                                                readonly="1"/>
                                         <field name="state_result" force_save="1" readonly="1"/>
