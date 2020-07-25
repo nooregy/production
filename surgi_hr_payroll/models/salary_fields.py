@@ -11,10 +11,10 @@ class HrContract(models.Model):
         for rec in self:
             rec.increase_total = rec.increase_2018 + rec.increase_2017 + rec.increase_2016 + rec.increase_2015 + rec.increase_2014
 
-    @api.depends('standalone_incentive', 'incentive_2018', 'incentive_2017', 'incentive_2016', 'incentive_2015' ,'incentive_2014')
+    @api.depends('advanced_incentive','standalone_incentive', 'incentive_2018', 'incentive_2017', 'incentive_2016', 'incentive_2015' ,'incentive_2014')
     def _getsum_incentive_total(self):
         for rec in self:
-            rec.incentive_total = rec.standalone_incentive + rec.incentive_2018 + rec.incentive_2017 + rec.incentive_2016 + rec.incentive_2015 + rec.incentive_2014
+            rec.incentive_total = rec.advanced_incentive + rec.standalone_incentive + rec.incentive_2018 + rec.incentive_2017 + rec.incentive_2016 + rec.incentive_2015 + rec.incentive_2014
 
     @api.depends('basic_salary', 'increase_total')
     def _getsum_salary_total(self):
@@ -38,6 +38,8 @@ class HrContract(models.Model):
 
     total_salary_without_incentive = fields.Float('Total salary without incentive',compute='_getsum_salary_total', track_visibility='onchange')#
 
+    advanced_incentive = fields.Float('Odoo Incentive.', track_visibility='onchange',
+                                        digits=dp.get_precision('Payroll'))
     standalone_incentive = fields.Float('Standalone Incentive.',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     incentive_2018 = fields.Float('2018 Incentive.',track_visibility='onchange',digits=dp.get_precision('Payroll'))
     incentive_2017 = fields.Float('2017 Incentive.',track_visibility='onchange',digits=dp.get_precision('Payroll'))

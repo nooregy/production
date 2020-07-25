@@ -41,6 +41,7 @@
                     </group>
                        <group name="Incentives" string="Incentive">
                         <field name="standalone_incentive"/>
+                        <field name="advanced_incentive"/>
                         <field name="incentive_2014"/>
                         <field name="incentive_2015"/>
                         <field name="incentive_2016"/>
