@@ -32,6 +32,7 @@ class stock_hanged_quant_inherit(models.Model):
 
     quant_id = fields.Many2one('stock.quant', readonly=True)
     invoice_id = fields.Many2one(comodel_name='account.move', string='Invoice', readonly=True)
+    operation_id=fields.Many2one('operation.operation',string="Operation", readonly=True)
 
     def open_wizard_hanged_move_to_hanged_warehouse(self):
         action = self.env.ref('stock_quant.action_wizard_hanged_back_to_warehouse_quant')

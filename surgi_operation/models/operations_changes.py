@@ -433,7 +433,7 @@ class operation_operation(models.Model):
     #sender_responsible = fields.Many2one(comodel_name='res.users', string="Sender", default=_get_currunt_loged_user,track_visibility='onchange')
     surgeon_id_second_confirmation = fields.Many2one('res.partner', string="Surgeon", track_visibility='onchange')
     #returner_responsible = fields.Many2one(comodel_name='res.users', string="Returner", default=_get_currunt_loged_user,track_visibility='onchange')
-
+    qunat = fields.One2many('hanged.stock.quant', 'operation_id', 'Quants')
 
     def create_operation_invoice(self):
         for rec in self:

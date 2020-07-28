@@ -143,6 +143,7 @@ class stock_picking_inherit(models.Model):
                         'quantity': quant_line_update.quantity - line.quantity_done
                     })
             elif rec.location_dest_id.id == location.id:
+                op = rec.operation_id.id
                 for line in rec.move_lines:
                     quant_line = self.env['stock.quant'].search([('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id),('lot_id','=',line.move_line_ids.lot_id.id)])
                     if quant_line:
@@ -160,6 +161,7 @@ class stock_picking_inherit(models.Model):
                             'owner_id': quant_line.owner_id.id,
                             'product_uom_id': quant_line.product_uom_id.id,
                             'company_id': quant_line.company_id.id,
+                            'operation_id': op
                         })
         return super(stock_picking_inherit, self).button_validate()
 
