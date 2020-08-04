@@ -57,7 +57,7 @@ Create new Operation with name include hospital and add all it's data
         'views/view_surgeon_confirmation_operations.xml',
         'views/view_tender_operations_admin.xml',
         'views/view_recon_operations_coordinator_tanta.xml',
-        #'views/view_recon_operations_coordinator_alex.xml',
+        'views/view_recon_operations_coordinator_alex.xml',
         'views/view_recon_operations_coordinator_assuit.xml',
         
         #'views/stock_picking_changes2.xml',
