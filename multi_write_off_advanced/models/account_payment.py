@@ -66,10 +66,10 @@ class payment_register(models.TransientModel):
                         multi_accounts.append((0, 0, {'writeoff_account_id': line.writeoff_account_id.id,
                                                       'name': line.name or '',
                                                       'amt_percent': line.amt_percent or '',
-                                                      'amount': round((inv.amount_total/float(self.amount_pay_total))*line.amount_payment,1) or '',
+                                                      'amount': (inv.amount_total/float(self.amount_pay_total))*line.amount_payment or '',
                                                       'currency_id': line.currency_id and line.currency_id.id or ''}))
 
-                        diff_amount += round((inv.amount_total/float(self.amount_pay_total))*line.amount_payment,1)
+                        diff_amount += (inv.amount_total/float(self.amount_pay_total)*line.amount_payment)
 
                     else:
                         multi_accounts.append((0, 0, {'writeoff_account_id': line.writeoff_account_id.id,
