@@ -145,6 +145,7 @@
                       <field name="employee_id"/>
                       <field name="date_from"/>
                       <field name="date_to"/>
+                      <field name="no_miss"/>
                       <field name="no_overtime"/>
                       <field name="no_late"/>
                       <field name="no_absence"/>
