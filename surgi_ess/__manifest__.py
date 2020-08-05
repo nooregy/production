@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','hr_attendance','hr_holidays','project'],
+    'depends': ['base','hr','hr_attendance','hr_holidays','project','surgi_evaluation','surgi_attendance_sheet','attendance_sheet_extra'],
 
     # always loaded
     'data': [
@@ -36,6 +36,8 @@
 	    'views/manager.xml',
         'views/my_tasks.xml',
         'views/menu.xml',
+        'views/attendance_sheet.xml',
+        'views/evaluation.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
