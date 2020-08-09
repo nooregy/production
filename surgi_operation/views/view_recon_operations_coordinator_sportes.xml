@@ -2,8 +2,8 @@
 
 <odoo>
 
-    <record id="recon_operations_alex_coordinator_search" model="ir.ui.view">
-       <field name="name">recon.operations.alex.coordinator.search</field>
+    <record id="recon_operations_sports_coordinator_search" model="ir.ui.view">
+       <field name="name">recon.operations.sports.coordinator.search</field>
        <field name="model">operation.operation</field>
         <field name="arch" type="xml">
             <search string="Recon Operations Coordinator Search">
@@ -17,13 +17,13 @@
 
     <!-- This Menu Item must have a parent and an action -->
 
-    <record id="action_recon_operations_alex_coordinator" model="ir.actions.act_window">
-        <field name="name">Recon Operations Alex Coordinator</field>
+    <record id="action_recon_operations_sports_coordinator" model="ir.actions.act_window">
+        <field name="name">Recon Operations Sports Coordinator</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">operation.operation</field>
         <field name="view_mode">tree,form,pivot</field>
-        <field name="search_view_id" ref="recon_operations_alex_coordinator_search" />
-        <field name="domain">[('op_sales_area.id','=',34)]</field>
+        <field name="search_view_id" ref="recon_operations_sports_coordinator_search" />
+        <field name="domain">[('op_sales_area.id','=',154)]</field>
         <!--<field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>-->
         <!--<field name="limit" type="int">500</field>-->
         <!--<field name="domain">[('type','in',['out_invoice','out_refund'])]</field>-->
@@ -34,11 +34,11 @@
         </field>
     </record>
 
-        <menuitem id="recon_operations_alex_coordinator" name="Operation Alex Coordinator	" parent="operations_operation_menuitem" action="action_recon_operations_alex_coordinator" sequence="10" groups="operations_alex_coordinator,operations_manager_group"/>
+        <menuitem id="recon_operations_sports_coordinator" name="Operation Sports Coordinator	" parent="operations_operation_menuitem" action="action_recon_operations_sports_coordinator" sequence="10" groups="operations_sports_coordinator,operations_manager_group"/>
 
 
 
-    <record id="recon_operations_alex_coordinator_tree" model="ir.ui.view">
+    <record id="recon_operations_sports_coordinator_tree" model="ir.ui.view">
         <field name="name">recon.operations.coordinator.tree</field>
         <field name="model">operation.operation</field>
         <field name="arch" type="xml">
@@ -60,15 +60,15 @@
         </field>
     </record>
 
-    <record id="action_recon_operations_alex_coordinator_tree" model="ir.actions.act_window.view">
-            <field name="act_window_id" ref="action_recon_operations_alex_coordinator"/>
+    <record id="action_recon_operations_sports_coordinator_tree" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="action_recon_operations_sports_coordinator"/>
             <field name="sequence" eval="1"/>
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="recon_operations_alex_coordinator_tree"/>
+            <field name="view_id" ref="recon_operations_sports_coordinator_tree"/>
     </record>
 
-    <record id="recon_operations_alex_coordinator_form" model="ir.ui.view">
-        <field name="name">recon.operations.alex.coordinator.form</field>
+    <record id="recon_operations_sports_coordinator_form" model="ir.ui.view">
+        <field name="name">recon.operations.sports.coordinator.form</field>
         <field name="model">operation.operation</field>
         <field name="arch" type="xml">
              <form string="Sales Order">
@@ -222,15 +222,15 @@
     </record>
 
 
-    <record id="action_recon_operations_alex_coordinator_form" model="ir.actions.act_window.view">
-            <field name="act_window_id" ref="action_recon_operations_alex_coordinator"/>
+    <record id="action_recon_operations_sports_coordinator_form" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="action_recon_operations_sports_coordinator"/>
             <field name="sequence" eval="2"/>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="recon_operations_alex_coordinator_form"/>
+            <field name="view_id" ref="recon_operations_sports_coordinator_form"/>
     </record>
 
 
-    <record id="recon_operations_alex_coordinator_pivot" model="ir.ui.view">
+    <record id="recon_operations_sports_coordinator_pivot" model="ir.ui.view">
             <field name="name">recon.operations.pivot</field>
             <field name="model">operation.operation</field>
             <field name="arch" type="xml">
@@ -240,11 +240,11 @@
             </field>
     </record>
 
-        <record id="action_recon_operations_alex_coordinator_pivot" model="ir.actions.act_window.view">
-            <field name="act_window_id" ref="action_recon_operations_alex_coordinator"/>
+        <record id="action_recon_operations_sports_coordinator_pivot" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="action_recon_operations_sports_coordinator"/>
             <field name="sequence" eval="3"/>
             <field name="view_mode">pivot</field>
-            <field name="view_id" ref="recon_operations_alex_coordinator_pivot"/>
+            <field name="view_id" ref="recon_operations_sports_coordinator_pivot"/>
     </record>
 
 

@@ -547,13 +547,24 @@ class operation_operation(models.Model):
     # ============= NewFields ================
     # for the new cycle (Operation type) By Zienab Morsy
     op_type = fields.Selection([
-        ('surgery', 'Surgery'),
-        ('tender', 'Tender'),
+        ('private', 'Private'),
+        ('tender', 'Waiting List'),
         ('supply_order', 'Supply Order'),
-    ], string='Type', default="surgery")
+    ], string='Type', default="private")
     tender_so = fields.Many2one('sale.order', string='Tender SO', domain=[('so_type', '=', 'tender')])
+    patient_national_identification = fields.Many2one('waiting.list.patients', string='Patient National ID',
+                                          domain=[('is_active', '=', True)], track_visibility='onchange')
     supply_so = fields.Many2one('sale.order', string='Supply SO', domain=[('so_type', '=', 'supply_order')])
 
+    moh_approved_operation = fields.Char(string="MOH Approved Operation")
+
+
+    @api.onchange('patient_national_identification', 'op_type')
+    def _patient_name_get(self):
+        if (self.patient_national_identification and self.op_type == 'tender'):
+            self.patient_name = self.patient_national_identification.patient_name
+            self.patient_national_id = self.patient_national_identification.patient_national_id
+            self.moh_approved_operation = self.patient_national_identification.moh_approved_operation
     # ============= NewMethod ================
     # for the new cycle (Operation type) By Zienab Morsy
     #@api.onchange('responsible')

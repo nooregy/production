@@ -15,4 +15,5 @@ from . import stock_quant
 from . import operation_tags
 from . import intial_demand
 from . import account_move_changes
-from . import account_payment_register
+# from . import account_payment_register
+from . import waiting_list_patients

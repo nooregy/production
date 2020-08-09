@@ -31,6 +31,16 @@
 
 
 
+
+        <record id="operations_waiting_list_patients_group" model="res.groups">
+            <field name="name">Waitting List Patients</field>
+            <field name="category_id" ref="surgi_operations_group_category"/>
+        </record>
+
+
+
+
+
         <record id="operations_tanta_coordinator" model="res.groups">
             <field name="name">Operations Tanta Coordinator</field>
             <field name="category_id" ref="surgi_operations_group_category"/>
@@ -46,6 +56,10 @@
             <field name="category_id" ref="surgi_operations_group_category"/>
         </record>
 
+        <record id="operations_sports_coordinator" model="res.groups">
+            <field name="name">Operations Sports Coordinator</field>
+            <field name="category_id" ref="surgi_operations_group_category"/>
+        </record>
 
 
         <record id="operations_coordinator_trauma" model="res.groups">

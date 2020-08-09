@@ -23,7 +23,7 @@
         <field name="res_model">operation.operation</field>
         <field name="view_mode">tree,form,pivot</field>
         <field name="search_view_id" ref="recon_operations_assuit_coordinator_search" />
-        <field name="domain"></field>
+        <field name="domain">[('op_sales_area.id','=',40)]</field>
         <!--<field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>-->
         <!--<field name="limit" type="int">500</field>-->
         <!--<field name="domain">[('type','in',['out_invoice','out_refund'])]</field>-->
@@ -157,7 +157,7 @@
                         <group>
                             <group>
                                 <field name="flag" string="Confirmation Flag" readonly="1" attrs="{'invisible':['|',('hospital_id','=',False)], 'readonly': [('state','not in', ['draft'])]}"/>
-                                <field name="warehouse_id" attrs="{'invisible':[('flag','=',False)], 'readonly': [('state','in', ['Done'])]}" domain="[('warehouse_id.code','=','110')]" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="warehouse_id" attrs="{'invisible':[('flag','=',False)]}" readonly="1"  options="{'no_create': True, 'no_open': True}"/>
                                 <field name="gs_work_order" attrs="{'invisible':[('flag','=',False)], 'readonly': [('state','in', ['Done'])]}"/>
                             </group>
                             <group>
