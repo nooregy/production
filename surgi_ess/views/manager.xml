@@ -328,12 +328,10 @@
                     <header>
                         <button string="Confirm" name="action_confirm" states="draft" type="object"
                                 class="oe_highlight"/>
-                        <!--                        -->
-                        <!--                        <button string="Approve" name="action_approve" states="confirm" type="object"-->
-                        <!--                              attrs="{'invisible':[('current_user','!=','employee_id.parent_id.id')]}"  groups="hr_holidays.group_hr_holidays_user" class="oe_highlight"/>-->
-                        <!--                        -->
-                        <!--                        <button string="Refuse" name="action_refuse" states="confirm" type="object"-->
-                        <!--                              attrs="{'invisible':[('current_user','!=','employee_id.parent_id.id')]}"  groups="hr_holidays.group_hr_holidays_user"/>-->
+                        <button string="Approve" name="action_approve" states="confirm" type="object"
+                              attrs="{'invisible':[('current_user','!=','employee_id.parent_id.id')]}" class="oe_highlight"/>
+                        <button string="Refuse" name="action_refuse" states="confirm" type="object"
+                              attrs="{'invisible':[('current_user','!=','employee_id.parent_id.id')]}" />
                         <button string="Reset to Draft" name="action_draft" type="object"
                                 attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm'])]}"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,validate"/>
@@ -352,7 +350,6 @@
 
                                 <field name="name" readonly="1"
                                        attrs="{'readonly':[('state','!=','draft'),('state','!=','confirm')]}"/>
-                                <!--                                ('categ_id','=',False)-->
                                 <field name="holiday_status_id" context="{'employee_id':employee_id}"
                                        domain="[('id','!=','65'),('id','!=','63')]"
                                        options="{'no_create': True, 'no_open': True}"/>
