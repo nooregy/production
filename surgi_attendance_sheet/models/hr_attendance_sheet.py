@@ -199,6 +199,11 @@ class AttendanceSheet(models.Model):
                     work_intervals = att_sheet.employee_id.get_employee_shifts(
                         day_start,
                         day_end, tz)
+                    if not work_intervals:
+                        work_intervals = calendar_id.att_get_work_intervals(
+                            day_start,
+                            day_end, tz)
+
                     work_intervals = calendar_id.att_interval_clean(
                         work_intervals)
 
