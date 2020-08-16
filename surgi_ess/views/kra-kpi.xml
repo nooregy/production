@@ -75,7 +75,8 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">kpi.kpi</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('interval_employee.employee_ids.parent_id', '=', uid)]</field>
+            <field name="domain">[('interval_employee.employee_ids.parent_id.user_id', '=', uid)]</field>
+            <field name="context">{'group_by': ['interval_employee']}</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     <!-- Add Text Here -->
@@ -107,7 +108,8 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">kpi.kpi</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('interval_employee.employee_ids.in_direct_parent_id', '=', uid)]</field>
+            <field name="domain">[('interval_employee.employee_ids.in_direct_parent_id.user_id', '=', uid)]</field>
+            <field name="context">{'group_by': ['interval_employee']}</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     <!-- Add Text Here -->
