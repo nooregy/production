@@ -69,9 +69,84 @@
         </record>
 
 
+        <!-- Direct Subordinate -->
+        <record id="surgi_ess_kpi_direct_employee_page_actions" model="ir.actions.act_window">
+            <field name="name">KPI Employee</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">kpi.kpi</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('interval_employee.employee_ids.parent_id', '=', uid)]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+
+                </p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_surgi_ess_direct_form_views_page_kpi_employee">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="surgi_ess_form_views_page_kpi_employee"/>
+            <field name="act_window_id" ref="surgi_ess_kpi_direct_employee_page_actions"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_surgi_ess_direct_add_tree_views_kpi_kpi">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="surgi_ess_add_tree_views_kpi_kpi"/>
+            <field name="act_window_id" ref="surgi_ess_kpi_direct_employee_page_actions"/>
+        </record>
+
+        <!-- -->
+
+        <!-- IN-Direct Subordinate -->
+        <record id="surgi_ess_kpi_indirect_employee_page_actions" model="ir.actions.act_window">
+            <field name="name">KPI Employee</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">kpi.kpi</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('interval_employee.employee_ids.in_direct_parent_id', '=', uid)]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+
+                </p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_surgi_ess_indirect_form_views_page_kpi_employee">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="surgi_ess_form_views_page_kpi_employee"/>
+            <field name="act_window_id" ref="surgi_ess_kpi_indirect_employee_page_actions"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_surgi_ess_indirect_add_tree_views_kpi_kpi">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="surgi_ess_add_tree_views_kpi_kpi"/>
+            <field name="act_window_id" ref="surgi_ess_kpi_indirect_employee_page_actions"/>
+        </record>
+
+        <!-- -->
+
+
         <!-- This Menu Item must have a parent and an action -->
+
         <menuitem id="surgi_ess_menu_action_page_kpi" name="KPI" parent="menu_root_ess_surgi"
                   action="surgi_ess_kpi_employee_page_actions" sequence="7"/>
+
+        <menuitem id="surgi_ess_menu_action_page_my_kpi" name="My KPI" parent="surgi_ess_menu_action_page_kpi"
+                  action="surgi_ess_kpi_employee_page_actions" sequence="1"/>
+
+        <menuitem id="surgi_ess_Subordinate_menu_action_page_kpi" name="Direct Subordinate Job-Position KPI" parent="surgi_ess_menu_action_page_kpi"
+                  action="surgi_ess_kpi_direct_employee_page_actions" sequence="2"/>
+
+        <menuitem id="surgi_ess_Subordinate_menu_action_page_kpi" name="In-Direct Subordinate Job-Position KPI" parent="surgi_ess_menu_action_page_kpi"
+                  action="surgi_ess_kpi_indirect_employee_page_actions" sequence="3"/>
 
 
     </data>
