@@ -54,6 +54,21 @@
                 </p>
             </field>
         </record>
+
+        <record model="ir.actions.act_window.view" id="action_surgi_ess_form_views_page_kpi_employee">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="surgi_ess_form_views_page_kpi_employee"/>
+            <field name="act_window_id" ref="surgi_ess_kpi_employee_page_actions"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_surgi_ess_add_tree_views_kpi_kpi">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="surgi_ess_add_tree_views_kpi_kpi"/>
+            <field name="act_window_id" ref="surgi_ess_kpi_employee_page_actions"/>
+        </record>
+
+
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="surgi_ess_menu_action_page_kpi" name="KPI" parent="menu_root_ess_surgi"
                   action="surgi_ess_kpi_employee_page_actions" sequence="7"/>
