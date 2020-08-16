@@ -38,6 +38,7 @@
         'views/menu.xml',
         'views/attendance_sheet.xml',
         'views/evaluation.xml',
+        'views/kra-kpi.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -56,7 +56,7 @@
         </record>
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="surgi_ess_menu_action_page_kpi" name="KPI" parent="menu_root_ess_surgi"
-                  action="surgi_ess_kpi_employee_page_actions" sequence="6"/>
+                  action="surgi_ess_kpi_employee_page_actions" sequence="7"/>
 
 
     </data>
