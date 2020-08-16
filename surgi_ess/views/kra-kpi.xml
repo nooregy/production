@@ -31,7 +31,7 @@
                             </group>
                             <group>
                                 <field name="weight" widget="percentage"/>
-                                <field name="interval_employee"/>
+                                <field name="interval_employee" options="{'no_open': True}"/>
                             </group>
                         </group>
                     </sheet>
