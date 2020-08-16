@@ -136,16 +136,15 @@
 
         <!-- This Menu Item must have a parent and an action -->
 
-        <menuitem id="surgi_ess_menu_action_page_kpi" name="KPI" parent="menu_root_ess_surgi"
-                  action="surgi_ess_kpi_employee_page_actions" sequence="7"/>
+        <menuitem id="surgi_ess_menu_action_page_kpi" name="KPI" parent="menu_root_ess_surgi" sequence="7"/>
 
         <menuitem id="surgi_ess_menu_action_page_my_kpi" name="My KPI" parent="surgi_ess_menu_action_page_kpi"
                   action="surgi_ess_kpi_employee_page_actions" sequence="1"/>
 
-        <menuitem id="surgi_ess_Subordinate_menu_action_page_kpi" name="Direct Subordinate Job-Position KPI" parent="surgi_ess_menu_action_page_kpi"
+        <menuitem id="surgi_ess_Subordinate_menu_action_page_kpi" name="Direct Subordinate KPI" parent="surgi_ess_menu_action_page_kpi"
                   action="surgi_ess_kpi_direct_employee_page_actions" sequence="2"/>
 
-        <menuitem id="surgi_ess_Subordinate_menu_action_page_kpi" name="In-Direct Subordinate Job-Position KPI" parent="surgi_ess_menu_action_page_kpi"
+        <menuitem id="surgi_ess_in_subordinate_menu_action_page_kpi" name="In-Direct Subordinate KPI" parent="surgi_ess_menu_action_page_kpi"
                   action="surgi_ess_kpi_indirect_employee_page_actions" sequence="3"/>
 
 
