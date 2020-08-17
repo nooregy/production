@@ -20,13 +20,24 @@
             <field name="name">KPI Employee</field>
             <field name="model">kpi.kpi</field>
             <field name="arch" type="xml">
-                <form string="" create="false" edit="false" delete="false">
+                <form string="" create="false" edit="True" delete="false">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                        <button name="rest_kpi" type="object" string="Rest to draft"
+                                attrs="{'invisible':['|',('state','=','draft')]}"/>
+                        <button name="submit_kpi" type="object" string="Submit KPI" class="oe_highlight"
+                                attrs="{'invisible':['|',('state','!=','draft'),('active_kpi','=',True)]}"/>
+                        <button name="activate_kpi" type="object" string="Activate KPI" class="oe_highlight"
+                                attrs="{'invisible':['|',('state','!=','waiting'),('active_kpi','=',True)]}" groups="hr.group_hr_user"/>
+                        <button name="cancel_kpi" type="object" string="Cancel KPI" class="oe_highlight"
+                                attrs="{'invisible':[('state','!=','draft')]}"/>
+                    </header>
                     <sheet>
                         <group>
                             <group>
                                 <field name="kra_kpi"/>
                                 <field name="name"/>
-                                <field name="active_kpi"/>
+                                <field name="active_kpi" readonly='1' forcesave='1'/>
 
                             </group>
                             <group>

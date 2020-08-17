@@ -45,6 +45,37 @@ class KPIEMPLOYEE(models.Model):
 
     interval_employee = fields.Many2one(comodel_name="hr.job", string="Job Postion")
 
+    state = fields.Selection([
+        ('draft', 'New'), ('cancel', 'Cancelled'),
+        ('waiting', 'Waiting Activation'),
+        ('activated', 'Activated')], string='Status',
+        copy=False, default='draft', index=True, readonly=True,
+        help="* New: New KPI"
+             "* Waiting Activation: KPI Waiting HR Activation"
+             "* Activated: KPI Activated"
+             "* Cancelled: KPI Cancelled")
+
+    def rest_kpi(self):
+        self.active_kpi = False
+        self.state = 'draft'
+
+    def submit_kpi(self):
+        self.state = 'waiting'
+
+    def activate_kpi(self):
+        self.active_kpi = True
+        self.state = 'activated'
+
+    def cancel_kpi(self):
+        self.active_kpi = False
+        self.state = 'cancel'
+
+    @api.onchange('name', 'weight', 'kra_kpi', 'interval_employee')
+    def _onchange_active_kpi(self):
+        if self.active_kpi:
+            self.active_kpi = False
+            self.state = 'draft'
+
     # @api.onchange('name')
     # def tags_get(self):
     #     categ_ids = []
