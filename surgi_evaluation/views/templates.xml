@@ -28,8 +28,10 @@
                                 attrs="{'invisible':['|',('state','=','draft')]}"/>
                         <button name="submit_kpi" type="object" string="Submit KPI" class="oe_highlight"
                                 attrs="{'invisible':['|',('state','!=','draft'),('active_kpi','=',True)]}"/>
+                        <button name="review_kpi" type="object" string="Reviewing KPI" class="oe_highlight"
+                                attrs="{'invisible':[('state','!=','review')]}"/>
                         <button name="activate_kpi" type="object" string="Activate KPI" class="oe_highlight"
-                                attrs="{'invisible':['|',('state','!=','waiting'),('active_kpi','=',True)]}" groups="hr.group_hr_user"/>
+                                attrs="{'invisible':['|',('state','!=','waiting'),('active_kpi','=',True)]}" groups="hr_appraisal.group_hr_appraisal_manager"/>
                         <button name="cancel_kpi" type="object" string="Cancel KPI" class="oe_highlight"
                                 attrs="{'invisible':[('state','!=','draft')]}"/>
                     </header>

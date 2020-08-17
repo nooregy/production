@@ -47,6 +47,7 @@ class KPIEMPLOYEE(models.Model):
 
     state = fields.Selection([
         ('draft', 'New'), ('cancel', 'Cancelled'),
+        ('review','Reviewing'),
         ('waiting', 'Waiting Activation'),
         ('activated', 'Activated')], string='Status',
         copy=False, default='draft', index=True, readonly=True,
@@ -61,6 +62,10 @@ class KPIEMPLOYEE(models.Model):
 
     def submit_kpi(self):
         self.state = 'waiting'
+
+    def review_kpi(self):
+        self.active_kpi = False
+        self.state = 'review'
 
     def activate_kpi(self):
         self.active_kpi = True
