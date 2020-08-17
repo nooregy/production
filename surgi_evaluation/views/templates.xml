@@ -12,6 +12,7 @@
                     <field name="weight" widget="percentage"/>
                     <field name="active_kpi"/>
                     <field name="interval_employee"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
