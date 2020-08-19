@@ -1,6 +1,23 @@
 <odoo>
     <data>
 
+        <record id="form_view_account_move_line_inherit_page" model="ir.ui.view">
+            <field name="name">name.account.move.line.inherit</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="no_check" force_save="1" invisible="1"/>
+                    <field name="is_no" force_save="1" invisible="1"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
 <!--        <record id="account_payment_register_tree_view" model="ir.ui.view">-->
 <!--            <field name="name">Register Payment</field>-->
 <!--            <field name="model">account.payment.register</field>-->

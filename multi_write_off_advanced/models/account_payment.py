@@ -98,6 +98,10 @@ class payment_register(models.TransientModel):
 class account_payment(models.Model):
     _inherit = "account.payment"
 
+    # if payment.name:
+    #     print("mommmmmmmmmmmmmmmmmmmm", payment.name)
+    #     payment.name = payment.name + str(payment.check_number)
+
     payment_option = fields.Selection(
         [('full', 'Full Payment without Deduction'), ('partial', 'Full Payment with Deduction')], default='full',
         required=True, string='Payment Option')
@@ -122,6 +126,7 @@ class account_payment(models.Model):
 
     def post(self):
         for move in self:
+
             if move.payment_difference_handling == 'reconcile' and move.post_diff_acc == 'multi':
                 amount = 0
                 for payment in move.writeoff_multi_acc_ids:
@@ -129,37 +134,61 @@ class account_payment(models.Model):
                 print (amount,'mokhleeeeeeeeeeeeeef')
                 print (move.amount,'mokhleeeeeeeeeeeeeef222222')
                 print (move.payment_difference,'mokhleeeeeeeeeeeeeef33333333333333333')
+                # print("mmmmmmmmmmmmmmmmmmmmmmmmmmmm",move.name,)
+                # move.name =str(move.name) +str (move.check_number)
+                # print(move.name)
 
                 if move.amount > amount:
                     if move.payment_type == 'inbound' and round(move.payment_difference, 1) != round(amount, 1):
                         raise UserError(_("The sum of write off amounts and payment difference amounts are not equal."))
                     elif move.payment_type == 'outbound' and round(move.payment_difference, 1) != -round(amount, 1):
                         raise UserError(_("The sum of write off amounts and payment difference amounts are not equal."))
+
+
         return super(account_payment, self).post()
 
     def _prepare_payment_moves(self):
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         if not self.post_diff_acc == 'multi':
-            return super(account_payment, self)._prepare_payment_moves()
+            print("############################################################")
+            res = super(account_payment, self)._prepare_payment_moves()
+            for list in res:
+                # list.get('line_ids')[0][2]['name']='aaaaaaaaaaaaaaaaa'
+                list['line_ids'][0][2]['name']=str(str(self.name) + str('/')+ str(self.check_number))
+                list['line_ids'][1][2]['name']=str(str(self.name) + str('/')+ str(self.check_number))
+            print(res,'dddddddddddddddddddddddddddddddddddddddddd')
+            # res.update({'line_ids':{'name':'ggggggggggggggggggggggggggg'}})
+            # for rec in self.env['account.move.line'].search([('payment_id','=',res.id)]):
+            #     rec.name = 'dddddddddddddddddddddddddd'
+            #     print("############################",rec.name)
+            return res
+
         all_move_vals = []
         for payment in self:
+            print("00000000000000000000000000000000000000000000000000000000")
+
             company_currency = payment.company_id.currency_id
             move_names = payment.move_name.split(
                 payment._get_move_name_transfer_separator()) if payment.move_name else None
 
             write_off_amount = payment.payment_difference_handling == 'reconcile' and -payment.payment_difference or 0.0
             if payment.payment_type in ('outbound', 'transfer'):
+                print("111111111111111111111111111111111111111")
                 counterpart_amount = payment.amount
                 liquidity_line_account = payment.journal_id.default_debit_account_id
             else:
+                print("22222222222222222222222222")
                 counterpart_amount = -payment.amount
                 liquidity_line_account = payment.journal_id.default_credit_account_id
 
             if payment.currency_id == company_currency:
+                print("333333333333333333333333333")
                 balance = counterpart_amount
                 write_off_balance = write_off_amount
                 counterpart_amount = write_off_amount = 0.0
                 currency_id = False
             else:
+                print("44444444444444444444444444444444444444444444444")
                 balance = payment.currency_id._convert(counterpart_amount, company_currency, payment.company_id,
                                                        payment.payment_date)
                 write_off_balance = payment.currency_id._convert(write_off_amount, company_currency, payment.company_id,
@@ -167,34 +196,50 @@ class account_payment(models.Model):
                 currency_id = payment.currency_id.id
 
             if payment.journal_id.currency_id and payment.currency_id != payment.journal_id.currency_id:
+                print("555555555555555555555555555")
                 liquidity_line_currency_id = payment.journal_id.currency_id.id
                 liquidity_amount = company_currency._convert(
                     balance, payment.journal_id.currency_id, payment.company_id, payment.payment_date)
             else:
+                print("66666666666666666666666666666666666666666666666")
                 liquidity_line_currency_id = currency_id
                 liquidity_amount = counterpart_amount
 
             rec_pay_line_name = ''
             if payment.payment_type == 'transfer':
-                rec_pay_line_name = payment.name
+                print("7777777777777777777777777777777777777777")
+                rec_pay_line_name = payment.name+'/'+str(payment.check_number)
             else:
+                print("88888888888888888888888888888888888888")
                 if payment.partner_type == 'customer':
+                    print("9999999999999999999999999999999999999")
                     if payment.payment_type == 'inbound':
+                        print("1000000000000000000000000000000")
                         rec_pay_line_name += _("Customer Payment")
                     elif payment.payment_type == 'outbound':
+                        print("11111111111111110000000000000000000000")
                         rec_pay_line_name += _("Customer Credit Note")
                 elif payment.partner_type == 'supplier':
+                    print(22222222222222222222222222222111111111111111111)
                     if payment.payment_type == 'inbound':
+                        print("13333333333333333333333333333333333333333")
                         rec_pay_line_name += _("Vendor Credit Note")
                     elif payment.payment_type == 'outbound':
+                        print("14444444444444444444444444444444444444")
                         rec_pay_line_name += _("Vendor Payment")
                 if payment.invoice_ids:
+                    print("15555555555555555555555555555555555555555555555")
                     rec_pay_line_name += ': %s' % ', '.join(payment.invoice_ids.mapped('name'))
 
             if payment.payment_type == 'transfer':
+                print("1666666666666666666666666666")
                 liquidity_line_name = _('Transfer to %s') % payment.destination_journal_id.name
             else:
-                liquidity_line_name = payment.name
+                print("17777777777777777777777777777777777777777777777777777777777777")
+                liquidity_line_name = payment.name+'/'+str(payment.check_number)
+
+            print("1111111112222222222222fffffffffffff",rec_pay_line_name,liquidity_line_name,payment.name)
+
             move_vals = {
                 'date': payment.payment_date,
                 'ref': payment.communication,
@@ -236,7 +281,7 @@ class account_payment(models.Model):
                                                                          payment.company_id,
                                                                          payment.payment_date)
                     move_vals['line_ids'].append((0, 0, {
-                        'name': woff_payment.name,
+                        'name': woff_payment.name+'/'+str(payment.check_number),
                         'amount_currency': -write_off_amount,
                         'currency_id': currency_id,
                         'debit': write_off_balance < 0.0 and -write_off_balance or 0.0,
@@ -267,7 +312,7 @@ class account_payment(models.Model):
                     'journal_id': payment.destination_journal_id.id,
                     'line_ids': [
                         (0, 0, {
-                            'name': payment.name,
+                            'name': payment.name+'/'+str(payment.check_number),
                             'amount_currency': -counterpart_amount,
                             'currency_id': currency_id,
                             'debit': balance < 0.0 and -balance or 0.0,
@@ -278,7 +323,7 @@ class account_payment(models.Model):
                             'payment_id': payment.id,
                         }),
                         (0, 0, {
-                            'name': _('Transfer from %s') % payment.journal_id.name,
+                            'name': _('Transfer from %s') % payment.journal_id.name+'/'+str(payment.check_number),
                             'amount_currency': transfer_amount,
                             'currency_id': payment.destination_journal_id.currency_id.id,
                             'debit': balance > 0.0 and balance or 0.0,
@@ -293,7 +338,13 @@ class account_payment(models.Model):
                 if move_names and len(move_names) == 2:
                     transfer_move_vals['name'] = move_names[1]
                 all_move_vals.append(transfer_move_vals)
+
+
         return all_move_vals
+
+
+
+
 
 
 class writeoff_accounts(models.Model):
@@ -342,3 +393,22 @@ class NewModule(models.TransientModel):
 
     xeeinterval_id = fields.Many2one(comodel_name="account.payment.register",)
     total= fields.Float(string="",  required=False, )
+
+
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
+
+    no_check = fields.Char()
+    is_no = fields.Boolean(string="", compute='value_check_no' )
+    @api.depends('name','partner_id')
+    def value_check_no(self):
+        for rec in self:
+            rec.is_no=False
+            # if rec.name:
+            # for res in self.env['account.payment'].search([]):
+            #     if str(rec.name) in str(res.name) or str(rec.name) == str(res.name):
+            #         rec.is_no = True
+            #         rec.no_check=res.check_number
+            #         print("22222222222222222222222222222",rec.no_check)
+            #         rec.name=rec.name + '/'+rec.no_check
+            #         print("44444444",rec.name)
