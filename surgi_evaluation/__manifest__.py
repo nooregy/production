@@ -36,6 +36,7 @@
         'views/config_ratio.xml',
         'views/evaluation_wizard.xml',
         'demo/demo.xml',
+        'views/eval_dep.xml',
 
     ],
     # only loaded in demonstration mode
