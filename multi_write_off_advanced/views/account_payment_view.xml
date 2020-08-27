@@ -21,15 +21,15 @@
             			<field name="post_diff_acc" widget="radio" attrs="{'invisible': [('payment_difference_handling','=','open')]}"/>
             		</group>
             	</xpath>
-            	<field name="writeoff_account_id" position="replace">
+            	<field name="writeoff_account_id" position="replace" >
             		<field name="writeoff_account_id" string="Post Difference In"
-                                    attrs="{'invisible': ['|',('payment_difference_handling','=','open'),('post_diff_acc', '=', 'multi')], 'required': [('payment_difference_handling', '=', 'reconcile'),('post_diff_acc', '=', 'single')]}"/>
+                                    attrs="{'invisible': ['|',('payment_difference_handling','=','open'),('post_diff_acc', '=', 'multi')]}" />
             	</field>
             	<xpath expr="//form/sheet/group[1]" position="after">
             		<group colspan="4">
             			<field name="writeoff_multi_acc_ids" nolabel="1" attrs="{'invisible': ['|',('payment_difference_handling','=','open'),('post_diff_acc', '=', 'single')]}">
             				<tree string="Post Difference Accounts" editable="bottom">
-            					<field name="writeoff_account_id"/>
+            					<field name="writeoff_account_id" />
             					<field name="name" required="1"/>
              					<field name="amt_percent" sum="Total %"/>
             					<field name="amount" sum="Total Amount"/>
@@ -61,7 +61,7 @@
             			<field name="writeoff_multi_acc_ids" attrs="{'invisible': [('payment_option', '!=', 'partial')]}"
             				context="{'amount_pay_total':amount_pay_total}" colspan="4">
             				<tree string="Multi write of accounts" editable="bottom">
-	           					<field name="writeoff_account_id"/>
+								<field name="writeoff_account_id" />
 	           					<field name="name" required="1"/>
 	            				<field name="distribute_by_weight"/><!--Nassar-->
 								<field name="amt_percent" sum="Total %"/>
@@ -76,6 +76,47 @@
 				</field>
             </field>
         </record>
-    
+
+
+        <record id="view_account_payment_form_it_inherited" model="ir.ui.view">
+            <field name="name">account.payment.form.it.inherited</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form" />
+            <field name="arch" type="xml">
+
+                    <xpath expr="//field[@name='writeoff_account_id']" position="replace">
+
+						<field name="writeoff_account_id" options="{'no_create': True}" string="Post Difference In" required="0"/>
+
+					</xpath>
+            </field>
+        </record>
+
+
+
+		<record id="view_account_payment_form_it_inherit" model="ir.ui.view">
+            <field name="name">view.account.payment.form.it.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//form/sheet" position="inside">
+            		<group colspan="8">
+
+
+            			<field name="writeoff_multi_acc_ids" nolabel="1" >
+            				<tree string="Post Difference Accounts" editable="bottom">
+            					<field name="writeoff_account_id" />
+            					<field name="name" required="1" />
+             					<field name="amt_percent" sum="Total %"/>
+            					<field name="amount" sum="Total Amount"/>
+            					<field name="currency_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/>
+            				</tree>
+            			</field>
+            		</group>
+            	</xpath>
+            </field>
+        </record>
+
+
     </data>
 </openerp>
