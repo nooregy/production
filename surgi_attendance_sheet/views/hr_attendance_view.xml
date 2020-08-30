@@ -17,7 +17,7 @@
                             attrs="{'invisible':[('approval_state','!=','draft')]}"
                     groups="surgi_attendance_sheet.group_approve_attendance"/>
 
-                     <button name="action_reject" type="object" string="Approve"
+                     <button name="action_reject" type="object" string="Reject"
                             attrs="{'invisible':[('approval_state','!=','draft')]}"
                     groups="surgi_attendance_sheet.group_approve_attendance"/>
 
