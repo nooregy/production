@@ -79,7 +79,7 @@
         </record>
 
         <record id="surgi_ess_employee_attendance_tree_view" model="ir.ui.view">
-            <field name="name">surgi.ess.employee.attendance.tree.view</field>
+            <field name="name">surgi.ess.employee.directory.tree.view</field>
             <field name="model">hr.attendance</field>
             <field name="arch" type="xml">
                 <tree string="Employee attendances" create="false" edit="false" delete="false">
@@ -89,24 +89,6 @@
                     <!--                    <field name="section_id"/>-->
                     <field name="check_in"/>
                     <field name="check_out"/>
-                </tree>
-            </field>
-        </record>
-
-        <record id="surgi_ess_employee_attendance_waiting_approval_tree_view" model="ir.ui.view">
-            <field name="name">surgi.ess.employee.waiting.approval.tree.view</field>
-            <field name="model">hr.attendance</field>
-            <field name="arch" type="xml">
-                <tree string="Employee attendances" create="false" edit="false" delete="false">
-                    <field name="employee_id"/>
-                    <field name="department_id"/>
-                    <field name="check_in"/>
-                    <field name="check_out"/>
-                    <field name="address"/>
-                    <field name="approval_state" readonly="1"/>
-                    <button name="action_approve" type="object" string="Approve" attrs="{'invisible':[('approval_state','!=','draft')]}" groups="surgi_attendance_sheet.group_approve_attendance"/>
-                    <button name="action_reject" type="object" string="Reject" attrs="{'invisible':[('approval_state','!=','draft')]}" groups="surgi_attendance_sheet.group_approve_attendance"/>
-                    <field name="worked_hours" string="Work Hours" widget="float_time"/>
                 </tree>
             </field>
         </record>
@@ -197,32 +179,6 @@
 
 
         <!--        ===================================================================================================-->
-
-        <!--        ===================================================================================================-->
-
-
-        <record id="surgi_ess_attendance_waiting_approval_action" model="ir.actions.act_window">
-            <field name="name">Attendance Waiting Approval</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">hr.attendance</field>
-<!--            <field name="view_type">form</field>-->
-            <field name="view_mode">tree</field>
-            <field name="domain">[('employee_id.coach_id.user_id', '=', uid)]</field>
-            <field name="context">{}</field>
-            <field name="search_view_id" ref="surgi_ess_employee_attendance_search"/>
-        </record>
-
-        <record model="ir.actions.act_window.view" id="surgi_ess_attendance_waiting_approval_action_tree">
-            <field name="sequence" eval="1"/>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="surgi_ess_employee_attendance_waiting_approval_tree_view"/>
-            <field name="act_window_id" ref="surgi_ess_attendance_waiting_approval_action"/>
-        </record>
-
-
-        <!--        ===================================================================================================-->
-
-
         <menuitem id="category_menu_employee_attendance_list" name="Attendance" parent="menu_root_ess_surgi"
                   sequence="3"/>
         <menuitem id="first_menu_employee_my_attendance_list" name="My Attendance"
@@ -237,9 +193,6 @@
         <menuitem id="third_menu_employee_under_coach_attendance_list" name="Under Coach Attendance"
                   parent="category_menu_employee_attendance_list" action="surgi_ess_under_coach_attendance_action"
                   sequence="3"/>
-        <menuitem id="third_menu_employee_attendance_waiting_approval_list" name="Attendance Waiting Approval"
-                  parent="category_menu_employee_attendance_list" action="surgi_ess_attendance_waiting_approval_action"
-                  sequence="4"/>
 
 
     </data>
