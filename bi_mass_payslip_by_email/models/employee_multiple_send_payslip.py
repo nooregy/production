@@ -29,7 +29,7 @@ class MailComposeMessage(models.TransientModel):
                     email_template_obj = self.env['mail.template'].browse(template_id)
                     if template_id:
                         values = email_template_obj.generate_email(a_id, fields=None)
-                        values['email_from'] = super_user.partner_id.email
+                        # values['email_from'] = super_user.partner_id.email
                         values['author_id'] = super_user.partner_id.id
                         values['email_to'] = employee_email
                         ir_attachment_obj = self.env['ir.attachment']
