@@ -1,0 +1,87 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="contract_inc_tree">
+      <field name="name">contract.inc.tree</field>
+      <field name="model">increment.contract</field>
+      <field name="arch" type="xml">
+            <tree string="Increment">
+                <field name="increment_id" />
+                <field name="year_increment" />
+                <field name="amount_increment" />
+            </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="contract_inc_form">
+      <field name="name">contract.inc.form</field>
+      <field name="model">increment.contract</field>
+      <field name="arch" type="xml">
+            <form string="Employee Increment">
+                <sheet colspan="4">
+
+                    <group>
+                        <group colspan="8">
+                            <field name="emp_contract_name"/>
+                            <field name="job_ides" forcesave='1'/>
+                            <field name="current_salary" />
+                            <field name="total_empp_salary" forcesave='1'/>
+                            <field name="total_current_salary" />
+
+<!--                            <field name="increment_id" forcesave='1'/>-->
+                            <field name="year_increment" forcesave='1'/>
+                            <field name="amount_increment" forcesave='1'/>
+
+                            <field name="grade_id" forcesave='1'/>
+                            <field name="rank_id" forcesave='1'/>
+                            <field name="rang_id" forcesave='1'/>
+
+                        </group>
+                    </group>
+
+                </sheet>
+            </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="increment_contract_action">
+      <field name="name">Increment Contract Employee</field>
+      <field name="res_model">increment.contract</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+<!--    <record id="hr_contract_form_cont_inherit" model="ir.ui.view">-->
+<!--            <field name="name">hr.contract.view.form.cont.inherit</field>-->
+<!--            <field name="model">hr.contract</field>-->
+<!--            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//notebook/page[@name='other']" position="after">-->
+<!--                    <page name="icrement_emp_surgi" string="increment historical">-->
+<!--                        <group colspan="8">-->
+
+<!--                                <field name="increment_contr" string="increment" >-->
+<!--                                    <field name="increment_id"/>-->
+<!--                                    <tree editable="bottom">-->
+<!--                                        <field name="year_incerment" forcesave='1'/>-->
+<!--                                        <field name="amount_increment" forcesave='1'/>-->
+
+<!--                                    </tree>-->
+<!--                                </field>-->
+<!--                        </group>-->
+<!--                    </page>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--    </record>-->
+
+<!--    <menuitem name="Employee Contract" id="contract_inccrement_menu" parent="hr_payroll.menu_hr_payroll_root"-->
+<!--              action="increment_contract_action"        sequence="100" />-->
+
+  </data>
+</odoo>
