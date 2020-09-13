@@ -62,7 +62,22 @@
                                         <li t-if="record.work_phone.raw_value">
                                             <field name="mobile_phone"/>
                                         </li>
+
+                                        <li t-if="record.grade_id.raw_value">
+                                            <field name="grade_id"/>
+                                        </li>
+
+                                        <li t-if="record.rank_id.raw_value">
+                                            <field name="rank_id"/>
+                                        </li>
+
+                                        <li t-if="record.rang_id.raw_value">
+                                            <field name="rang_id"/>
+                                        </li>
+
+
                                     </ul>
+
                                     <div class="o_kanban_button">
                                         <button t-if="record.message_is_follower.raw_value" name="action_unfollow"
                                                 type="object" class="o_follow_btn o_following btn btn-sm btn-default">
@@ -122,12 +137,17 @@
                                             </group>
                                             <group string="Position">
                                                 <field name="department_id" readonly="1" options="{'no_open': True}"/>
+
+                                                <field name="rang_id" options="{'no_open': True}" string="Grade"/>
+
                                                 <field name="job_id" readonly="1" options="{'no_open': True}"/>
+
                                                 <field name="parent_id" readonly="1" options="{'no_open': True}"/>
                                                 <field name="coach_id" readonly="1" options="{'no_open': True}"/>
                                                 <field name="resource_calendar_id" readonly="1"
                                                        options="{'no_open': True}"/>
                                             </group>
+
                                         </group>
                                         <field name="notes" placeholder="Other Information ..." colspan="4"
                                                readonly="1"/>
