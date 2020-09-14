@@ -21,7 +21,7 @@
                         <field name="payrolled_employee" groups="hr_payroll.group_hr_payroll_user"/>
                     </xpath>
 
-                <xpath expr="//field[@name='resource_calendar_id']" position="before">
+                <xpath expr="//field[@name='work_location']" position="after">
                         <field name="attendance_type"  widget="radio" options="{'horizontal': true}"/>
                     </xpath>
 
