@@ -27,14 +27,32 @@
             <field name="act_window_id" ref="action_recon_operations_need_approval"/>
             <field name="sequence" eval="1"/>
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="recon_operations_tree"/>
+            <field name="view_id" ref="recon_operations_need_approval_tree"/>
+    </record>
+
+    <record id="recon_operations_need_approval_tree" model="ir.ui.view">
+        <field name="name">new.recon.operations.need.approval.tree</field>
+        <field name="model">operation.operation</field>
+        <field name="arch" type="xml">
+        <tree string="Recon Need Approval Operations" create="false" delete="false" edit="true" decoration-info="state=='draft'" decoration-bf="state=='confirm'" decoration-danger="state=='cancel'" decoration-success="state=='done'">
+                    <field name="name" string="Name"/>
+                    <field name="responsible" string="Sales Man"/>
+                    <field name="start_datetime" string="Starting Date"/>
+                    <field name="operation_type"/>
+                    <field name="hospital_id"/>
+                    <field name="surgeon_id"/>
+                    <field name="gs_work_order"/>
+                    <field name="notes"/>
+                    <field name="state" invisible="0"/>
+                </tree>
+        </field>
     </record>
 
     <record id="recon_operations_need_approval_form" model="ir.ui.view">
         <field name="name">recon.approval.operations.form</field>
         <field name="model">operation.operation</field>
         <field name="arch" type="xml">
-            <form string="Sales Order">
+            <form string="Sales Order" create="false" delete="false">
                     <header>
                         <!--<button name="action_done_sales" string="Done" type="object" attrs="{'invisible': [('state','!=','confirm')]}"/>-->
                         <!--<button name="create_sales_order" string="Create SO" icon="fa-cart-plus" type="object" attrs="{'invisible': ['|',('op_type','!=','surgery'),('state','=','draft')]}"/>-->
