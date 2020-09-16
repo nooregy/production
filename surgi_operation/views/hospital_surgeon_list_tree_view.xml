@@ -26,7 +26,7 @@
         <field name="res_model">res.partner</field>
         <field name="view_mode">tree,pivot</field>
         <field name="search_view_id" ref="hospital_surgeon_search" />
-        <field name="domain">[('user_ids', '=', False),('supplier', '!=', True),('customer', '=', True),('is_hospital', '=', True)]</field>
+        <field name="domain">[('user_ids', '=', False),('customer', '=', True),('is_hospital', '=', True)]</field>
         <field name="help" type="html">
           <p class="oe_view_nocontent_create">
             <!-- Add Text Here -->
@@ -71,7 +71,7 @@
         <field name="res_model">res.partner</field>
         <field name="view_mode">tree,pivot</field>
         <field name="search_view_id" ref="hospital_surgeon_search" />
-        <field name="domain">[('user_ids', '=', False),('supplier', '!=', True),('customer', '=', True),('is_surgeon', '=', True)]</field>
+        <field name="domain">[('user_ids', '=', False),('customer', '=', True),('is_surgeon', '=', True)]</field>
         <field name="help" type="html">
           <p class="oe_view_nocontent_create">
             <!-- Add Text Here -->
