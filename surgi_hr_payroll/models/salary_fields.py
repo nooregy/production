@@ -14,11 +14,11 @@ class increment_contract(models.Model):
             year_list.append((str(year), str(year)))
             year += 1
         return year_list
-    @api.onchange('emp_contract')
-    def set_employee_name(self):
-        for rec in self:
-           if rec.emp_contract:
-               rec.emp_contract_name = rec.emp_contract.employee_id
+    # @api.onchange('emp_contract')
+    # def set_employee_name(self):
+    #     for rec in self:
+    #        if rec.emp_contract:
+    #            rec.emp_contract_name = rec.emp_contract.employee_id
 
 
     @api.onchange('grade_id')
@@ -56,16 +56,16 @@ class increment_contract(models.Model):
 
 
 
-
+    employee_id= fields.Many2one('hr.employee', string='employee')
     year_increment = fields.Selection(year_selection,string="Year" , default="2020")
     amount_increment = fields.Float(string="Increment Amount")
     increment_id= fields.Many2one('hr.contract',string='Employee increement', required=True)
-    current_salary= fields.Float(string="Current Salary")
-    total_empp_salary = fields.Float(string='Current Total Salary', related='increment_id.total_salary',store=True,readonly=True, forcesave=True ,ondelete='cascade',onchange=True,index=True)
+    current_salary= fields.Float(string="Salary")
+    total_empp_salary = fields.Float(string='Current Salary', related='increment_id.total_salary',store=True,readonly=True, forcesave=True ,ondelete='cascade',onchange=True,index=True)
     emp_contract = fields.Many2one('hr.employee')
-    emp_contract_name = fields.Char(string='Employee')
+    # emp_contract_name = fields.Char(string='Employee')
 
-    total_current_salary = fields.Float('Total Current Salary', compute='_getsum_total_current_salary')
+    total_current_salary = fields.Float('Total Salary with increment', compute='_getsum_total_current_salary')
 
 
 
