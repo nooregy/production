@@ -10,6 +10,12 @@ class stock_inventory_inherit(models.Model):
     _inherit = 'stock.inventory'
     #_name='stock.inventory'
 
+    location_ids = fields.Many2many(
+        'stock.location', string='Locations',
+        readonly=True, check_company=True,
+        states={'draft': [('readonly', False)]},
+        domain="[]")
+
     scanning_box = fields.Char(string="Scan")
     scanning_mode = fields.Selection(
         [('internal_ref', 'By Internal reference'), ('lot_serial_no', 'By Lot/Serial Number')], string="Scanning Mode")
@@ -130,6 +136,12 @@ class stock_inventory_inherit(models.Model):
 
 class stock_inventory_line_inherit(models.Model):
     _inherit = 'stock.inventory.line'
+
+    location_id = fields.Many2one(
+        'stock.location', 'Location', check_company=True,
+        domain="[]",
+        index=True, required=True)
+
     scanned_quantity = fields.Float(string="Scanned Quantity")
     def action_reset_product_qty(self):
         """ Write `product_qty` to zero on the selected records. """
