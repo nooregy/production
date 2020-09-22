@@ -20,13 +20,14 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','crm','account_accountant','sale','account_budget'],
+    'depends': ['base','account','crm','account_accountant','sale','account_budget','bi_picking_analytic'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/stock_picking.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

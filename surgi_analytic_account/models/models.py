@@ -46,4 +46,43 @@ class AccountMove(models.Model):
 
 
 
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+
+    # name = fields.Char
+    user_sales_id = fields.Many2one(comodel_name="res.users", string="Salesperson", required=False, )
+
+    is_check = fields.Boolean(string="Check", )
+
+    # @api.onchange('is_check')
+    def compute_analytic_account(self):
+
+        analytic_account_obj = self.env['account.analytic.account'].search([])
+        for line in self.move_ids_without_package:
+            part = False
+            for rec in analytic_account_obj:
+                if line.product_id.product_id == rec.product_id:
+                    # part = True
+                    if rec.user_id == self.user_sales_id:
+                        line.analytic_account_id = rec.id
+                        break
+
+                    elif self.user_sales_id in rec.user_add_ids:
+                        line.analytic_account_id = rec.id
+                        break
+
+                    elif rec.undefined_sales_person == True:
+                        line.analytic_account_id = rec.id
+                        break
+                    else:
+                        line.analytic_account_id = False
+                        break
+                else:
+                    line.analytic_account_id = False
+                    # break
+
+
+# class StockMove(models.Model):
+#     _inherit = 'stock.move'
+#     analytic_account = fields.Many2one(comodel_name="account.analytic.account", string="Analytic Account",)
 
