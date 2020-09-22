@@ -14,6 +14,7 @@ Warehouse modifications
         'views/stock_warehouse_view_changes.xml',
         'views/stock_location_changes_view.xml',
         'views/stock_warehouse_changes_view.xml',
+        'views/stock_quant_change_view.xml',
         'security/ir.model.access.csv',
         'security/stock_inventory_security.xml',
     ],
