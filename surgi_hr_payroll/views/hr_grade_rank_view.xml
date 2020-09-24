@@ -57,7 +57,7 @@
     </record>
 
     <!-- GRADE MENU -->
-    <menuitem id="menu_grade" parent="hr.menu_human_resources_configuration"
+    <menuitem id="menu_grade" parent="hr.menu_human_resources_configuration" groups="hr.group_hr_user"
               action="action_employee_grade"/>
 
     <!-- RANK FORM VIEW -->
@@ -117,7 +117,7 @@
     </record>
 
     <!-- RANK MENU -->
-    <menuitem id="menu_rank" parent="hr.menu_human_resources_configuration"
+    <menuitem id="menu_rank" parent="hr.menu_human_resources_configuration" groups="hr.group_hr_user"
               action="action_employee_rank"/>
 
     <!-- Contract INHERITED FORM VIEW -->
