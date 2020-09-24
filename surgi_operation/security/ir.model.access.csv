@@ -43,6 +43,6 @@ initial_demand_inventory_manager,initial.demand.inventory.manager,surgi_operatio
 operation_operation_tender_operation_admin,operation.operation.tender.operation.admin,surgi_operation.model_operation_operation,surgi_operation.tender_operation_admin,1,1,1,1
 access_hanged_stock_quant_inventory_manager,access.hanged.stock.quant,surgi_operation.model_hanged_stock_quant,stock.group_stock_manager,1,1,1,1
 access_hanged_stock_quant_inventory_user,access.hanged.stock.quant,surgi_operation.model_hanged_stock_quant,stock.group_stock_user,1,1,1,0
-access_hanged_stock_quant_user,access.hanged.stock.quant,surgi_operation.model_hanged_stock_quant,base.operations_user_group,1,1,0,0
+access_hanged_stock_quant_user,access.hanged.stock.quant,surgi_operation.model_hanged_stock_quant,surgi_operation.operations_user_group,1,1,0,0
 waiting_list_patients_access_user,waiting.list.patients,surgi_operation.model_waiting_list_patients,surgi_operation.operations_user_group,1,1,0,0
 waiting_list_patients_access_manager,waiting.list.patients,surgi_operation.model_waiting_list_patients,surgi_operation.waiting_list_manager_group,1,1,1,1
