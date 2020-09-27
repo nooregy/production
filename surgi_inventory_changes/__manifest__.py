@@ -1,7 +1,6 @@
 {
     'name': 'Surgitech Inventory',
     'version': '10.0.0.1',
-    'author': 'Ahmed Salama , Zienab Abd EL Nasser',
     'category': 'Inventory',
     'description': """
 Warehouse modifications
@@ -15,6 +14,8 @@ Warehouse modifications
         'views/stock_location_changes_view.xml',
         'views/stock_warehouse_changes_view.xml',
         'views/stock_quant_change_view.xml',
+        'views/stock_move_line_changes.xml',
+        'views/inventory_menu.xml',
         'security/ir.model.access.csv',
         'security/stock_inventory_security.xml',
     ],
