@@ -15,6 +15,7 @@
                                 <field name="customers_operations_location" domain="[('usage','=','view')]" invisible="1"/>
                                 <field name="customers_operations_location2" domain="[('usage','=','view')]" invisible="1"/>
                                 <field name="operations_location" readonly="1"/>
+                                <field name="customers_sales_order_location_id" readonly="1"/>
                             </group>
                           <group>
                                 <field name="is_surgeon"/>

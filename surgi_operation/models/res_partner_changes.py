@@ -17,8 +17,8 @@ class res_partner_inherit(models.Model):
     gender = fields.Selection([('m', 'Male'), ('f', 'Female')])
     authority = fields.Selection([('closed', 'Closed'),('open', 'Open'),('open_approval', 'Open with Approval')], string='Authority Type')
 
-    hospital_stock_location_id = fields.Many2one('stock.location', string="Hospital Stock Location")
-    hospital_customers_location_id = fields.Many2one('stock.location', string="Hospital Customers Location")
+    # hospital_stock_location_id = fields.Many2one('stock.location', string="Hospital Stock Location")
+    customers_sales_order_location_id = fields.Many2one('stock.location', string="Customers Sales Order Location")
 
 
     def get_default_stock_config(self):
@@ -55,26 +55,37 @@ class res_partner_inherit(models.Model):
             }
             print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
             res = self.env['stock.location'].create(values)
+            # ## Second location: internal location with hospital name + /stock as location name and created hospital as owner ##
+            # secondLocationVals = {
+            #     'name': 'Onshelf',
+            #     'usage': "internal",
+            #     'partner_id': createdHospital.id,
+            #     'location_id': res.id
+            # }
+            # secondLocation = self.env['stock.location'].create(secondLocationVals)
             ## Second location: internal location with hospital name + /stock as location name and created hospital as owner ##
             secondLocationVals = {
-                'name': 'Onshelf',
-                'usage': "internal",
+                'name': 'Delivery',
+                'usage': "customer",
                 'partner_id': createdHospital.id,
+                'delivery_order_location': True,
                 'location_id': res.id
             }
             secondLocation = self.env['stock.location'].create(secondLocationVals)
             ## Third location: internal location with hospital name + /customers as location name and created hospital as owner ##
             thirdLocationVals = {
-                'name': 'customer',
+                'name': 'S-O',
                 'usage': "customer",
                 'partner_id': createdHospital.id,
+                'sales_order_location': True,
                 'location_id': res.id
             }
             thirdLocation = self.env['stock.location'].create(thirdLocationVals)
             createdHospital.write({
                                   'operations_location': res.id,
-                                  'hospital_stock_location_id': secondLocation.id,
-                                  'hospital_customers_location_id': thirdLocation.id,
+                                  #'hospital_stock_location_id': secondLocation.id,
+                                  'property_stock_customer': secondLocation.id,
+                                  'customers_sales_order_location_id': thirdLocation.id,
                                   })
         return createdHospital
 
