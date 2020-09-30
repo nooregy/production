@@ -54,6 +54,7 @@
                     <field name="surgeon_id"/>
                     <field name="patient_name"/>
                     <field name="patient_national_id"/>
+                    <field name="moh_approved_operation"/>
                     <field name="side"/>
                     <field name="gs_work_order"/>
                     <field name="notes"/>
