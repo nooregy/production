@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="stock_quant_tree_inherit_accounting" model="ir.ui.view">
+            <field name="name">stock.quant.tree.inherit</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="surgi_inventory_changes.stock_quant_tree_inherit_main"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_uom_id']" position="after">
+                    <field name="currency_id" invisible="0" groups="account.group_account_user"/>
+                    <field name="value" groups="account.group_account_user"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

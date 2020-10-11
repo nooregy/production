@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','account_accountant','hr','hr_contract','hr_payroll_account'],
+    'depends': ['base','account','account_accountant','hr','hr_contract','hr_payroll_account','stock_account','stock','surgi_inventory_changes'],
 
     # always loaded
     'data': [
@@ -31,6 +31,7 @@
         'views/account_payment_register.xml',
         'views/account_bank_statement.xml',
         'views/register_payment.xml',
+        'views/stock_quant_change_accounting_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
