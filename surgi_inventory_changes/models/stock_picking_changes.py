@@ -12,10 +12,10 @@ class StockPickingInherit(models.Model):
     type_delivery_type = fields.Selection(string="Delivery Type ",related='picking_type_id.delivery_type',
                                      selection=[('gov', 'Government Form'), ('exchange', 'Exchange ')],
                                      help="Used ot show picking type delivery type")
-    tender_order_id = fields.Many2one(comodel_name='stock.picking',string="Tender Delivery Order",
+    exchange_out_order_id = fields.Many2one(comodel_name='stock.picking',string="Exchange Delivery Order",
                              help="used to set Tender Delivery Order",
                                       domain=[('type_delivery_type','=','exchange')])
-    exchange_order_id = fields.Many2one(comodel_name='stock.picking', string="Exchange Receipt Order",
+    exchange_in_order_id = fields.Many2one(comodel_name='stock.picking', string="Exchange Receipt Order",
                                       help="used to set Exchange Receipt Order",
                                       domain=[('receipt_exchange', '=', True)])
     gov_form_url = fields.Char(string="Gov Form URL",help="used to add Gov Form URL")
@@ -54,12 +54,12 @@ class StockPickingInherit(models.Model):
         self.save_descrip_action()
         if self.receipt_exchange:
             ## in case of recipt exchange order add it's id on tendre order
-            if self.tender_order_id:
-                self.tender_order_id.write({'exchange_order_id' : self.id})
+            if self.exchange_out_order_id:
+                self.exchange_out_order_id.write({'exchange_in_order_id' : self.id})
         elif self.type_delivery_type == 'exchange':
             ## in case of exchange order add it's id on exhchange  order
-            if self.exchange_order_id:
-                self.exchange_order_id.write({'tender_order_id' : self.id})
+            if self.exchange_in_order_id:
+                self.exchange_in_order_id.write({'exchange_out_order_id' : self.id})
             ## If there is no exchange order raise warning
             else:
                 raise Warning ("Please Set Exchange Receipt Order to be able to validate")

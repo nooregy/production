@@ -12,26 +12,34 @@
                 <!--<button name="do_new_transfer" states="validate" string="Validate" groups="stock.group_stock_user" type="object" class="oe_highlight"/>-->
                 <!--</button>-->
                 <!--====================== A.Salama ==========================-->
-                <xpath expr="//field[@name='priority']" position="replace">
-                </xpath>
+                <!--<xpath expr="//field[@name='priority']" position="replace">-->
+                <!--</xpath>-->
 
                 <!--<xpath expr="//field[@name='partner_id']" position="before">
                     <field name="picking_type_id"/>
                 </xpath>-->
-                <xpath expr="//field[@name='location_dest_id']" position="after">
-                    <field name="priority"/>
+                <xpath expr="//field[@name='location_id']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["state","not in",["draft"]]]}</attribute>
                 </xpath>
+
+                <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["state","not in",["draft"]]]}</attribute>
+                </xpath>
+
+                <!--<xpath expr="//field[@name='location_dest_id']" position="after">-->
+                    <!--<field name="priority"/>-->
+                <!--</xpath>-->
 
                 <!--<xpath expr="//page[@name='extra']/group/group/field[@name='picking_type_id']" position="replace">
                 </xpath>-->
 
-                <xpath expr="//field[@name='priority']" position="after">
+                <xpath expr="//field[@name='origin']" position="after">
                     <field name="receipt_exchange" invisible="1"/>
                     <field name="type_delivery_type" invisible="1"/>
                     <field name="gov_form_url"  placeholder="https://" widget="url"
                            attrs="{'invisible':[('type_delivery_type','!=','gov')]}"/>
-                    <field name="tender_order_id" attrs="{'invisible':[('receipt_exchange','!=',True)]}"/>
-                    <field name="exchange_order_id" attrs="{'invisible':[('type_delivery_type','!=','exchange')]}"/>
+                    <field name="exchange_out_order_id" attrs="{'invisible':[('receipt_exchange','!=',True)]}"/>
+                    <field name="exchange_in_order_id" attrs="{'invisible':[('type_delivery_type','!=','exchange')]}"/>
                 </xpath>
 
                 <xpath expr="//notebook" position="inside">
