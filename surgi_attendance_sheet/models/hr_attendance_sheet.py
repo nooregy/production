@@ -648,6 +648,7 @@ class AttendanceSheet(models.Model):
                                 act_float_diff = float_diff
                                 float_diff, diff_cnt = policy_id.get_diff(
                                     float_diff, diff_cnt)
+
                             values = {
                                 'date': date,
                                 'day': day_str,
