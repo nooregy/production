@@ -19,6 +19,7 @@ class hrEmployee(models.Model):
 
     attendance_approval = fields.Boolean('Require Attendance Approval')
 
+
     def get_employee_shifts(self, day_start, day_end, tz):
         self.ensure_one()
         plan_slot_obj = self.env['planning.slot']

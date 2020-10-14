@@ -11,6 +11,15 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
+from datetime import date, datetime
+from pytz import timezone, utc
+
+
+def get_float_from_time(time):
+    str_time = datetime.strftime(time, "%H:%M")
+    split_time = [int(n) for n in str_time.split(":")]
+    float_time = split_time[0] + split_time[1] / 60.0
+    return float_time
 
 
 class HrAttendancePolicy(models.Model):
@@ -18,8 +27,11 @@ class HrAttendancePolicy(models.Model):
 
     miss_rule_id = fields.Many2one(comodel_name="hr.miss.rule",
                                    string="Missed Punch Rule", required=False)
+    shift_allowance_line_ids = fields.One2many('attendance.shift.allowance',
+                                               'policy_id',
+                                               'Attendance Shift Allowances')
 
-    def get_late(self,period, cnt):
+    def get_late(self, period, cnt):
         res = period
         flag = False
         no = 1
@@ -124,6 +136,32 @@ class HrAttendancePolicy(models.Model):
                     res = 0
         return res
 
+    def get_shift_allowance(self, date_from, date_to, tz):
+        if not self.shift_allowance_line_ids:
+            return 0
+
+        date_start_native = date_from.replace(tzinfo=tz).astimezone(
+            utc).replace(tzinfo=None)
+        date_end_native = date_to.replace(tzinfo=tz).astimezone(
+            utc).replace(tzinfo=None)
+        time_start = get_float_from_time(date_start_native)
+        time_end = get_float_from_time(date_end_native)
+        intervals = []
+        shift_amount = 0
+        if time_end < time_start:
+            intervals = [(time_start, 24), (0, time_end)]
+        else:
+            intervals = [(time_start, time_end)]
+        for interval in intervals:
+            for line in self.shift_allowance_line_ids:
+                if max(interval[0], line.time_from) < min(
+                        interval[1], line.date_to):
+                    time = max(interval[0], line.time_from) - min(
+                        interval[1], line.date_to)
+                    shift_amount += time * line.amount
+        return shift_amount
+
+
 class HrLateRuleLine(models.Model):
     _inherit = 'hr.late.rule.line'
 
@@ -143,11 +181,14 @@ class HrDiffRuleLine(models.Model):
     fourth = fields.Float('Fourth Time', default=1)
     fifth = fields.Float('Fifth Time', default=1)
 
+
 class hr_miss_rule(models.Model):
     _name = 'hr.miss.rule'
 
-    name = fields.Char(string='name', required=True,translate=True)
-    line_ids = fields.One2many(comodel_name='hr.miss.rule.line', inverse_name='miss_id', string='Missed punchis rules')
+    name = fields.Char(string='name', required=True, translate=True)
+    line_ids = fields.One2many(comodel_name='hr.miss.rule.line',
+                               inverse_name='miss_id',
+                               string='Missed punchis rules')
 
 
 class hr_miss_rule_line(models.Model):
@@ -163,7 +204,7 @@ class hr_miss_rule_line(models.Model):
     ]
 
     miss_id = fields.Many2one(comodel_name='hr.miss.rule', string='name')
-    amount = fields.Float(string='amount',required=True)
+    amount = fields.Float(string='amount', required=True)
     counter = fields.Selection(string="Times", selection=times, required=True, )
 
     _sql_constraints = [
@@ -172,7 +213,15 @@ class hr_miss_rule_line(models.Model):
     ]
 
 
+class AttendanceShiftAllowance(models.Model):
+    _name = 'attendance.shift.allowance'
+    policy_id = fields.Many2one('hr.attendance.policy', 'Attendance Policy',
+                                ondelete='cascade')
+    time_start = fields.Float('Time From', required=True)
+    time_end = fields.Float('Time To', required=True)
+    amount = fields.Float('Amount')
 
-
-
-
+    @api.constrains('time_from', 'time_to', 'policy_id')
+    def _check_time(self):
+        for line in self:
+            pass

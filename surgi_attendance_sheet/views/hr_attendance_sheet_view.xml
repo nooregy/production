@@ -49,6 +49,7 @@
                        position="after">
                     <field name="miss_type" optional="hide"/>
                     <field name="miss_pen" optional="hide"/>
+                    <field name="shift_allowance" optional="hide"/>
                 </xpath>
             </field>
         </record>
