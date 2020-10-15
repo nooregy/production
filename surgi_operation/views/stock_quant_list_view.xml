@@ -100,7 +100,7 @@
             <field name="res_model">hanged.stock.quant</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="hanged_stock_quant_tree_inherit"/>
-            <field name="context">{'group_by': ['operation_location_id']}</field>
+            <field name="context">{}</field>
             <field name="domain">[('is_operation_related','=',1),('is_wh_user','=',1)]</field>
         </record>
 
