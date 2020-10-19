@@ -33,28 +33,5 @@
             </field>
         </record>
 
-
-        <!-- Inherit Form View to Modify it -->
-        <record id="form_view_account_move_inherit_page" model="ir.ui.view">
-            <field name="name">name.account.move.edit.forms</field>
-            <field name="model">account.move</field>
-            <field name="inherit_id" ref="account.view_move_form"/>
-            <field name="arch" type="xml">
-
-                <xpath expr="//page[@name='other_info']" position="after">
-                    <page string="Payment Data">
-                        <group>
-                            <group>
-                                <field name="date_reconcile"/>
-                                <field name="payment_name"/>
-                            </group>
-                        </group>
-
-                    </page>
-                </xpath>
-
-            </field>
-        </record>
-
     </data>
 </odoo>
