@@ -8,4 +8,4 @@ class stock_quant_inherit_wizard(models.Model):
     #u_p_usd = fields.Float(string="U. Price in USD")
 
     product_group = fields.Char(srting="Group", related="product_id.product_group", store=True)
-    product_categ_id = fields.Char(srting="Product Category", related="product_id.categ_id", store=True)
+    product_categ_id = fields.Many2one('product.category', related='product_id.categ_id', store=True)
