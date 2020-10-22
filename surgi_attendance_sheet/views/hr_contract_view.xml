@@ -9,6 +9,7 @@
                 <xpath expr="//field[@name='trial_date_end']"
                        position="after">
                     <field name="multi_shift"/>
+                    <field name="shift_allowance"/>
                 </xpath>
             </field>
         </record>

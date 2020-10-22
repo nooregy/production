@@ -29,6 +29,9 @@ class AttendanceSheet(models.Model):
     tot_miss = fields.Float(compute="_compute_sheet_total",
                             string="Total Miss Punches Penalty", readonly=True,
                             store=True)
+    tot_shift_allowance = fields.Float(compute="_compute_sheet_total",
+                            string="Total Shift Allowance", readonly=True,
+                            store=True)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirm', 'Confirmed'),
@@ -47,6 +50,7 @@ class AttendanceSheet(models.Model):
                 lambda l: l.miss_type != 'right' and l.miss_pen > 0)
             sheet.no_miss = len(miss_line_ids)
             sheet.tot_miss = sum([l.miss_pen for l in miss_line_ids])
+            sheet.tot_shift_allowance  =sum([l.shift_allowance for l in sheet.line_ids])
         return res
 
     def compute_penalty_count(self):
@@ -151,7 +155,8 @@ class AttendanceSheet(models.Model):
                   ('check_in', '<=', day_end_native), ]
         if employee.attendance_approval:
             domain += [('approval_state', '=', 'approved')]
-        attendances = self.env['hr.attendance'].sudo().search(domain,order="check_in")
+        attendances = self.env['hr.attendance'].sudo().search(domain,
+                                                              order="check_in")
         for att in attendances:
             check_in = att.check_in
             check_out = att.check_out
@@ -164,6 +169,7 @@ class AttendanceSheet(models.Model):
         for att_sheet in self:
             contract = att_sheet.contract_id
             att_sheet.line_ids.unlink()
+            shift_allowance = contract.shift_allowance
             att_line = self.env["attendance.sheet.line"]
             from_date = att_sheet.date_from
             to_date = att_sheet.date_to
@@ -225,6 +231,11 @@ class AttendanceSheet(models.Model):
                     if public_holiday:
                         if attendance_intervals:
                             for attendance_interval in attendance_intervals:
+                                shift_alw_amount =0
+                                if shift_allowance:
+                                    shift_alw_amount = policy_id.get_shift_allowance(
+                                        attendance_interval[0],
+                                        attendance_interval[1], tz)
                                 overtime = attendance_interval[1] - \
                                            attendance_interval[0]
                                 float_overtime = overtime.total_seconds() / 3600
@@ -255,6 +266,7 @@ class AttendanceSheet(models.Model):
                                     'ac_sign_in': float_ac_sign_in,
                                     'ac_sign_out': float_ac_sign_out,
                                     'worked_hours': float_worked_hours,
+                                    'shift_allowance':shift_alw_amount,
                                     # 'o_worked_hours': float_worked_hours,
                                     'overtime': float_overtime,
                                     'act_overtime': act_float_overtime,
@@ -283,6 +295,7 @@ class AttendanceSheet(models.Model):
 
                             all_miss_intervals = attendance_intervals
                             miss_cnt += 1
+                            shift_alw_amount = 0
                             miss_amount = policy_id.get_miss(miss_cnt)
                             for i, work_interval in enumerate(work_intervals):
                                 pl_sign_in = self._get_float_from_time(
@@ -442,6 +455,7 @@ class AttendanceSheet(models.Model):
                             att_work_intervals = []
                             diff_intervals = []
                             late_in_interval = []
+                            shift_alw_amount = 0
                             diff_time = timedelta(hours=00, minutes=00,
                                                   seconds=00)
                             late_in = timedelta(hours=00, minutes=00,
@@ -484,6 +498,9 @@ class AttendanceSheet(models.Model):
                             status = ""
                             note = ""
                             if att_work_intervals:
+                                if shift_allowance:
+                                    for attw_interval in attendance_intervals:
+                                        shift_alw_amount+=policy_id.get_shift_allowance(attw_interval[0],attw_interval[1],tz)
                                 if len(att_work_intervals) > 1:
                                     # print("there is more than one interval for that work interval")
                                     late_in_interval = (
@@ -640,6 +657,7 @@ class AttendanceSheet(models.Model):
                                 'ac_sign_in': ac_sign_in,
                                 'ac_sign_out': ac_sign_out,
                                 'late_in': policy_late,
+                                'shift_allowance':shift_alw_amount,
                                 'act_late_in': act_float_late,
                                 'worked_hours': float_worked_hours,
                                 'overtime': float_overtime,
@@ -752,3 +770,4 @@ class AttendanceSheetLine(models.Model):
                    ('right', 'Right')], string='Miss Punch Type',
         default='right')
     miss_pen = fields.Float("Miss punch Penalty", readonly=True)
+    shift_allowance = fields.Float('Shift Allowance')
