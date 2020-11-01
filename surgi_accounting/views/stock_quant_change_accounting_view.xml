@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <!-- Inherit Form View to Modify it -->
         <record id="stock_quant_tree_inherit_accounting" model="ir.ui.view">
             <field name="name">stock.quant.tree.inherit</field>
