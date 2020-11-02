@@ -25,22 +25,25 @@ class AccountInvoiceInherit(models.Model):
     exchange_invoices = fields.Boolean("Exchanged invoices")
     exchange_invoices_id = fields.Many2one('account.move', 'Exchange invoices No.')
 
-    date_reconcile = fields.Date(string="Date", )
-    payment_name = fields.Char(string="Payment Name", )
+    date_reconcile = fields.Date(string="Date",compute='_compute_payments_widget_reconciled_info' )
+    payment_name = fields.Char(string="Payment Name",compute='_compute_payments_widget_reconciled_info'  )
 
     @api.depends('type', 'line_ids.amount_residual')
     def _compute_payments_widget_reconciled_info(self):
+        self.date_reconcile=False
+        self.payment_name=""
         for move in self:
             if move.state != 'posted' or not move.is_invoice(include_receipts=True):
                 move.invoice_payments_widget = json.dumps(False)
                 continue
             reconciled_vals = move._get_reconciled_info_JSON_values()
-
+            print("111111111111",reconciled_vals)
             for recs in reconciled_vals:
                 move.date_reconcile = recs['date']
 
             for pay in self.env['account.payment'].search([]):
                 if move.id in pay.invoice_ids.ids:
+                    print("1111111111111ffffffffffffffffffffffffffffffffffffffffffffffff",pay.name)
                     move.payment_name = pay.name
 
             if reconciled_vals:

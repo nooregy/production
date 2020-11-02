@@ -15,6 +15,11 @@
                     <field name="ref"/>
                 </xpath>
 
+                <xpath expr="//field[@name='state']" position="before">
+                    <field name="date_reconcile"/>
+                    <field name="payment_name"/>
+                </xpath>
+
             </field>
         </record>
 
