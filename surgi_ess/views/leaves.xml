@@ -31,6 +31,7 @@
                     <separator/>
                     <filter name="year" string="Current Year" domain="[('holiday_status_id.active', '=', True)]"
                             help="Active Leaves and Allocations"/>
+                    <filter name="day" string="Current Day" domain="[('request_date_from', '=', context_today().strftime('%Y-%m-%d'))]"/>
                     <separator/>
                     <filter string="My Requests" name="my_leaves" domain="[('user_id', '=', uid)]"/>
                     <separator/>

@@ -30,6 +30,14 @@ class HrContract(models.Model):
     allowances = fields.Float(string="Allowances", digits=dp.get_precision('Payroll'),track_visibility='onchange')
     prev_raise = fields.Float(string="previous Annual Raises", digits=dp.get_precision('Payroll'),track_visibility='onchange')
 
+    wage = fields.Monetary('Wage', required=True, tracking=True, help="Employee's monthly gross wage.",compute='calculate_wage')
+
+    @api.depends('basic_salary','basic_salary_precent')
+    def calculate_wage(self):
+        self.wage=0
+        for rec in self:
+            rec.wage = rec.basic_salary + rec.basic_salary_precent
+
 
     @api.onchange('employee_id')
     def _onchange_employee_id(self):

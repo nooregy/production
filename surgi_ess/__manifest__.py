@@ -20,11 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','hr_attendance','hr_holidays','project','surgi_evaluation','surgi_attendance_sheet','attendance_sheet_extra','hr_appraisal'],
+    'depends': ['base','hr','hr_attendance','hr_holidays','project','surgi_evaluation',
+                'surgi_attendance_sheet','attendance_sheet_extra','hr_appraisal'],
 
     # always loaded
     'data': [
         'security/ess_security.xml',
+        'report/waiting_approval_report.xml',
         'views/employee_directory.xml',
         'views/attendance.xml',
         'views/employee_profile.xml',
@@ -38,7 +40,7 @@
         'views/menu.xml',
         'views/attendance_sheet.xml',
         'views/evaluation.xml',
-        'views/kra-kpi.xml',
+        'views/kra-kpi.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

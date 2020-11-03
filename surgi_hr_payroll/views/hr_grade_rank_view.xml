@@ -22,7 +22,7 @@
                                 <tree string="Ranks">
                                     <field name="name"/>
                                     <field name="salary_range"/>
-                                    <!--<field name="total_salary"/>-->F
+                                    <!--<field name="total_salary"/>-->
                                     <field name="description"/>
                                 </tree>
                             </field>

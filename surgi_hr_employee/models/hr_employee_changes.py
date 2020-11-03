@@ -147,6 +147,19 @@ class HREmployeeFields(models.Model):
 
     # bank_account_num = fields.Integer(string="Bank Account Number",)
 
+    def _is_name(self, name):
+        return not any(char.isdigit() for char in name)
+
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        if self._name == 'hr.employee':
+            if not self._is_name(name):
+                self._rec_name = 'registration_number'
+            res = super().name_search(name, args, operator, limit)
+        else:
+            res = super().name_search(name, args, operator, limit)
+        return res
+
 
     @api.constrains('in_direct_parent_id')
     def _check_parent_id(self):
