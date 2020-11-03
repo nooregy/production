@@ -13,7 +13,6 @@ var AbstractAction = require('web.AbstractAction');
 
             var self = this;
             this.active_id = this.get_stock_id();
-            this.cids = this.get_cids();
             this.ready = this.load_stock_data();
             this.data = {};
             this.quantsData = {};
@@ -34,14 +33,6 @@ var AbstractAction = require('web.AbstractAction');
                     .split('=')[1];
             return activeid;
         },
-        get_cids: function () {
-        console.log("2");
-            var lochash = location.hash.substr(1);
-            var cids = lochash.substr(lochash.indexOf('cids='))
-                    .split('&')[0]
-                    .split('=')[1];
-            return cids;
-        },
         load_stock_data: function () {
         console.log("3a");
             var loaded = new $.Deferred();
@@ -51,7 +42,7 @@ var AbstractAction = require('web.AbstractAction');
             var stock_picking = rpc.query({
                 model:'stock.picking',
                 method: 'get_stock_lot_scan_data',
-                args: [self.active_id,self.cids],
+                args: [self.active_id],
             }).then(function (result) {
             console.log("4");
                 result = JSON.parse(result);
