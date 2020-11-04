@@ -15,6 +15,7 @@ class DepartmentFields(models.Model):
 class HrEmployeeBaseDate(models.AbstractModel):
     _inherit = "hr.employee.base"
 
+    resignation_date = fields.Date()
     labor_linc_no = fields.Char(string="Labor Linc No.", )
     id_from = fields.Char(string="ID From", store=True)
     military_status = fields.Selection(string="Military Status",
