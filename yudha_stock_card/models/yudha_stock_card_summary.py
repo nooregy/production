@@ -267,7 +267,7 @@ class yudha_stock_card_summary(models.Model):
     def convert_uom_qty(self, product_id,sm_uom_id,qty):
 
         product = self.env['product.product'].browse(product_id)
-        uom 	= self.env['uom.uom'].browse(sm_uom_id)
+        uom 	= self.env['product.uom'].browse(sm_uom_id)
 
         if product_id == 45:
             print ('ini')

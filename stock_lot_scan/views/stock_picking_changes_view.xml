@@ -27,7 +27,7 @@
                 </field>
 
                 <field name="backorder_id" position="after">
-                    <field name="ean13" invisible="0" groups="base.group_no_one"/>
+                    <field name="ean13"/>
                     <!--<field name="ean132"  invisible="0"/>-->
                     <!--<field name="ean_out"  attrs="{'invisible': [('pickin_Typ_code', '=', 'incoming')]}"/>-->
                     <button name="savebeforescanbutton" string="savebeforescanbutton" style="display:none"/>

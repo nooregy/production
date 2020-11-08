@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record model="ir.actions.act_window" id="act_yudha_stock_card_view">
+        <record id="act_yudha_stock_card_view_edit" model="ir.actions.act_window">
             <field name="name">Stock Card</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">yudha.stock.card</field>
-<!--            <field name="view_type">form</field>-->
+            <!--<field name="view_type">form</field>-->
             <field name="view_mode">tree,form</field>
             <field name="domain">[]</field>
             <field name="context">{}</field>
         </record>
+
+
+        <menuitem id="menu_yudha_stock_card_edit"
+                  parent="menu_yudha_stock_main"
+                  sequence="25"
+                  name="Stock Card Per Product"
+                  action="act_yudha_stock_card_view_edit"/>
+
+
         <!--tree view-->
         <record id="view_yudha_stock_card_tree" model="ir.ui.view">
             <field name="name">yudha.stock.card.tree</field>
