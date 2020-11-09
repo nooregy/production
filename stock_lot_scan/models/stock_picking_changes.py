@@ -218,7 +218,7 @@ class stock_picking_inherit(models.Model):
             return True
 
     @api.model
-    def get_stock_lot_scan_data(self, active_id,cids):
+    def get_stock_lot_scan_data(self, active_id,cids=""):
         if active_id != "":
             rec = self.env['stock.picking'].search([('id', '=', active_id)])
             #  rec.company_id.id
@@ -229,7 +229,7 @@ class stock_picking_inherit(models.Model):
             else:
                 componiesid = str(cids).split("%2C")
             print("f");
-            componiesid=[int(i) for i in componiesid]
+            #componiesid=[int(i) for i in componiesid]
             #componiesid=[1,2]
             lots = self.env['stock.production.lot'].search([('company_id','=', rec.company_id.id)])
 
