@@ -74,18 +74,21 @@
                                 <field name="date_to" required="1"
                                        class="oe_inline"
                                        attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="days_no_tmp" string="Hours" attrs="{'invisible': [('duration_type', '=', 'days')]}"/>
-                                <field name="days_no_tmp" string="Days" attrs="{'invisible': [('duration_type', '=', 'hours')]}"/>
-                                <field name="payslip_paid"  readonly="1" attrs="{'invisible': [('type','!=', 'cash')]}" widget="toggle_button" groups="hr.group_hr_manager"/>
-                                <field name="days_no" readonly="1"
-                                       invisible="1"/>
                             </group>
                             <group>
-                                <div>
-                                    <separator string="Public Holiday"/>
-                                    <field name="public_holiday"
-                                           force_save="1"/>
-                                </div>
+                                <field name="days_no_tmp" string="Hours" attrs="{'invisible': [('duration_type', '=', 'days')]}"/>
+                                <field name="days_no_tmp" string="Days" attrs="{'invisible': [('duration_type', '=', 'hours')]}"/>
+                                <field name="total_morning_hours" readonly="True"/>
+                                <field name="total_night_hours" readonly="True"/>
+                            </group>
+                            <group>
+                                <field name="days_no" readonly="1"
+                                       invisible="1"/>
+                                <field name="payslip_paid"  readonly="1" attrs="{'invisible': [('type','!=', 'cash')]}" widget="toggle_button" groups="hr.group_hr_manager"/>
+                            </group>
+                            <group>
+                                <field name="public_holiday" string="Is Public Holiday"/>
+                                <field name="is_weekend" string="Is Weekend"/>
                             </group>
                         </group>
                         <notebook>
