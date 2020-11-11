@@ -87,8 +87,6 @@ class stock_picking_inherit(models.Model):
 
         pass  # end function
 
-
-
     # synchronize Function
     def synchronize_scan(self):
         for rec in self:
@@ -218,20 +216,20 @@ class stock_picking_inherit(models.Model):
             return True
 
     @api.model
-    def get_stock_lot_scan_data(self, active_id,cids=""):
+    def get_stock_lot_scan_data(self, active_id, cids=""):
         if active_id != "":
             rec = self.env['stock.picking'].search([('id', '=', active_id)])
             #  rec.company_id.id
-           # companiesids=rec.env.company_ids
-           # companiesids=allowed_companies = view_context.get('allowed_company_ids', False)
+            # companiesids=rec.env.company_ids
+            # companiesids=allowed_companies = view_context.get('allowed_company_ids', False)
             if cids.find(',') != -1:
-                componiesid=str(cids).split(",")
+                componiesid = str(cids).split(",")
             else:
                 componiesid = str(cids).split("%2C")
             print("f");
-            #componiesid=[int(i) for i in componiesid]
-            #componiesid=[1,2]
-            lots = self.env['stock.production.lot'].search([('company_id','=', rec.company_id.id)])
+            # componiesid=[int(i) for i in componiesid]
+            # componiesid=[1,2]
+            lots = self.env['stock.production.lot'].search([('company_id', '=', rec.company_id.id)])
 
             quants = self.env['stock.quant'].search([('location_id', '=', rec.location_id.id)])
 
@@ -262,9 +260,9 @@ class stock_picking_inherit(models.Model):
                     product_qty = -1
                 if serial in data:
                     if lot.expiration_date:
-                        expdate=lot.expiration_date
+                        expdate = lot.expiration_date
                     else:
-                        expdate=datetime.now()+timedelta(days=+300)
+                        expdate = datetime.now() + timedelta(days=+300)
                     data[serial].append({
                         'product_id': lot.product_id.id,
                         'product_qty': product_qty,
@@ -274,9 +272,9 @@ class stock_picking_inherit(models.Model):
                     })
                 else:
                     if "expiration_date" in lot:
-                        expdate=lot.expiration_date
+                        expdate = lot.expiration_date
                     else:
-                        expdate=datetime.now()+timedelta(days=+300)
+                        expdate = datetime.now() + timedelta(days=+300)
                     data[serial] = [{
                         'product_id': lot.product_id.id,
                         'product_qty': product_qty,
@@ -295,13 +293,15 @@ class stock_picking_inherit(models.Model):
                                                           'tracking': product.tracking}
             scan_lines = rec.scan_products_ids
             x = 0
-            #productsCodeData={}
+            # productsCodeData={}
             for line in scan_lines:
                 serial = line.lot_no
-                if(line.expiration_date):
-                    expdate=line.expiration_date
+                if line.lot_no in data:
+                    data[line.lot_no][0]['product_qty'] = line.product_availabilty
+                if line.expiration_date:
+                    expdate = line.expiration_date
                 else:
-                    expdate=None
+                    expdate = None
                 linesData[x] = {
                     'id': line.id,
                     'serial': serial,
@@ -321,6 +321,7 @@ class stock_picking_inherit(models.Model):
                 'type_of_scaning': rec.type_of_scaning,
                 'pickin_Typ_code': rec.pickin_Typ_code
             }
+            print(returnData);
             # logging.warning("this is before function")
             return json.dumps(returnData, ensure_ascii=False)
 
