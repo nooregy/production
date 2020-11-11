@@ -14,8 +14,8 @@ class ProductProduct(models.Model):
 
     _sql_constraints = [
         (
-              "default_code_uniq",
-              "unique(default_code)",
-              "Internal Reference must be unique across the database!",
+            "default_code_uniq",
+            "unique(default_code)",
+            "Internal Reference must be unique across the database!",
         )
     ]

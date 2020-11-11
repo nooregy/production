@@ -21,4 +21,5 @@
     'data': [
         'views/product_template_view.xml',
     ],
+    "pre_init_hook": "pre_init_product_code",
 }
