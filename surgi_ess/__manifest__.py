@@ -25,6 +25,7 @@
 
     # always loaded
     'data': [
+        'security/ir.model.access.csv',
         'security/ess_security.xml',
         'report/waiting_approval_report.xml',
         'views/employee_directory.xml',
@@ -41,6 +42,7 @@
         'views/attendance_sheet.xml',
         'views/evaluation.xml',
         'views/kra-kpi.xml'
+        'views/daily_plan.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
