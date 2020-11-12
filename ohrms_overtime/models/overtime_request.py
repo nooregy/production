@@ -78,13 +78,15 @@ class HrOverTime(models.Model):
     type = fields.Selection([('cash', 'Cash'), ('leave', 'leave')], default="leave", required=True, string="Type")
     overtime_type_id = fields.Many2one('overtime.type', domain="[('type','=',type),('duration_type','=', "
                                                                "duration_type)]")
-    public_holiday = fields.Boolean(default=False, readonly=True)
-    is_weekend = fields.Boolean(default=False, readonly=True)
+    public_holiday = fields.Boolean(default=False, compute='_onchange_date', store=True)
+    is_weekend = fields.Boolean(default=False, compute='_onchange_date', store=True)
     total_morning_hours = fields.Float(compute='_get_hour_amount', store=True)
     total_night_hours = fields.Float(compute='_get_hour_amount', store=True)
 
     # attendance_ids = fields.Many2many('hr.attendance', string='Attendance')
-    attendance_ids = fields.One2many(comodel_name="attendance.attendance", inverse_name="interval_attendance", string="", required=False, )
+    attendance_ids = fields.One2many(comodel_name="attendance.attendance",
+                                     inverse_name="interval_attendance",
+                                     string="", required=False)
 
     work_schedule = fields.One2many(
         related='employee_id.resource_calendar_id.attendance_ids')
@@ -140,33 +142,44 @@ class HrOverTime(models.Model):
 
     @api.depends('overtime_type_id')
     def _get_hour_amount(self):
-        if self.overtime_type_id.rule_line_ids:
-            if not self.public_holiday and not self.is_weekend:
-                morning_rule = night_rule = None
-                for line in self.overtime_type_id.rule_line_ids:
-                    if line.name == 'working_day_morning':
-                        morning_rule = line
-                    elif line.name == 'working_day_night':
-                        night_rule = line
-                morning_start = morning_rule.from_hrs
-                morning_end = morning_rule.to_hrs
-                night_start = morning_end
-                night_end = (morning_start - 0.01) % 24
-                total_morning_hours, total_night_hours = self._get_day_night_hours(day_start=morning_start,
-                                                                                             day_end=morning_end,
-                                                                                             night_start=night_start,
-                                                                                             night_end=night_end,
-                                                                                             interval_start=self.date_from,
-                                                                                             interval_end=self.date_to)
-                self.total_morning_hours = total_morning_hours
-                self.total_night_hours = total_night_hours
-                if self.duration_type == 'hours' and self.contract_id:
-                    morning_rate = morning_rule.hrs_amount if morning_rule else 0
-                    night_rate = night_rule.hrs_amount if night_rule else 0
-                    hour_rate = self.contract_id.over_hour
+        for rec in self:
+            if rec.overtime_type_id.rule_line_ids:
+                if rec.public_holiday:
+                    for line in rec.overtime_type_id.rule_line_ids:
+                        if line.name == 'holiday' and rec.duration_type == 'hours' and rec.contract_id:
+                            rec.cash_hrs_amount = rec.contract_id.over_hour * line.hrs_amount * rec.days_no_tmp
+                            break
+                elif rec.is_weekend:
+                    for line in rec.overtime_type_id.rule_line_ids:
+                        if line.name == 'weekend' and rec.duration_type == 'hours' and rec.contract_id:
+                            rec.cash_hrs_amount = rec.contract_id.over_hour * line.hrs_amount * rec.days_no_tmp
+                            break
+                else:
+                    morning_rule = night_rule = None
+                    for line in rec.overtime_type_id.rule_line_ids:
+                        if line.name == 'working_day_morning':
+                            morning_rule = line
+                        elif line.name == 'working_day_night':
+                            night_rule = line
+                    morning_start = morning_rule.from_hrs
+                    morning_end = morning_rule.to_hrs
+                    night_start = morning_end
+                    night_end = (morning_start - 0.01) % 24
+                    total_morning_hours, total_night_hours = self._get_day_night_hours(day_start=morning_start,
+                                                                                                 day_end=morning_end,
+                                                                                                 night_start=night_start,
+                                                                                                 night_end=night_end,
+                                                                                                 interval_start=rec.date_from,
+                                                                                                 interval_end=rec.date_to)
+                    rec.total_morning_hours = total_morning_hours
+                    rec.total_night_hours = total_night_hours
+                    if rec.duration_type == 'hours' and rec.contract_id:
+                        morning_rate = morning_rule.hrs_amount if morning_rule else 0
+                        night_rate = night_rule.hrs_amount if night_rule else 0
+                        hour_rate = rec.contract_id.over_hour
 
-                    self.cash_hrs_amount = (hour_rate * self.total_morning_hours * morning_rate) \
-                                           + (hour_rate * self.total_night_hours * night_rate)
+                        rec.cash_hrs_amount = (hour_rate * rec.total_morning_hours * morning_rate) \
+                                               + (hour_rate * rec.total_night_hours * night_rate)
 
 
 
@@ -300,58 +313,59 @@ class HrOverTime(models.Model):
                 _('You cannot delete TIL request which is not in draft state.'))
         return super(HrOverTime, self).unlink()
 
-    @api.onchange('date_from', 'date_to', 'employee_id')
+    @api.depends('date_from', 'date_to', 'employee_id')
     def _onchange_date(self):
-        holiday = False
-        lines = [(5, 0, 0), ]
-        if self.contract_id and self.date_from and self.date_to:
-            for leaves in self.contract_id.resource_calendar_id.global_leave_ids:
-                leave_dates = pd.date_range(leaves.date_from, leaves.date_to).date
-                overtime_dates = pd.date_range(self.date_from, self.date_to).date
-                for over_time in overtime_dates:
-                    for leave_date in leave_dates:
-                        if leave_date == over_time:
-                            holiday = True
+        for rec in self:
+            holiday = False
+            lines = [(5, 0, 0)]
+            if rec.contract_id and rec.date_from and rec.date_to:
+                for leaves in rec.contract_id.resource_calendar_id.global_leave_ids:
+                    leave_dates = pd.date_range(leaves.date_from, leaves.date_to).date
+                    overtime_dates = pd.date_range(rec.date_from, rec.date_to).date
+                    for over_time in overtime_dates:
+                        for leave_date in leave_dates:
+                            if leave_date == over_time:
+                                holiday = True
 
-            week_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-            start_day_no = week_days.index(self.date_from.strftime("%A").lower())
-            _is_weekend = True
-            for att in self.contract_id.resource_calendar_id.attendance_ids:
-                if str(att.dayofweek) == str(start_day_no):
-                    _is_weekend = False
-                    break
+                week_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+                start_day_no = week_days.index(rec.date_from.strftime("%A").lower())
+                _is_weekend = True
+                for att in rec.contract_id.resource_calendar_id.attendance_ids:
+                    if str(att.dayofweek) == str(start_day_no):
+                        _is_weekend = False
+                        break
 
-            if holiday:
-                self.write({
-                    'public_holiday': True,
-                    'is_weekend': False
+                if holiday:
+                    rec.write({
+                        'public_holiday': True,
+                        'is_weekend': False
+                    })
+                else:
+                    rec.write({'public_holiday': False})
+                    rec.is_weekend = _is_weekend
+
+                hr_attendance = self.env['hr.attendance'].search([('employee_id', '=', rec.employee_id.id)])
+
+                for emp_att in hr_attendance:
+                    checkin = datetime.strptime(str(emp_att.check_in), '%Y-%m-%d %H:%M:%S').date()
+                    start_date = datetime.strptime(str(rec.date_from), '%Y-%m-%d %H:%M:%S').date()
+                    to_date = datetime.strptime(str(rec.date_to), '%Y-%m-%d %H:%M:%S').date()
+
+                    if start_date<=checkin<=to_date:
+                        print(start_date,checkin,to_date,'QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ')
+                        lines.append((0, 0, {
+                        'employee_id':emp_att.employee_id.id ,
+                        'check_in': emp_att.check_in,
+                        'check_out': emp_att.check_out,
+                        'work_hour': emp_att.worked_hours,
+                    }))
+
+                # [(6, 0, hr_attendance.ids)]
+                rec.update({
+                    'attendance_ids': lines
                 })
-            else:
-                self.write({'public_holiday': False})
-                self.is_weekend = _is_weekend
 
-            hr_attendance = self.env['hr.attendance'].search([('employee_id', '=', self.employee_id.id)])
-
-            for emp_att in hr_attendance:
-                checkin = datetime.strptime(str(emp_att.check_in), '%Y-%m-%d %H:%M:%S').date()
-                start_date = datetime.strptime(str(self.date_from), '%Y-%m-%d %H:%M:%S').date()
-                to_date = datetime.strptime(str(self.date_to), '%Y-%m-%d %H:%M:%S').date()
-
-                if start_date<=checkin<=to_date:
-                    print(start_date,checkin,to_date,'QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ')
-                    lines.append((0, 0, {
-                    'employee_id':emp_att.employee_id.id ,
-                    'check_in': emp_att.check_in,
-                    'check_out': emp_att.check_out,
-                    'work_hour': emp_att.worked_hours,
-                }))
-
-            # [(6, 0, hr_attendance.ids)]
-            self.update({
-                'attendance_ids': lines
-            })
-
-    @api.constrains('date_from', 'date_to','attendance_ids')
+    @api.constrains('date_from', 'date_to', 'attendance_ids')
     def _validate_check_out_date(self):
         for res in self.attendance_ids:
             if self.date_to > res.check_out:
