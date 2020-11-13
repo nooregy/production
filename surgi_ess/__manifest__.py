@@ -21,7 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base','hr','hr_attendance','hr_holidays','project','surgi_evaluation',
-                'surgi_attendance_sheet','attendance_sheet_extra','hr_appraisal'],
+                'surgi_attendance_sheet','attendance_sheet_extra','hr_appraisal','surgi_operation'],
 
     # always loaded
     'data': [
@@ -41,8 +41,8 @@
         'views/menu.xml',
         'views/attendance_sheet.xml',
         'views/evaluation.xml',
-        'views/kra-kpi.xml'
-        'views/daily_plan.xml'
+        'views/kra-kpi.xml',
+        'views/daily_plan.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
