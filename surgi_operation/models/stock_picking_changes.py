@@ -11,7 +11,6 @@ class stock_picking_inherit(models.Model):
         uom_categ_id = self.env.ref('uom.product_uom_unit').id
         return self.env['uom.uom'].search([('category_id', '=', uom_categ_id), ('factor', '=', 1)], limit=1)
 
-
     def open_stock_wizard_cancel_operation(self):
         action = self.env.ref('surgi_operation.action_cancel_stock_wizard_view')
         result = action.read()[0]
@@ -19,7 +18,6 @@ class stock_picking_inherit(models.Model):
         result['views'] = [(res and res.id or False, 'form')]
         result['target'] = 'new'
         return result
-
 
     reason = fields.Many2one(comodel_name='operation.cancel.reason', string="Reason")
     description = fields.Text(string="Description")
@@ -39,7 +37,7 @@ class stock_picking_inherit(models.Model):
 
     # Adding function set Reviewed
     def setReviewed(self):
-        self.write({'reviewed':True})
+        self.write({'reviewed': True})
 
     @api.model
     def create(self, vals):
@@ -52,7 +50,9 @@ class stock_picking_inherit(models.Model):
         pick_typpe = self.env['stock.picking.type'].browse(picking_type)
         # raise Warning (str(pick_typpe.warehouse_id.id))
         if "operation_id" in vals:
-            vals['operation_components_ids'] = [(4, operation.id) for operation in self.env['operation.operation'].browse(vals['operation_id']).component_ids]
+            vals['operation_components_ids'] = [(4, operation.id) for operation in
+                                                self.env['operation.operation'].browse(
+                                                    vals['operation_id']).component_ids]
 
             prod_lines = []
             for ln in self.env['operation.operation'].browse(vals['operation_id']).product_lines:
@@ -66,9 +66,9 @@ class stock_picking_inherit(models.Model):
             values = {
                 'name': "fake name to be updated from ress.name ",
                 'usage': "transit",
-                'location_id':partner_obj_op_loc,
-                'is_operation_location':True,
-                'warehouse_id':pick_typpe.warehouse_id.id
+                'location_id': partner_obj_op_loc,
+                'is_operation_location': True,
+                'warehouse_id': pick_typpe.warehouse_id.id
             }
             res = self.env['stock.location'].create(values)
             vals['location_dest_id'] = res.id
@@ -79,7 +79,6 @@ class stock_picking_inherit(models.Model):
             return ress
         else:
             return super(stock_picking_inherit, self).create(vals)
-
 
     # here to change the default of loading default values of location_destination_id
     @api.onchange('picking_type_id', 'partner_id')
@@ -116,7 +115,7 @@ class stock_picking_inherit(models.Model):
             if self.partner_id.picking_warn == 'no-message' and self.partner_id.parent_id:
                 partner = self.partner_id.parent_id
             elif self.partner_id.picking_warn not in (
-                                                      'no-message', 'block') and self.partner_id.parent_id.picking_warn == 'block':
+                    'no-message', 'block') and self.partner_id.parent_id.picking_warn == 'block':
                 partner = self.partner_id.parent_id
             else:
                 partner = self.partner_id
@@ -128,14 +127,19 @@ class stock_picking_inherit(models.Model):
                     'message': partner.picking_warn_msg
                 }}
 
-    def button_validate(self):
+    def button_validate1(self):
         for rec in self:
+            # raise Warning(rec.move_line_ids_without_package)
             dist_warehouse = self.env['stock.warehouse'].search([('is_hanged_warehouse', '=', True)])
-            location = self.env['stock.location'].search([('warehouse_id', '=', dist_warehouse.id), ('is_operation_location', '=', True),('usage', '=', 'internal')])
+            location = self.env['stock.location'].search(
+                [('warehouse_id', '=', dist_warehouse.id), ('is_operation_location', '=', True),
+                 ('usage', '=', 'internal')])
+            # raise Warning(rec.location_dest_id.id)
             if rec.location_id.id == location.id:
                 for line in rec.move_lines:
                     quant_line_delete = self.env['hanged.stock.quant'].search(
-                        [('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id), ('quantity', '=', line.quantity_done),])
+                        [('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id),
+                         ('quantity', '=', line.quantity_done), ])
                     quant_line_delete.unlink()
                     quant_line_update = self.env['hanged.stock.quant'].search(
                         [('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id)])
@@ -143,9 +147,17 @@ class stock_picking_inherit(models.Model):
                         'quantity': quant_line_update.quantity - line.quantity_done
                     })
             elif rec.location_dest_id.id == location.id:
+                print("ff")
                 op = rec.operation_id.id
                 for line in rec.move_lines:
-                    quant_line = self.env['stock.quant'].search([('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id),('lot_id','=',line.move_line_ids.lot_id.id)])
+                    ##raise Warning(line.name)
+                    # lot=self.env['stock.production.lot'].search(['company_id','=',line.company_id.id,('product_id', '=', line.product_id.id),('name','=',line.lot_name)])
+                    # raise Warning(lot.id)
+                    # quant_line = self.env['stock.quant'].search([('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id),('lot_id','=',line.move_line_ids.lot_id.id)])
+                    quant_line = self.env['stock.quant'].search(
+                        [('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id),
+                         ('lot_id', '=', line.move_line_ids.lot_id.id)])
+                    # raise Exception(quant_line)
                     if quant_line:
                         self.env['hanged.stock.quant'].create({
                             'quant_id': quant_line.id,
@@ -156,6 +168,56 @@ class stock_picking_inherit(models.Model):
                             'is_operation_related': quant_line.is_operation_related,
                             'reserved_quantity': quant_line.reserved_quantity,
                             'quantity': line.quantity_done,
+                            'lot_id': quant_line.lot_id.id,
+                            'package_id': quant_line.package_id.id,
+                            'owner_id': quant_line.owner_id.id,
+                            'product_uom_id': quant_line.product_uom_id.id,
+                            'company_id': quant_line.company_id.id,
+                            'operation_id': op
+                        })
+        return super(stock_picking_inherit, self).button_validate()
+
+    def button_validate(self):
+        for rec in self:
+            # raise Warning(rec.move_line_ids_without_package)
+            dist_warehouse = self.env['stock.warehouse'].search([('is_hanged_warehouse', '=', True)])
+            location = self.env['stock.location'].search(
+                [('warehouse_id', '=', dist_warehouse.id), ('is_operation_location', '=', True),
+                 ('usage', '=', 'internal')])
+            # raise Warning(rec.location_dest_id.id)
+            if rec.location_id.id == location.id:
+                for line in rec.move_lines:
+                    quant_line_delete = self.env['hanged.stock.quant'].search(
+                        [('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id),
+                         ('quantity', '=', line.quantity_done), ])
+                    quant_line_delete.unlink()
+                    quant_line_update = self.env['hanged.stock.quant'].search(
+                        [('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id)])
+                    quant_line_update.write({
+                        'quantity': quant_line_update.quantity - line.quantity_done
+                    })
+            elif rec.location_dest_id.id == location.id:
+                print("ff")
+                op = rec.operation_id.id
+                for line in rec.move_line_ids_without_package:
+                    ##raise Warning(line.name)
+                    # lot=self.env['stock.production.lot'].search(['company_id','=',line.company_id.id,('product_id', '=', line.product_id.id),('name','=',line.lot_name)])
+                    # raise Warning(lot.id)
+                    # quant_line = self.env['stock.quant'].search([('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id),('lot_id','=',line.move_line_ids.lot_id.id)])
+                    quant_line = self.env['stock.quant'].search(
+                        [('location_id', '=', line.location_id.id), ('product_id', '=', line.product_id.id),
+                         ('lot_id', '=', line.lot_id.id)])
+                    # raise Exception(quant_line)
+                    if quant_line:
+                        self.env['hanged.stock.quant'].create({
+                            'quant_id': quant_line.id,
+                            'product_id': quant_line.product_id.id,
+                            'location_id': location.id,
+                            'operation_location_id': quant_line.location_id.id,
+                            'is_wh_user': quant_line.is_wh_user,
+                            'is_operation_related': quant_line.is_operation_related,
+                            'reserved_quantity': quant_line.reserved_quantity,
+                            'quantity': line.qty_done,
                             'lot_id': quant_line.lot_id.id,
                             'package_id': quant_line.package_id.id,
                             'owner_id': quant_line.owner_id.id,
