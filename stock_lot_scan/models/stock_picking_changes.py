@@ -217,6 +217,7 @@ class stock_picking_inherit(models.Model):
 
     @api.model
     def get_stock_lot_scan_data(self, active_id, cids=""):
+        raise Warning("test")
         if active_id != "":
             rec = self.env['stock.picking'].search([('id', '=', active_id)])
             usecreatelotobj = rec.use_create_lots
