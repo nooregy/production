@@ -62,7 +62,7 @@ console.log("6a");
                 console.log("11a");
                 self.res_id = result.res_id;
                 console.log("12a");
-
+                self.usercanwrite=result.usecreatelot;
                 loaded.resolve();
                 console.log("13a");
 
@@ -143,7 +143,7 @@ console.log("6");
             var self = this;
             this._super.apply(this, arguments);
             console.log(this.xmlDependencies);
-            
+
 
             return this.stock_data.ready.done(function () {
                // self.$el.prepend();
@@ -465,8 +465,11 @@ console.log("6");
         search_product: function (e) {
         console.log("13");
             var self = this;
+            var scan_box = $('#scan_box').val();
+            if(self.stock_data.data[scan_box] != undefined || (self.stock_data.data[scan_box] == undefined && self.stock_data.usercanwrite ) ){
             if (self.stock_data.type_of_scaning != 'third_group') {
-                var scan_box = $('#scan_box').val();
+
+
                 if (scan_box.trim() != '') {
                     var modalShown = false;
                     $("div[id$=Modal]").each(function () {
@@ -657,7 +660,8 @@ console.log("6");
                     }
                     $('#scan_box').val('').blur().focus();
                 }
-            } else {
+            }
+            else {
                 var scan_box = $('#scan_box').val();
                 var dateArray = scan_box.split('-');
                 if (dateArray.length > 1) {
@@ -667,6 +671,12 @@ console.log("6");
                 } else {
                     $('input#expiration_date').focus();
                 }
+            }
+
+            }else{
+            document.getElementById('audio').play();
+            alert("lot not exist and you dont have permission for create lot");
+
             }
         },
         cancel_button: function (e) {
