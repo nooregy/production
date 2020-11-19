@@ -2,6 +2,7 @@ jQuery(document).ready(function () {
 
     window.newWindow = null
 });
+
 function openScanWindow(loadedStockLotScanData, type, type_of_scaning) {
 console.log("2b");
 
