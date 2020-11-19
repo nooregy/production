@@ -219,7 +219,7 @@ class stock_picking_inherit(models.Model):
     def get_stock_lot_scan_data(self, active_id, cids=""):
         if active_id != "":
             rec = self.env['stock.picking'].search([('id', '=', active_id)])
-            print("ffffffffffffff")
+            usecreatelotobj = rec.use_create_lots
             #  rec.company_id.id
             # companiesids=rec.env.company_ids
             # companiesids=allowed_companies = view_context.get('allowed_company_ids', False)
@@ -320,7 +320,8 @@ class stock_picking_inherit(models.Model):
                 'res_id': active_id,
                 'scan_lines': linesData,
                 'type_of_scaning': rec.type_of_scaning,
-                'pickin_Typ_code': rec.pickin_Typ_code
+                'pickin_Typ_code': rec.pickin_Typ_code,
+                'usecreatelot': usecreatelotobj
             }
             print(returnData);
             # logging.warning("this is before function")
