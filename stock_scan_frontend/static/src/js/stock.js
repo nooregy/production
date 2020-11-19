@@ -13,6 +13,7 @@ var AbstractAction = require('web.AbstractAction');
 
             var self = this;
             this.active_id = this.get_stock_id();
+            this.cids = this.get_cids();
             this.ready = this.load_stock_data();
             this.data = {};
             this.quantsData = {};
@@ -21,6 +22,7 @@ var AbstractAction = require('web.AbstractAction');
             this.scan_lines = {}
             this.addedScansObj = {};
             this.totalQty = 0;
+            this.usecreatelot=0;
             this.createdScansObj = {};
             this.type_of_scaning = '';
             this.pickin_Typ_code = '';
@@ -33,6 +35,14 @@ var AbstractAction = require('web.AbstractAction');
                     .split('=')[1];
             return activeid;
         },
+        get_cids: function () {
+        console.log("2");
+            var lochash = location.hash.substr(1);
+            var cids = lochash.substr(lochash.indexOf('cids='))
+                    .split('&')[0]
+                    .split('=')[1];
+            return cids;
+        },
         load_stock_data: function () {
         console.log("3a");
             var loaded = new $.Deferred();
@@ -42,7 +52,7 @@ var AbstractAction = require('web.AbstractAction');
             var stock_picking = rpc.query({
                 model:'stock.picking',
                 method: 'get_stock_lot_scan_data',
-                args: [self.active_id],
+                args: [self.active_id,self.cids],
             }).then(function (result) {
             console.log("4");
                 result = JSON.parse(result);
@@ -57,7 +67,9 @@ console.log("6a");
                 self.codeProducts = result.productsCodeData;
                 console.log("9a");
                 self.type_of_scaning = result.type_of_scaning;
+                self.usecreatelot=result.usecreatelot;
                 console.log("10a");
+                console.log(result);
                 self.pickin_Typ_code = result.pickin_Typ_code;
                 console.log("11a");
                 self.res_id = result.res_id;
@@ -133,7 +145,8 @@ console.log("6");
             this._super.apply(this, arguments);
             console.log("1");
             this.stock_data = new ScanningModel(require);
-            console.log("7x");
+            console.log("zzzzzzzzzzzzzzzzzzz");
+            console.log(options);
             //this.start();
         },
 
@@ -182,7 +195,7 @@ console.log("6");
             });
         },
         selectLine: function (e) {
-        console.log("9");
+        console.log("9vvvvvvvvvvvv");
             var self = this;
             var el = e.target;
             var scan_box = $(el).attr('id');
@@ -488,8 +501,15 @@ console.log("6");
                                 var scan = self.stock_data.data[scan_box][0];
                                 var product_id = scan.product_id;
                                 var product = self.stock_data.products[product_id];
+                                if(scan.lot_name!=null){
                                 var lot_name = scan.lot_name;
+                                }else{
+                                var lot_name = scan.lot_no
+                                }
+                              // var lot_name = scan.lot_name;
+                              //if(scan.expiration_date!="NaN/NaN/NaN"){
                                 var expiration_date = scan.expiration_date;
+                                //}
                                 var qty = 1;
                                 if (!self.stock_data.createdScansObj[scan_box]) {
                                     self.stock_data.createdScansObj[scan_box] = {};
@@ -497,7 +517,13 @@ console.log("6");
                                 if (!self.stock_data.addedScansObj[scan_box]) {
                                     self.stock_data.addedScansObj[scan_box] = {};
                                 }
-                                if (self.stock_data.addedScansObj[scan_box][product_id]) {
+                                scanboxupper=scan_box.toUpperCase();
+                                scanlower=scan_box.toLowerCase();
+                                if (self.stock_data.addedScansObj[scan_box][product_id] ) {
+                                //if (self.stock_data.addedScansObj[scan_box] || self.stock_data.addedScansObj[scanboxupper] || self.stock_data.addedScansObj[scan_box]  ) {
+                                scanboxupper=scan_box.toUpperCase();
+                                console.log(scanboxupper);
+                                 console.log("check if exist");
                                     var tr = $('#' + encoded);
                                     var qtyInput = tr.find('.qty');
                                     qty = parseInt(tr.find('.qty').val());
@@ -518,7 +544,7 @@ console.log("6");
                                         $('#scan_box').val('').blur().focus();
                                         $("#limitReachedModal").modal();
                                     }
-                                } else {
+                                } else if(self.usecreatelot){
                                     if(scan.product_qty === -1 || scan.product_qty >= qty){
                                         var product = self.stock_data.products[product_id];
                                         var date = new Date(expiration_date);
