@@ -219,7 +219,7 @@ class stock_picking_inherit(models.Model):
     def get_stock_lot_scan_data(self, active_id, cids=""):
         if active_id != "":
             rec = self.env['stock.picking'].search([('id', '=', active_id)])
-            #z
+            #zx
             #  rec.company_id.id
             # companiesids=rec.env.company_ids
             # companiesids=allowed_companies = view_context.get('allowed_company_ids', False)
