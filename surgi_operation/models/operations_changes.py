@@ -435,6 +435,9 @@ class operation_operation(models.Model):
     #returner_responsible = fields.Many2one(comodel_name='res.users', string="Returner", default=_get_currunt_loged_user,track_visibility='onchange')
     qunat = fields.One2many('hanged.stock.quant', 'operation_id', 'Quants')
 
+    delivery_type = fields.Selection(string="Delivery Type", selection=[('delivery_exchange', 'Delivery Exchange'), ('sale_delivery', 'Sales Delivery'),('load_delivery','Loaded Delivery') ], required=False, )
+
+
     def create_operation_invoice(self):
         for rec in self:
             vals = {

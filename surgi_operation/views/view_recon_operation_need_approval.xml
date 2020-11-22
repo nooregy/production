@@ -49,9 +49,9 @@
             <form string="Sales Order" create="false" delete="false">
                     <header>
                         <!--<button name="action_done_sales" string="Done" type="object" attrs="{'invisible': [('state','!=','confirm')]}"/>-->
-                        <!--<button name="create_sales_order" string="Create SO" icon="fa-cart-plus" type="object" attrs="{'invisible': ['|',('op_type','!=','surgery'),('state','=','draft')]}"/>-->
+                        <!--<button name="create_sales_order" string="Create SO" icon="fa-cart-plus" type="object" attrs="{'invisible': ['|','|',('has_oper_loc_hanged_quant','=',False ),('so_created','=',True ),('state','=','draft')]}"/>-->
                         <!--<button name="action_confirm_sales" string="Confirm" type="object" attrs="{'invisible': [('state','!=','draft')]}"/>-->
-                        <!--<<button name="open_wizard_cancel_operation" type="object" string="Cancel" icon="fa-pencil" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['Return','done', 'cancel'])]}"/>-->
+                        <!--<<button name="open_wizard_cancel_operation" type="object" string="Cancel" icon="fa-pencil" class="oe_highlight" attrs="{'invisible': ['|'('so_created','=',True ),('state', 'in', ['Return','done', 'cancel'])]}"/>-->
                         <field name="state" widget="statusbar" /> <!-- attrs="{'invisible': [('state', 'not in', ['draft','done', 'cancel'])]}"/> -->
                         <!--<field name="stage_id" widget="statusbar" attrs="{'invisible': [('state', 'in', ['draft','done', 'cancel'])]}" clickable="False"/>-->
                     </header>
@@ -63,9 +63,9 @@
                             <button name="action_view_operation_del" type="object" class="oe_stat_button" icon="fa-building-o">
                                 <field string="Stock Pickings" name="oper_loc_del" widget="statinfo" modifiers="{'readonly': true}"/>
                             </button>
-                            <button name="action_view_operation_SO" icon="fa-cart-plus" type="object" class="oe_stat_button" attrs="{'invisible': ['|',('state','=','draft'),('op_type','!=','surgery')]}">
-                                <field name="oper_loc_so" string="Sale Order" modifiers="{'readonly': true}" widget="statinfo"/>
-                            </button>
+                            <!--<button name="action_view_operation_SO" icon="fa-cart-plus" type="object" class="oe_stat_button" attrs="{'invisible': ['|',('state','=','draft'),('op_type','!=','surgery')]}">-->
+                                <!--<field name="oper_loc_so" string="Sale Order" modifiers="{'readonly': true}" widget="statinfo"/>-->
+                            <!--</button>-->
                         </div>
                         <div class="oe_title">
                             <h1>

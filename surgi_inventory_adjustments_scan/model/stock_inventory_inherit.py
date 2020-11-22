@@ -71,7 +71,7 @@ class stock_inventory_inherit(models.Model):
 
         if rec.scanning_mode == False:
             raise Warning(str("You should select scanning mode first !!"))
-        lots = self.env['stock.production.lot'].search([])
+        lots = self.env['stock.production.lot'].search([('company_id', '=', rec.company_id.id)])
         data = {}
         productsData = {}
         productsCodeData = {}
