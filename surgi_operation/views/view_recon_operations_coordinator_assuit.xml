@@ -97,9 +97,9 @@
                             <button name="action_view_operation_del" type="object" class="oe_stat_button" icon="fa-building-o">
                                 <field string="Stock Pickings" name="oper_loc_del" widget="statinfo" modifiers="{'readonly': true}"/>
                             </button>
-                            <button name="action_view_operation_SO" icon="fa-cart-plus" type="object" class="oe_stat_button" attrs="{'invisible': [('so_created','=',False )]}">
-                                <field name="oper_loc_so" string="Sale Order" modifiers="{'readonly': true}" widget="statinfo"/>
-                            </button>
+<!--                            <button name="action_view_operation_SO" icon="fa-cart-plus" type="object" class="oe_stat_button" attrs="{'invisible': [('so_created','=',False )]}">-->
+<!--                                <field name="oper_loc_so" string="Sale Order" modifiers="{'readonly': true}" widget="statinfo"/>-->
+<!--                            </button>-->
                         </div>
                         <div class="oe_title">
                             <h1>
