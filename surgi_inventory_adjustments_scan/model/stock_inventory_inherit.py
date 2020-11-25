@@ -120,13 +120,10 @@ class stock_inventory_inherit(models.Model):
             linesData[x] = {'id': line.id, 'serial': serial, 'cutSerial': serial, 'qty': line.scanned_quantity,
                             'product_id': line.product_id.id}
             x += 1
-        # returnData = {"data": data, "products": productsData, 'productsCodeData': productsCodeData, 'res': res,
-        # "res_id": active_id, 'scan_lines': linesData} #Ahmed Hashed
-        returnData = {"data": data, "products": productsData, 'productsCodeData' : { } , 'res': res,
+        returnData = {"data": data, "products": productsData, 'productsCodeData': productsCodeData, 'res': res,
                       "res_id": active_id, 'scan_lines': linesData}
         # returnData = {"data": data, "products": productsData, 'productsCodeData': productsCodeData, 'res': [],
         #               "res_id": active_id, 'scan_lines': linesData}
-        print("xx")
         return json.dumps(returnData, ensure_ascii=False)
 
     # end of class
