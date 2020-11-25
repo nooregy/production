@@ -114,15 +114,6 @@ if records:
         </field>
     </record>
 
-<record id="model_stock_inventory_line_action_sync_quantity" model="ir.actions.server">
-        <field name="name">Sync Scanned Quantity</field>
-        <field name="model_id" ref="model_stock_inventory_line"/>
-        <field name="binding_model_id" ref="model_stock_inventory_line"/>
-        <field name="state">code</field>
-        <field name="code">
-if records:
-    action = records.synchronize_inventorylines()
-        </field>
-    </record>
+
 
     </odoo>

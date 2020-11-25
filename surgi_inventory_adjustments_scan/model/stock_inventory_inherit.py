@@ -1,15 +1,14 @@
 import datetime
 import json
-# from xxlimited import Null
+#from xxlimited import Null
 
-# from addons.stock.models import stock_inventory
-from odoo import api, exceptions, fields, models
-from odoo.exceptions import UserError, Warning, ValidationError
-
+#from addons.stock.models import stock_inventory
+from odoo import api,exceptions,fields,models
+from odoo.exceptions import UserError,Warning,ValidationError
 
 class stock_inventory_inherit(models.Model):
     _inherit = 'stock.inventory'
-    # _name='stock.inventory'
+    #_name='stock.inventory'
 
     location_ids = fields.Many2many(
         'stock.location', string='Locations',
@@ -30,11 +29,16 @@ class stock_inventory_inherit(models.Model):
         else:
             raise UserError(('You must define a warehouse for the company: %s.') % (company_user.name,))
 
+
+
+
+
     location_id = fields.Many2one(
         'stock.location', 'Inventoried Location',
         readonly=True, required=True,
         states={'draft': [('readonly', False)]},
         default=_default_location_id)
+
 
     @api.model
     def scan_from_ui(self, res_id, created, added):
@@ -65,7 +69,7 @@ class stock_inventory_inherit(models.Model):
 
     @api.model
     def get_stock_inventory_scan_data(self, active_id):
-        if active_id is None or active_id is "Null":
+        if  active_id is None or active_id is "Null":
             raise Warning(str("Please Save Your Product !!"))
         rec = self.env['stock.inventory'].search([('id', '=', active_id)])
 
@@ -78,7 +82,7 @@ class stock_inventory_inherit(models.Model):
         linesData = {}
         for lot in lots:
             serial = lot.name
-            # lot_name = lot.lot_name
+            #lot_name = lot.lot_name
             lot_name = lot.name
             if rec.scanning_mode == 'lot_serial_no':
                 ####### 2 check scanning box for $, to avoid redoing of 2,3,4,5 ########
@@ -94,7 +98,7 @@ class stock_inventory_inherit(models.Model):
                      })
             else:
                 data[serial] = [{'id': lot.id, 'product_id': lot.product_id.id, 'lot_no': serial, 'lot_name': lot_name,
-                                 # Ahmed Hashed 'expiration_date': str(lot.expiration_date)
+                                 #Ahmed Hashed 'expiration_date': str(lot.expiration_date)
                                  }]
         products = self.env['product.product'].search([])
         for product in products:
@@ -105,13 +109,13 @@ class stock_inventory_inherit(models.Model):
                                                       'default_code': product.default_code, 'uom_id': product.uom_id.id,
                                                       'tracking': product.tracking}
         res = {'location_id': rec.location_id.id, 'location_name': rec.location_id.name,
-               # Ahmed Hashed 'filter': rec.filter,
-               # Ahmed Hashed 'exhausted': rec.exhausted,
+               #Ahmed Hashed 'filter': rec.filter,
+               #Ahmed Hashed 'exhausted': rec.exhausted,
                'date': str(rec.date), 'accounting_date': str(rec.accounting_date),
                'scanning_mode': rec.scanning_mode, 'state': rec.state, 'company_id': rec.company_id.id,
                'name': rec.name,
-               # Ahmed Hashed 'package_id': rec.package_id.id,
-               # AHmed Hashed 'partner_id': rec.partner_id.id
+               #Ahmed Hashed 'package_id': rec.package_id.id,
+               #AHmed Hashed 'partner_id': rec.partner_id.id
                }
         scan_lines = rec.line_ids
         x = 0
@@ -139,22 +143,10 @@ class stock_inventory_line_inherit(models.Model):
         index=True, required=True)
 
     scanned_quantity = fields.Float(string="Scanned Quantity")
-
-    # syncronize inventory lines
-    def synchronize_inventorylines(self):
-        filtered_lines = self.filtered(lambda l: l.state != 'done')
-        for line in filtered_lines:
-            #line.theoretical_qty=line.scanned_quantity
-            line.product_qty = line.scanned_quantity
-            #print(line.scanned_quantity)
-            pass
-
-        pass
-
     def action_reset_product_qty(self):
         """ Write `product_qty` to zero on the selected records. """
-        res = super(stock_inventory_line_inherit, self).action_reset_product_qty()
-        # raise  UserError("Entered")
+        res=super(stock_inventory_line_inherit, self).action_reset_product_qty()
+        #raise  UserError("Entered")
         impacted_lines = self.env['stock.inventory.line']
         for line in self:
             if line.state == 'done':
@@ -163,4 +155,4 @@ class stock_inventory_line_inherit(models.Model):
         impacted_lines.write({'product_qty': line.scanned_quantity})
         return res
 
-    pass  # end class line inhert
+    pass# end class line inhert
