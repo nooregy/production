@@ -133,10 +133,10 @@
                             <group>
                                 <field name="patient_name" attrs="{'readonly': [('op_type', '=', 'tender')]}"/>
                                 <field name="patient_national_identification" invisible ="1"/>
-                                <field name="side" required="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                                <field name="side" required="0" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
                         </group>
                             <group>
-                                <field name="patient_gender" required="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/> <!--attrs="{'required': [('is_patient','=',False)],'readonly': [('is_patient','=',True)]}"-->
+                                <field name="patient_gender" required="0" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/> <!--attrs="{'required': [('is_patient','=',False)],'readonly': [('is_patient','=',True)]}"-->
 
                             </group>
                         </group>
