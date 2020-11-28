@@ -156,7 +156,7 @@ class StockMove(models.Model):
         # This method returns a dictonary to provide an easy extension hook to modify the valuation lines (see purchase for an example)
 
         print("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",debit_account_id,credit_account_id)
-
+	rslt={}
         self.ensure_one()
         if self._context.get('forced_ref'):
             ref = self._context['forced_ref']
